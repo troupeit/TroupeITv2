@@ -1,0 +1,117 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <P ALIGN=CENTER>
+      <img src="<%=asset_path 'bhof/bhof-logo-140px11-black.png'%>"><BR>
+      <STRONG><%=::BHOF_YEAR %> Application System</STRONG>
+    </P>
+
+    <!-- Default panel contents -->
+    <div class="bs-callout bs-callout-info">
+      <h4>Welcome to the BHOF <%=::BHOF_YEAR %> Application System</h4>
+
+      <p>If you are a Legend and you wish to perform, please email the Legends Team at  <a href="mailto:legends@burlesquehall.com">legends@burlesquehall.com</a></p>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <span class="fa-stack fa-3x">
+          <i class="fa fa-calendar fa-stack-1x"></i>
+          <i class="fa fa-circle-thin fa-stack-2x"></i>
+        </span>
+        <P><strong>Dates to Remember:</strong></p>
+        
+        <table data-toggle="table" data-url="data1.json" data-cache="false" class="table">
+          <thead>
+            <tr>
+              <th data-field="date">Date</th>
+              <th data-field="what">Event</th>
+            </tr>
+          </thead>
+          <TR>
+            <TD><%=::BHOF_DISCOUNT_DEADLINE.strftime(LONG_DATE_FMT) %> Pacific Time</TD><TD>Early Bird Deadline</TD>
+          </TR>
+          <TR>
+            <TD><%=::BHOF_FINAL_DEADLINE.strftime(LONG_DATE_FMT) %> Pacific Time</TD><TD>Application Deadline</TD>
+          </TR>
+          <TR>
+            <TD>March <%=::BHOF_YEAR %></TD><TD>Application Notifications</TD>
+          </TR>
+          <TR>
+            <TD>April <%=::BHOF_YEAR %></TD><TD>Weekend Passes on sale</TD>
+          </TR>
+          <TR>
+            <TD>April 28, <%=::BHOF_YEAR %></TD><TD>Hotel group rate expires</TD>
+          </TR>
+          <TR>
+            <TD><%=::BHOF_WEEKEND_DATES %></TD><TD><%=::BHOF_YEAR %> Weekender</TD>
+          </TR>
+        </table>
+      </div>
+      <div class="col-md-4">
+        <span class="fa-stack fa-3x">
+          <i class="fa fa-users fa-stack-1x"></i>
+          <i class="fa fa-circle-thin fa-stack-2x"></i>
+        </span>
+        <p><strong>What's TroupeIT?</strong></p>
+        <p>
+        TroupeIT is a simple show and media management system for
+        theater, burlesque, and more. When you sign up for an account
+        for your BHOF application, you'll also get a <B>free, 30-day
+        producer trial</b> of one of the best systems for managing
+        burlesque shows. 
+        </p>
+        <p>
+          Feel free to invite your troupe and use our software on your
+          next show when you're done with your application.
+        </p>
+        <p>
+          We're proud to be a part of the BHOF <%= ::BHOF_YEAR %>
+          Weekender.
+        </p>
+        <p>
+          <a href="/?l=1">Learn more about TroupeIT</a>
+        </p>
+
+      </div>
+      <div class="col-md-4">
+        <span class="fa-stack fa-3x">
+          <i class="fa fa-question fa-stack-1x"></i>
+          <i class="fa fa-circle-thin fa-stack-2x"></i>
+        </span>
+        <P><strong>FAQs and Information</strong></p>
+        <a href="/bhof/rules" target="_blank">Full Rules</a><BR>
+        <a href="/bhof/judging_criteria" target="_blank">Judging Criteria</a><BR>
+        <a href="http://blog.bhofapplication.com/behind-the-scenes-the-competition-selection-process" target="_blank">How the selection process works</a>
+        <hr/>
+        <P><strong>Questions about the application process?</strong></p>
+        <p>Please email the application team at <a href="<%=::BHOF_EMAIL %>"><%=::BHOF_EMAIL %></a></p>
+<hr>            
+<% if current_user -%>
+  <% if current_user.bhof_member_id.present? -%>
+  <p>
+    <a href="/apps/">
+      Skip the rule review &mdash; Just take me to my applications
+    </a>
+  </p>
+  <% end -%>
+  <p align="center">
+    <a href="/bhof/page1">
+      <button class="btn btn-success btn-block" style="margin-bottom: 20px;">Next <i class="fa fa-angle-right"></i></button>
+    </a>
+  </p>
+  <% else -%>
+  <p> 
+    <strong>Next, you will sign in or register a new troupeIT account so that you can begin your application.</strong>
+    <BR/>
+  </p>
+  <p>
+    <a href="/bhof/page1"><button class="btn btn-block btn-success">Next <i class="fa fa-angle-right"></i></button>
+    </a>
+  </p>
+  <% end -%>
+      </div>
+  </div>
+</div>
+</div>
+
+
+</div>

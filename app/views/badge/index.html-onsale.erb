@@ -1,0 +1,287 @@
+<!-- Load Stripe.js on your website. -->
+<script src="https://js.stripe.com/v3"></script>
+
+<div class="panel panel-default" style="max-width: 750px; margin-right: auto; margin-left: auto;">
+  <div class="panel-body" style="padding:50px;">
+    <h1>
+      <STRONG>Team Ides - Badge Sales</strong>
+    </h1>
+
+    <hr/>
+
+    <div class="text-center">
+    <h4>DEF CON 27 Unofficial Badge: da Bomb - DEFCON PICKUP</h3>
+
+    <img src="<%=asset_path 'badge/bomb1.jpg'%>" width="30%" alt="dabomb image"/>
+    <div id="error-message"></div>
+
+    <div class="row">
+    <div class="col-md-12 col-xs-12">
+    <button
+       class="btn"
+       style="background-color:#6772E5;color:#FFF;padding:8px;margin:4px;border:0;border-radius:4px;font-size:1.25em"
+       id="checkout-button-sku_FJdd3ZYWSt3Nj9"
+       role="link"
+       >
+      <B>Order Now! PICK UP at DEF CON</B>
+    </button>
+    </div>
+    </div>
+    </div>
+
+  <p align="center">
+    <small>
+      Looking for support for your badge? You can get everything you need on
+      the <a href="https://ides.team/dabomb">Team Ides da Bomb support site!</a>
+    </small>
+  </p>
+
+    <h3>Ordering Information</H3>
+    <P>
+      The button above will redirect you to <b>Stripe</b>, so you can pre-order (1) da Bomb
+      Badge.
+    </p>
+
+    <P>
+      These badges are available in a <b>limited quantity</b>, through
+      this site only. We will (most likely) not do cash or charge
+      sales at the conference.
+    </p>
+    <P>
+
+      <B>If you select "Pickup"</b>: Please make sure you enter a
+      correct email address &mdash; 
+     <b>Pickups will take place at the HHV in Bally's starting around
+       11am on Thursday, August 8th, 2019.</b> All you need to bring
+       is yourself and the order's e-mail addreess. </b> More details
+       will be posted to our Twitter at
+       <a href="https://twitter.com/spqrbadge">@spqrbadge</a>
+    </p>
+    <P>
+      We will e-mail you a QR code and instructions for Pickup. We've
+      already sent out a first pass of QR codes and we will send all
+      of them again on Tuesday, August 5th.
+    </P>
+    <P>
+      If you fail to pickup the badge, we will ship it to you after
+      DEF CON, at your expense. We reserve the right to resell orders
+      left behind for more than 60 days.
+    </p>
+
+    <h3>As seen on Kickstarter!</h3>
+
+    <P>
+      Demand was very high for our badge, and we raised over $30,000 on
+      Kickstarter to make this thing happen. We're giving you a second
+      chance to get one before DEF CON.
+    </p>
+
+    <p>
+      You can watch our fun 1940's style video and get more information
+      <a href="https://www.kickstarter.com/projects/1887776662/its-da-bomb-an-indie-def-con-badge-for-dc27" target="_ks">
+        right here on Kickstarter.
+      </a>
+    </p>
+
+    <h4>The badge will come with:</h4>
+    
+    <UL>
+      <LI>Fully assembled and programmed PCB</LI>
+      <LI>Display module and 4GB MicroSD card</LI>
+      <LI>Custom Lanyard</LI>
+      <LI>Custom box</LI>
+      <LI>BONUS Sticker Sheet (while supplies last)</LI>
+    </UL>
+
+<h4>What will the final product look like?</h4>
+        
+<p>
+  The pictures we have above are photos of our prototype badge. The
+  final rendering, which is a red soldermask on matte black
+  background, is what the final badge will look like. We will
+  not be shipping red boards to you. Black only.
+</p>
+<P>
+  They will look something like this:
+</p>
+<center>
+    <img src="<%=asset_path 'badge/bomb2.jpg'%>" width="80%" alt="dabomb production rendering"/>
+  </center>
+</p>
+
+<h4>What is this thing?</h4>
+
+<p>
+  If you're unfamiliar with electronic conference badges, they are
+  usually some sort of printed circuit board badge that you wear on a
+  lanyard. They're filled with puzzles, easter eggs, and all of cool
+  toys that hackers love. They also act as a development and educational
+  platform, encouraging people to learn about hardware development and
+  manufacturing.
+</p>
+
+<p>
+  While DEFCON has their own official badge each year, #badgelife
+  groups have been rolling their own badges to show off their skills
+  in a sort of unofficial contest.
+</p>
+
+<h4>Badge Hardware</h4>
+
+<p>
+  Our board is packed with features! It's a full computer, display,
+  and sound system in a custom bomb-shaped board that's guaranteed to
+  piss off the TSA on the way home.
+</p>
+
+<ul>
+<li>A new micro controller, the Rigado BMD340 - 64MHz 32-bit ARM® Cortex™-M4F CPU with 1MB Flash & 256kB RAM</li>
+<li>650mA LDO (3.3v) and charging system</li>
+<li>Complete Bluetooth 5.0 and Thread (802.15.4) solution, for badge-to-badge battles!</li>
+<li>ChibiOS real-time operating system</li>
+<li>24bit/96Khz STEREO Audio driven by the CS4344 DAC and LM4880 200mW Stereo amplifier.</li>
+<li>Two 87dB Speakers</li>
+<li>320x240 detachable TFT touch screen with Micro-SD port</li>
+<li>4GB MicroSD card containing our game code</li>
+<li>CP2102 UART - Low cost USB Interface</li>
+<li>JTAG (SWD) programming interface</li>
+<li>32 RGB LEDS driven by a dedicated I2C LED controller to save battery and CPU. No more heat-busted neo-pixels to deal with!</li>
+<li>2000 mAh LiPo battery with full MAX73833 1 Amp USB Charging circuit</li>
+<li>Surface mount design with limited through-hole parts.</li>
+<li>Dual Joysticks with 5 inputs each!</li>
+<li>Badge Functions</li>
+<li>Many LED pattern modes. Such blinky, so wow.</li>
+<li>LED Dimming so it doesn't blind you.</li>
+<li>Badge to Badge Sea warfare/bombing game with multiple levels and RPG-like attributes. Level up and battle your friends!</li>
+<li>Video playback with synchronized audio (We're seeing around 18 FPS right now on the new code!)</li>
+<li>Digital Audio playback, audio amplifier, and speaker.</li>
+</ul>
+
+<i>All specifications subject to change at any time based on market/part availability</i>
+
+<h4>What makes our badge different?</h4>
+
+<p>
+  This is a lightweight system with a long battery life, and the
+  battery itself is rechargeable! You don't have to run around the
+  conference trying to find AA batteries or other strange and rare
+  camera batteries, which many badges run on.
+</p>
+
+<h4>What's this game all about? Why a Sea Battle? </h4>
+
+<p>
+  We really liked watching people battle each other at DC25. We want
+  to keep that going and thought that a Sea Battle game might be fun,
+  based on your votes on
+  our <a href="https://twitter.com/spqrbadge">Twitter account.</a>
+</p>
+
+<P>
+  The game is full color, with animation, and has been developed by
+  our game designer, Egan, who worked on many AAA game
+  releases. John's writing the software, Bill has done extensive work
+  to bring the board and drivers to life.
+</p>
+
+<h4>Other software?</h4>
+
+<p>
+  The board will also have easter eggs, a crypto puzzle, radio chat
+  system, setup screen, and more. If you access the console via
+  FTDI/USB you might find some more things to play with, but we'll
+  keep that a secret for now!
+</p>
+
+
+    <h4>No warranty, No refunds. Exchanges and repair assistance only.</h4>
+
+    <P>
+      While we will make every effort to QA and test your badge before
+      handing it over, issues may arise that we cannot control.
+    </p>
+
+    <P>
+      Refunds will only be issued in the event that we cannot produce a
+      functional device in time for DEFCON 27.
+    </p>
+
+    <p>
+      You understand and through this purchase agree that that this is
+      a limited edition piece of experimental hardware for the hacker
+      community and not a finished, commercial, consumer-grade
+      product. 
+    </p>
+
+    <p>
+      All schematics and source code will be available online at
+      <a href="https://github.com/netik/dc27_badge">
+        https://github.com/netik/dc27_badge
+      </a>
+      for repair assistance or other hacking. 
+    </p>  
+    
+<!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+
+</div>
+</div>
+
+<script>
+  var stripe = Stripe('pk_CMXcLed4EVpbhrBnME2oYMtrqZOVw');
+
+  var checkoutButton = document.getElementById('checkout-button-sku_FJdd3ZYWSt3Nj9');
+  var checkoutButton2 = document.getElementById('checkout-button-sku_FKrBvT35T7i9Gi');
+
+
+  checkoutButton.addEventListener('click', function () {
+    // When the customer clicks on the button, redirect
+    // them to Checkout.
+    stripe.redirectToCheckout({
+      items: [{sku: 'sku_FJdd3ZYWSt3Nj9', quantity: 1}],
+
+      // Do not rely on the redirect to the successUrl for fulfilling
+      // purchases, customers may not always reach the success_url after
+      // a successful payment.
+      // Instead use one of the strategies described in
+      // https://stripe.com/docs/payments/checkout/fulfillment
+      successUrl: window.location.protocol + '//troupeit.com/badge/success',
+      cancelUrl: window.location.protocol + '//troupeit.com/badge/cancelled',
+      billingAddressCollection: 'required',
+    })
+    .then(function (result) {
+      if (result.error) {
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer.
+        var displayError = document.getElementById('error-message');
+        displayError.textContent = result.error.message;
+      }
+    });
+  });
+
+  checkoutButton2.addEventListener('click', function () {
+    // When the customer clicks on the button, redirect
+    // them to Checkout.
+    stripe.redirectToCheckout({
+    items: [{sku: 'sku_FKrBvT35T7i9Gi', quantity: 1}],
+ 
+    // Do not rely on the redirect to the successUrl for fulfilling
+    // purchases, customers may not always reach the success_url after
+    // a successful payment.
+    // Instead use one of the strategies described in
+    // https://stripe.com/docs/payments/checkout/fulfillment
+    successUrl: window.location.protocol + '//troupeit.com/badge/success',
+    cancelUrl: window.location.protocol + '//troupeit.com/badge/cancelled',
+    billingAddressCollection: 'required',
+    })
+      .then(function (result) {
+         if (result.error) {
+           // If `redirectToCheckout` fails due to a browser or network
+           // error, display the localized error message to your customer.
+           var displayError = document.getElementById('error-message');
+           displayError.textContent = result.error.message;
+         }
+      });
+  });
+
+</script>
+

@@ -1,0 +1,53 @@
+<P ALIGN=CENTER>
+ <img src="<%=asset_path 'bhof/bhof-logo-140px11-black.png'%>"><BR>
+  <STRONG><%=::BHOF_YEAR %> Application System</STRONG>
+</P>
+<%= form_for :bhofmember, :url => url_for(:controller => "bhof", :action => "verify"), :html => {:class => "form-inline"} do |f| %>
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><strong>Please verify your BHoF membership to apply.<span class="pull-right">(1 of 3)</span></strong></div>
+  <div class="panel-body">
+    <P>
+      <b>BHoF membership (at any level) is required to apply to compete
+      or perform in the Saturday and Thursday showcases.</b> For acts
+      featuring more than one performer, only the contact person named
+      in the application must be a member.
+
+    <p>
+      If you are not a member, please
+      <a href="https://www.burlesquehall.com/support/become-a-member/">apply for a membership</a> and return to troupeIT after you&rsquo;ve purchased one. 
+      Your membership must be paid and up to date to begin the application process.
+    </p>
+    <p>
+      Membership fees vary starting at $10 for a monthly
+      subscription. In addition to eligibility for the BHoF Weekender
+      showcases, membership offers many great perks!
+    </p>
+
+    <P>Please the email address you use for your BHoF membership or your 8-digit BHoF Member ID below </p>
+    <div class="row text-center">
+      <div class="form-group">
+        <B><%= f.label :memberid, "Your e-mail address or BHoF member ID", :class => "control-label" %>&nbsp;&nbsp;</B>
+        <%= f.text_field :memberid, :class => "form-control required", :id => "memberid", :value => current_user.email %>
+      </div>
+      <div class="form-group">
+        <%= f.submit "Verify", :class => "btn btn-success" %>
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <P></p>
+        <a href="https://www.burlesquehall.com/support/become-a-member/">Don&rsquo;t have a member ID? Apply now for a BHoF membership!</a>
+        </a>
+    </div>
+
+    <div class="row text-center">
+      <P></p>
+      To pass membership verification, your troupeIT email address must match your BHoF email address.<BR>
+      <a href="/settings/edit">Update your troupeIT email address</a> if necessary.  We&rsquo;ll let you know if they don&rsquo;t match. 
+    </div>
+  </div>
+</div>
+
+<% end %>

@@ -1,0 +1,244 @@
+<h1>BHOF <%=BHOF_YEAR%>: Your Applications</h1>
+
+<style>
+#resultModal .modal-dialog
+{
+  width: 70%;
+}
+</style>
+<!-- Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title">Confirm</h4>
+
+            </div>
+            <div class="modal-body"><div class="te"></div></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<% if @apps_incomplete > 0 %>
+    <div class="alert alert-info">
+      <!-- only show if apps exist ? -->
+      <strong>Heads Up!</strong> Applications will not be accepted until they are submitted. You have
+      <%= pluralize(@apps_incomplete, "incomplete application") %>.
+    </div>
+<% end %>
+
+<% if current_user.has_role?(:bhof_no_deadline) -%>
+<div class="alert alert-info">
+  <strong> You're special. </strong> You've been granted an extension on your applications by the judges. Finish them as fast as you can.
+</div>
+<% end -%>
+
+<% if @apps_accepted > 0 and DECIDER("bhof2024_decisions") == 1 -%>
+    <div class="alert alert-success">
+      <!-- only show if apps exist ? -->
+
+      <strong>Congratulations!</strong> One or more of your
+      applications has been accepted for BHOF <%=BHOF_YEAR %>. Please click the
+      status link below to RSVP. You must RSVP to perform.
+    </div>
+<% end %>
+
+
+<div class="well">
+<style>
+div#clock { color: white; margin: 20px auto; width: 560px; overflow: hidden; text-align: center; }
+div#clock p { background: #333; float: left; height: 100px; width: 88px; }
+div#clock p span { display: block; font-size: 50px; font-weight: bold; padding: 5px 0 0; }
+div#clock div.space { color: #ccc; display: block; line-height: 1.7em; font-size: 50px; float: left; height: 100px; width: 30px; }
+
+div.multi_clock{ border: 1px solid #666; color: #333; float: left; margin: 10px; padding: 5px; }
+pre{background-color: #eee; border: 1px solid #ccc; line-height: 1.4em; padding: 10px; margin: 0;}
+</style>
+
+
+<script type="text/javascript">
+
+$('body').on('hidden.bs.modal', '.modal', function () {
+ $(this).removeData('bs.modal');
+});
+  
+$(function() {
+  var deadlineDate = new Date(Date.UTC(
+<%=@deadlinedate.to_time.in_time_zone('UTC').strftime("%Y") %>,
+<%=@deadlinedate.to_time.in_time_zone('UTC').strftime("%-m").to_i - 1 %>,
+<%=@deadlinedate.to_time.in_time_zone('UTC').strftime("%-d") %>,
+<%=@deadlinedate.to_time.in_time_zone('UTC').strftime("%H").to_i + 1  %>,
+<%=@deadlinedate.to_time.in_time_zone('UTC').strftime("%S") %>));
+
+  $('div#clock').countdown(deadlineDate, function(event) {
+    $this = $(this);
+    switch(event.type) {
+      case "seconds":
+      case "minutes":
+      case "hours":
+      case "days":
+      case "weeks":
+      case "daysLeft":
+        $this.find('span#'+event.type).html(event.value);
+        break;
+      case "finished":
+        $this.fadeTo('slow', .5);
+        break;
+    }
+  });
+});
+</script>
+<!-- HTML -->
+<% if DECIDER("bhof2024_decisions") > 0 -%>
+  <P ALIGN=CENTER><strong>RSVP Deadline for accepted acts: <%=BHOF_RSVP_DEADLINE.to_time.in_time_zone('US/Pacific').strftime(LONG_DATE_FMT_TZ) %>
+  </strong></P>
+<% else -%> 
+  <P ALIGN=CENTER><strong>Application Deadline: <%=BHOF_FINAL_DEADLINE.to_time.in_time_zone('US/Pacific').strftime(LONG_DATE_FMT_TZ) %>
+  </strong></P>
+<% end -%>
+<% if DECIDER('bhof2024_apps_open') == 1 -%>
+<div id="clock">
+  <p>
+    <span id="weeks"></span>
+    Weeks
+  </p>
+  <div class="space">:</div>
+  <p>
+    <span id="daysLeft"></span>
+    Days
+  </p>
+  <div class="space">:</div>
+  <p>
+    <span id="hours"></span>
+    Hours
+  </p>
+  <div class="space">:</div>
+  <p>
+    <span id="minutes"></span>
+    Minutes
+  </p>
+  <div class="space">:</div>
+  <p>
+    <span id="seconds"></span>
+    Seconds
+  </p>
+</div>
+<% end -%>
+
+<% if DECIDER('bhof2024_apps_open') == 1 -%>
+<% 
+if DECIDER('bhof2024_decisions') == 0
+  if DateTime.now <= BHOF_FINAL_DEADLINE or current_user.has_role?(:bhof_no_deadline) -%>
+   <P>
+    You may submit up to two (2) solo and up to two (2) group acts per account.<BR>
+    <% if @apps.count > 0 -%>
+    Click "<strong>Dashboard</strong>" below to 
+    go to each application's dashboard, where you can see the status of each of your applications and submit all of the
+    required information.
+    <% end -%>
+  </p>
+  <p>
+     <a href="/apps/new" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign white"></i>&nbsp;Create a new Application</a>
+  </p>
+  <% else -%>
+    <h3>The deadline to submit applications has passed.</h3>
+  <% end -%>
+  <% else 
+  if (DateTime.now >= BHOF_RSVP_DEADLINE) -%>
+    <h3>The deadline to RSVP has passed.</h3>
+  <% end -%>
+  <% end -%>
+  <% else -%>
+  <h3>Applications are not open yet! come back soon!</h3>
+<% end -%>  
+<% if @apps.count > 0 %>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Created</th>
+        <th>Description</th>
+        <% if DECIDER("bhof2024_decisions") == 1 -%>
+        <TH>Status</TH>
+        <TH>RSVP?</TH>
+        <% else -%> 
+        <TH>Status</TH>
+        <% end -%> 
+        <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @apps.each do |app| %>
+          <tr>
+            <td><%= app.created_at.to_time.in_time_zone('US/Pacific').strftime(SHORT_TIME_FMT_TZ) %></td>
+            <td>
+              <% if app.entry -%>
+                  <% if app.entry.type == 1 -%>
+                  <strong>Solo: </strong>
+                  <% elsif app.entry.type == 2 -%>
+                  <strong>Small Group: </strong>
+                  <% elsif app.entry.type == 3 -%>
+                  <strong>Large Group: </strong>
+                  <% end -%>
+              <% end -%>
+              <%= app.description %></td>
+            <td>
+              <% if app.entry.nil? or
+                    app.entry_techinfo.nil? or
+                    app.is_complete? == false or
+                    app.entry.is_complete? == false or
+                    app.entry_techinfo.is_complete? == false or
+                    app.purchased_at.nil? -%>
+                  <I>Incomplete</I>
+              <% else -%>
+                  <% if app.locked -%>
+                      <% if DECIDER("bhof2024_decisions") == 1 -%>
+
+                      <% if params[:testfr].present? %>
+                      <%  app.final_decision=params[:testfr].to_i -%>         
+                      <% end -%>
+
+                        <% if app.final_decision == 0 %>
+                          <a href="/apps/<%=app._id.to_s%>/resultmodal?testfr=<%=params[:testfr]%>" data-toggle="modal" data-target="#resultModal">Application was not accepted.</a>
+                        <% else -%> 
+                          <a href="/apps/<%=app._id.to_s%>/resultmodal?testfr=<%=params[:testfr]%>" data-toggle="modal" data-target="#resultModal">Accepted: <%=BHOF_FINAL_DECISION[app.final_decision] %></a>
+                        <% end -%>
+                      <% else -%>
+                        <I>Submitted. Good Luck!</I>
+                      <% end -%> 
+                  <% else -%>
+                      <strong>Ready - Needs Submission</strong>
+                  <% end -%>
+              <% end -%>
+            </TD>
+            <% if DECIDER("bhof2020_decisions") == 1 -%>
+              <TD>
+              <% if app.final_decision == 0 %>
+              n/a
+              <% else -%>
+              <%=RSVP_STRINGS[app.decision_rsvp]%>
+              <% end -%>
+              </TD>
+            <% end -%>
+            <td><a href="/apps/<%= app.id.to_s %>/dashboard" class="btn btn-success btn-sm">Dashboard</a>
+              <%= link_to 'Edit', edit_app_path(app), class: "btn btn-primary btn-sm" %>
+              <% if app.locked == false -%>
+              <%= link_to 'Destroy', app, method: :delete, data: {confirm: 'Destroying an application will permanently erase it, and if you have paid for the application, will forfeit your payment. Are you sure?'}, class: "btn btn-danger btn-sm" %>
+              <% end -%>
+
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% else %>
+    <h4>You currently have no applications for <%=BHOF_YEAR%>.</h4>
+<% end %>

@@ -1,0 +1,116 @@
+<div class='modal' id='noteModal' style='display: none' tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+     <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4 class="modal-title">Add Note</h4>
+     </div>
+
+  <%= form_for @show_item, :html => { :class => "form-horiziontal" } do |f| -%>
+  <div class='modal-body'>
+    <div class="alert alert-danger" style='display: none' id='noteflash'>
+      Length must be in the form MM:SS
+    </div>
+    <div class="control-group">
+      <%= f.label :duration, "Length in the form (MM:SS)", :class=>"control-label" %>
+      <div class="controls">
+        <%= f.text_field :duration, :class=>"input-xlarge" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :note, "Note", :class=>"control-label" %>
+      <div class="controls">
+        <%= f.text_field :note, :class=>"input-xlarge" %>
+      </div>
+    </div>
+  </div>
+
+  <div class='modal-footer'>
+    <%= f.hidden_field :act_id, :value=> 0  %>
+    <%= f.hidden_field :kind, :value=> 0  %>
+    <%= f.hidden_field :show_id, :value=> @show.id  %>
+    <button class="btn btn-primary" id="modal-form-submit">Add Note</button>
+  </div> <!-- /.modal-footer --> 
+  <% end -%>
+  </div> <!-- /.modal-content --> 
+ </div>  <!-- /.modal-dialog --> 
+</div> <!-- /.modal --> 
+
+<script>
+  //<![CDATA[
+    $(function() {
+      // wire up the buttons to dismiss the modal when shown
+      $("#noteModal").bind("show", function() {
+        $("#noteModal a.btn").click(function(e) {
+          // hide the dialog box
+          $("#noteModal").modal('hide');
+        });
+
+      });
+      // remove the event listeners when the dialog is hidden
+      $("#noteModal").bind("hide", function() {
+          // remove event listeners on the buttons
+          $("#noteModal a.btn").unbind();
+      });
+
+      // finally, wire up the actual modal functionality and show the dialog
+      $("#noteModal").modal({
+        "backdrop" : "static",
+        "keyboard" : true,
+        "show" : true // this parameter ensures the modal is shown immediately
+      });
+
+      $('#modal-form-submit').on('click', function(e){
+      // We don't want this to act as a link so cancel the link action
+        e.preventDefault();
+
+        dur = $('#show_item_duration').val();
+        durm = -1;
+        durs = -1;
+
+        if (dur.indexOf(":") > -1) {
+          dpart = dur.split(":");
+          durm_i = parseInt(dpart[0]);
+          durs_i = parseInt(dpart[1]);
+
+          if ((durs_i >= 0) && (durs_i <= 59)) { 
+            durm = durm_i; 
+            durs = durs_i;
+          }
+        }
+
+        if ((durm == -1) || (durs == -1)) { 
+          $("#noteflash").show();
+          return;
+        }
+
+        // passed validations
+        $("#noteflash").modal('hide');
+        $("#noteModal").modal('hide');
+
+        // first instance is  the add box, second instance is the length box.
+        var actdata = {
+          "authenticity_token" : AUTH_TOKEN,
+          'show_id':'<%=@show.id%>',
+          'kind' : 0,
+          'act_id' : 0 ,
+          'note': $('#show_item_note').val(),
+          'duration':  (durm * 60) + durs
+        };
+
+        console.log(actdata);
+
+        $.ajax({
+          type: 'POST',
+              dataType: 'json',
+              url: '/show_items.json',
+              contentType: 'application/json',
+              data: JSON.stringify(actdata),
+              success: function() { 
+                 showDT.fnReloadAjax();
+              }
+          });
+        });
+    });
+  //]]>
+</script>

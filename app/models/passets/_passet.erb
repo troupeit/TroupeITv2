@@ -1,0 +1,31 @@
+<TR>
+  <% if defined? @adminindex -%>
+      <TD>
+        <% begin
+             @u = User.find(passet.created_by)
+        -%>
+            <a href="/users/<%= passet.created_by %>"><%= @u.name %></a><BR>
+            <a href="mailto:<%= @u.email %>"><%= @u.email %></a>
+        <% rescue -%>
+            <font color="#ff0000">Deleted User</font>
+        <% end -%>
+      </TD>
+  <% end -%>
+  <TD>
+    <%= passet.to_html.html_safe %>
+  </TD>
+
+  <% if defined? @adminindex -%>
+  <td>
+    <a href="/passets/<%= passet.id %>/edit" class="btn btn-sm btn-primary btn-block">Edit</a><br>    
+  </TD>
+  <% end -%>
+  <TD>
+    <% if @noedit == nil -%>
+    <%= button_to 'Remove', passet, :method => :delete, :class => "btn btn-sm btn-block btn-danger", :data => {:confirm => "Delete #{passet.filename}: Are you sure?"} %><BR>
+    <a href="https://troupeit.com/gf/getfile?uuid=<%=passet[:uuid]%>&downloadas=<%=FileTools::sanitize_csv_filename(passet[:filename])%>"><button class="btn btn-success btn-sm btn-block">Download</button></a>
+    <% end -%>
+    </div>
+  </TD>
+
+</TR>

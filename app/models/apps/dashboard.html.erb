@@ -1,0 +1,256 @@
+<%= render 'submit_modal' %>
+
+<div class="panel bs-docs-container">
+  <div class="panel-body">
+
+<script>
+  $(function() {
+      $("#submitModal").modal('hide');
+
+      $("#submitit").click(function() {
+          $("#submitModal").modal('show');
+      });
+
+      $("#submitbtn").click(function() {
+          $("#submitModal").modal('show');
+      });
+  });
+</script>
+
+<% if current_user.has_role?(:bhof_no_deadline) -%>
+<div class="alert alert-info">
+  <strong> You're special. </strong> You've been granted an extension on your applications by the judges. Finish them as fast as you can.
+</div>
+<% end -%>
+
+<h2> <a href="/apps">Applications</a> <i class="fa fa-angle-right"></i> </span>Application Dashboard </h2>
+
+<p><strong>To complete your application, complete all of the sections below.</strong>
+</P>
+
+<% if @app.locked == true -%> 
+<div class="alert alert-success">
+This application has been submitted. No further changes are possible.
+<% if current_user.try(:admin?) or current_user.has_role?(:bhof_judge) -%>
+	<%= link_to 'Unlock', unlock_app_path(@app), method: :post, data: {confirm: 'Unlock this application? You Sure?'}, class: "btn btn-danger" %>
+<% end -%>
+</div>
+<% end -%> 
+
+<h2 align="center"><%=link_to @app.description, edit_app_path(@app)%></h2>
+<table class="table table-bordered">
+  <THEAD>
+  <TR>
+    <TH>&nbsp;</TH>
+    <TH>
+      Form (click to edit)
+    </TH>
+    <TH>Estimated time to Complete</TH>
+    <TH>Status</TH>
+    <TH WIDTH="40%">Notes</TH>
+  </TR>
+  </THEAD>
+
+  <tr>
+    <td>
+       <div align="center"><strong>Part&nbsp;1</strong></div>
+    </td>
+    <td width="210">
+        <% if @entry -%>
+          <%=link_to "Act Information",  edit_app_entry_path({app_id: @app.id, id: @entry.id}) %>
+        <% else -%>
+          <%=link_to "Act Information",  new_app_entry_path({app_id: @app.id}) %>
+         <% end -%>
+    </td>
+    <td align="center">5-10 mins</td>
+    <td align="center">
+      <% if @entry and @entry.is_part1_complete? -%> 
+        <a href="<%=edit_app_entry_path({app_id: @app.id, id: @entry.id})%>">
+        <BUTTON type="button" CLASS="btn btn-block btn-success">Complete</BUTTON>
+        </a>
+      <% else -%>
+          <% if @entry -%>
+             <a href="<%=edit_app_entry_path({app_id: @app.id, id: @entry.id})%>">
+          <% else -%>
+             <a href="<%= new_app_entry_path({app_id: @app.id})%>">
+          <% end -%>
+          <BUTTON type="button" CLASS="btn btn-block btn-danger">Incomplete</BUTTON>
+          </a>
+      <% end -%> 
+    </td>
+
+    <td>
+     Basic information about the act being submitted.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center"><strong>Part&nbsp;2</strong></div>
+    </td>
+    <td>
+     Payment of application fee
+    </td>
+    <td>
+      <div align="center">3 min</div>
+    </td>
+    <td align="center">
+      <% if ! @app.purchased_at.nil? -%>
+      <BUTTON type="button" CLASS="btn btn-block btn-success">Payment Complete</BUTTON>
+      <BR>$<%='%.2f' % (@app.purchase_price.to_i/100.0) %><BR><%=@app.purchased_at.to_time.in_time_zone('US/Pacific').strftime(SHORT_TIME_FMT_TZ)%>
+      <% else -%>
+        <% if (! @entry.nil?) and @entry.is_part1_complete? and ( (DateTime.now <= BHOF_FINAL_DEADLINE) or (current_user.has_role?(:bhof_no_deadline)))   -%>
+          <button id="buynow" class="btn btn-block btn-primary btn-sm btn-block buybtn">Ready for Payment</button>
+          <BR>$<%='%.2f' % (@app.get_current_price() / 100) %> Due.
+         <% else -%>
+          <% if (DateTime.now > BHOF_FINAL_DEADLINE) and (! current_user.has_role?(:bhof_no_deadline)) -%>
+            <BUTTON type="button" CLASS="btn btn-block btn-default">Deadline has passed.</BUTTON>
+          <% else -%>
+            <BUTTON type="button" CLASS="btn btn-block btn-default">Finish Part 1 First!</BUTTON>
+          <% end -%>
+        <% end -%>
+      <% end -%>
+    </td>
+    <td>
+      <p>You may pay once Part 1 is complete, but not before. Fees are
+      payable online, through TroupeIT by most major credit cards.</p>
+
+      <P>Payment is discounted at $29 for applications and payment submitted by 
+        <b><%=BHOF_DISCOUNT_DEADLINE.to_time.in_time_zone('US/Pacific').strftime(LONG_DATE_FMT_TZ)%></b>
+        After that deadline, the application fee is $39. 
+        All payments are non-refundable.
+      </p>
+      <P>
+        The final deadline for all application submssions is <BR>
+        <b><%=BHOF_FINAL_DEADLINE.to_time.in_time_zone('US/Pacific').strftime(LONG_DATE_FMT_TZ)%></b>.
+      </p></td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center"><strong>Part&nbsp;3</strong></div>
+    </td>
+    <td>
+      <% if @app.entry_techinfo -%>
+          <%=link_to "Tech / Staging Information",  edit_app_entry_techinfo_path({app_id: @app.id, id: @app.entry_techinfo.id}) %>
+      <% else -%>
+          <%=link_to "Tech / Staging Information",  new_app_entry_techinfo_path({app_id: @app.id}) %>
+      <% end -%>
+
+    </td>
+    <td>
+      <div align="center">10-15 mins</div>
+    </td>
+    <td align="center">
+      <% if @app.entry_techinfo and @app.entry_techinfo.is_complete? -%>
+         <a href="<%=edit_app_entry_techinfo_path({app_id: @app.id, id: @app.entry_techinfo.id}) %>">
+         <BUTTON type="button" CLASS="btn btn-block btn-success">Complete</BUTTON>
+         </a>
+      <% else -%>
+         <% if @app.entry_techinfo -%>
+            <a href="<%=edit_app_entry_techinfo_path({app_id: @app.id, id: @app.entry_techinfo.id}) %>">
+         <% else -%>
+            <a href="<%=new_app_entry_techinfo_path({app_id: @app.id}) %>">
+         <% end -%>
+            <BUTTON type="button" CLASS="btn btn-block btn-danger">Incomplete</BUTTON>
+         </a>
+      <% end -%>
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="1">
+      <div align="center"><strong>Part&nbsp;4</strong></font></div>
+    </td>
+
+    <td>
+    <% if @app.locked.present? == false and @app.complete? -%> 
+    <a href="#" id="submitit">Submit Application</a>
+    <% else -%> 
+    Submit Application
+    <% end -%> 
+    </td>
+    <TD>
+      &nbsp;
+    </td>
+    <td align="center">
+    <% if @app.locked == true -%> 
+      <BUTTON type="button" CLASS="btn btn-block btn-success">Submitted! Good Luck!</BUTTON>
+    <% else -%> 
+      <% if @app.complete? -%>
+          <BUTTON type="button" CLASS="btn btn-block btn-danger" id="submitbtn"><strong>Ready to Submit</strong></BUTTON>
+      <% else -%>
+          <BUTTON type="button" CLASS="btn btn-block btn-danger" id="deadsubmitbtn">Application Incomplete</BUTTON>
+      <% end -%>
+    <% end -%>
+    </td>
+    <td><P>
+      Final submission must be done before the deadline of:<BR>
+      <strong><%=BHOF_FINAL_DEADLINE.to_time.in_time_zone('US/Pacific').strftime(LONG_DATE_FMT_TZ) %></strong>. 
+      </p>
+      <P>
+      You will not
+      be able to submit the application until all required information and payment
+      are complete. Once an application has been submitted it can no longer be modified.
+      </p></td>
+  </tr>
+</table>
+</div>
+</div>
+
+<script>
+
+/* payment integration... */
+
+var handler = StripeCheckout.configure({
+  key: '<%=@stripe_pk%>',
+  image: '<%=image_path "troupeit-trussedlogo-260.png" %>',
+  email: '<%=current_user.email%>',
+  address: true,
+  token: function(token) {
+    // ajax post to site with token ID
+    var postdata = {
+      "authenticity_token": AUTH_TOKEN,
+      "stripetoken": token.id,
+      "app_id": "<%=@app.id.to_s %>",
+      "amount": "<%=@app.get_current_price() %>",
+    };
+    
+    $.ajax({
+      type: 'POST',
+      url: "/apps/<%=@app.id%>/charge.json",
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(postdata),
+      success: function (response) {
+        console.log("success");
+        // rails will update flash for us, which this redirect should show. 
+        window.location.href = "/apps/<%=@app.id%>/dashboard";
+      },
+      error: function (xhr, status, err) {
+        console.error('payment token handler', status, err.toString());
+        // rails will update flash for us, which this redirect should show. 
+        window.location.href = "/apps/<%=@app.id%>/dashboard";
+      }
+    });
+  }
+});
+
+$('.buybtn').on('click', function(e) {
+  // Open Checkout with further options
+
+  handler.open({
+    name: "BHOF <%=BHOF_YEAR%> Application",
+    description: "$<%='%.2f' % (@app.get_current_price()/100.0) %>",
+    amount: '<%=@app.get_current_price()%>',
+    billingAddrs: true
+  });
+  e.preventDefault();
+});
+
+// Close Checkout on page navigation
+$(window).on('popstate', function() {
+  handler.close();
+});
+
+</script>
+
+
+

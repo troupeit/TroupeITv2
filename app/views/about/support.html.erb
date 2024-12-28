@@ -1,0 +1,49 @@
+<%=stylesheet_link_tag "freshwidget", media: "all" %>
+<div class="container col-md-10 col-md-offset-1" style="margin-top: 20px;">
+	<h2 class="page-heading">Got a problem? We can help!</h2>
+  
+  <div class="panel panel-inverse">
+    <div class="panel-heading">
+      <div class="panel-title">
+        Open a Ticket
+      </div>
+    </div>
+    <div class="panel-body">
+      <P> 
+        Let us know what's wrong by describing our problem clearly in the
+        form below. 
+      </P>
+      <P>
+        Tip: Take a screen shot (if the problem is something you can
+        see) and attach it. It will help us to resolve your issue.
+      </P>
+      <% if current_user.present?
+         @email = current_user.email
+         else
+         # support for not-logged-in users
+         @email = ""
+         end
+         -%>
+      <iframe class="freshwidget-embedded-form" id="freshwidget-embedded-form" src="https://troupeit.freshdesk.com/widgets/feedback_widget/new?&widgetType=embedded&screenshot=no&formTitle=&helpdesk_ticket[requester]=<%=@email %>" scrolling="no" height="300px" width="100%" frameborder="0" >
+      </iframe>
+    </div>
+  </div>
+
+  
+  <div class="panel panel-inverse">
+    <div class="panel-heading">
+      <div class="panel-title">
+        Have you tried the manual?
+      </div>
+    </div>
+    <div class="panel-body">
+      <p>We offer a regularly updated manual which you can
+      download below. We're happy to answer questions, but we hope
+      the manual can help you! </p>
+      <P><span class="fa fa-download"></span><a href="<%= asset_path "TroupeIT Manual.pdf"%>" _target="manual"> Download TroupeIT Manual.pdf</a></p>
+      
+    </div>
+
+  </div>
+
+</div>

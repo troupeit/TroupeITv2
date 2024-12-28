@@ -1,0 +1,33 @@
+<%= form_for(@signup_invite, :html => {:class => "form-horizontal"} ) do |f| %>
+  <% if @signup_invite.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@signup_invite.errors.count, "error") %> prohibited this signup_invite from being saved:</h2>
+
+      <ul>
+      <% @signup_invite.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :code %><br>
+    <%= f.text_field :code, :class => "form-control" %>
+  </div>
+  <div class="field">
+    <%= f.label :available %><br>
+    <%= f.text_field :available, :class => "form-control" %>
+  </div>
+  <div class="field">
+    <%= f.label :expires %><br>
+    <%= f.text_field :expires, :class => "form-control" %>
+  </div>
+  <div class="field">
+    <%= f.label :used_count %><br>
+    <%= f.text_field :used_count, :class => "form-control" %>
+  </div>
+  <div class="field">
+   <%= f.submit 'Save', :class=>'btn btn-success' %>
+  </div>
+<% end %>

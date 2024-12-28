@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<h3><%= @role.name %></h3>
+<p>
+  <%= @role.description %>
+</p>
+<H3>Users in Role</h3>
+<TABLE CLASS="table table-striped">
+<TBODY>
+  <% @role.user.sort_by {|hsh| hsh[:username]}.each { |r| %>
+  <TR>
+    <TD>
+    <a href="<%=user_path(r)%>"><%= r.username %></a>
+    </TD>
+  </TR>
+  <% } %>
+</TBODY>
+</TABLE>
+
+<%= link_to 'Edit', edit_role_path(@role) %> |
+<%= link_to 'Back', roles_path %>

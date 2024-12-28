@@ -1,15 +1,15 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  # include ActsAsTaggable::Tagger
+  include ActsAsTaggable::Tagger
+
   after_create :reset_trial_expiration
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
 
-  devise :two_factor_authenticatable,
-         :database_authenticatable, :registerable, :recoverable,
+  devise :database_authenticatable, :registerable, :recoverable,
          :rememberable, :trackable, :validatable, :omniauthable
 
   # dependent objects
@@ -29,7 +29,7 @@ class User
 
   # Role-Based Access Control
   has_and_belongs_to_many :roles
-  has_one_time_password
+  #has_one_time_password
 
   # validations
   validates_presence_of :email, message: "You must supply an e-mail address."
@@ -134,8 +134,8 @@ class User
 
   # email preferences
   field :email_product_updates, type:  Boolean, default:  true
-  field :email_notifications, type:  Boolean, default: rue
-  field :email_marketing, type:  Boolean, default: rue
+  field :email_notifications, type:  Boolean, default: true
+  field :email_marketing, type:  Boolean, default: true
 
   # this represents the email lifecycle
   field :emailed_welcome, type:  Boolean, default:  false

@@ -113,11 +113,11 @@ class Passet
 
    def post_process!
      # should this be global instead of local here?
-     client = Aws::SQS::Client.new(access_key_id: Rails.application.secrets.aws_access_key,
-                                    secret_access_key: Rails.application.secrets.aws_secret_key,
-                                    region: Rails.application.secrets.aws_sqs_region)
+     client = Aws::SQS::Client.new(access_key_id: Rails.application.credentials.aws_access_key,
+                                    secret_access_key: Rails.application.credentials.aws_secret_key,
+                                    region: Rails.application.credentials.aws_sqs_region)
 
-     client.send_message({ queue_url: Rails.application.secrets.aws_sqs_baseurl + "upload_processing",
+     client.send_message({ queue_url: Rails.application.credentials.aws_sqs_baseurl + "upload_processing",
                            message_body: self.to_json })
    end
 end

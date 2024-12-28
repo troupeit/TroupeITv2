@@ -1,0 +1,16 @@
+{
+  "substitution_data": {
+    "TITLE": "troupeit title",
+    "YEAR": "2023",
+    "BODY": "this is the body1",
+    "BODY2": "this is the body2",
+    "BODY3": "this is the body3",
+    "BODY4": "this is the body4",
+    "HEADLINE": "foo",
+    "SUBHEADLINE": "subheadline goes here",
+    "CTA":"go",
+    "CTALINK":"https://www.troupeit.com/apps"
+  },
+  "metadata": {},
+  "options": {}
+}

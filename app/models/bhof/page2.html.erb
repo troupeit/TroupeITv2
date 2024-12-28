@@ -1,0 +1,80 @@
+<P ALIGN=CENTER>
+  <img src="<%=asset_path 'bhof/bhof-logo-140px11-black.png'%>"><BR>
+  <STRONG><%=::BHOF_YEAR %> Application System</STRONG>
+</P>
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+
+  <div class="panel-heading"><strong>Please read and agree to the following before you begin<span class="pull-right">(2 of 3)</span></strong></div>
+  <div class="panel-body">
+    <p>This online application consists of four parts, with <b>EVERYTHING</b> due by electronic submission by the following deadlines:</p>
+    <ul>
+      <li>
+      <b><%= BHOF_DISCOUNT_DEADLINE.to_time.in_time_zone('US/Pacific').strftime(LONG_DATE_FMT_TZ)%></b>
+      to qualify for early bird pricing.
+      </li>
+      <li>
+        <b>
+          <%=BHOF_FINAL_DEADLINE.to_time.in_time_zone('US/Pacific').strftime(LONG_DATE_FMT_TZ)%></b>
+          All applications and payments due. <B>Final deadline.</B>
+      </li>
+    </ul>
+    
+      <P>If you have your act and video link ready, the
+      application can be done in less than an hour. </p>
+
+    <div class="bs-callout bs-callout-info">
+      <h4>Essential Rules</h4>
+
+      <p>Essential rules are below. Please read carefully, as they have been <strong>extensively revised</strong> for the 2023 application. We <strong>strongly recommend </strong>that you also read the <a id="iframe1" href="http://troupeit.com/bhof/rules" target="_blank">Full Rules</a> and <a id="iframe2" href="http://troupeit.com/bhof/judging_criteria" target="_blank">Evaluation Criteria</a>.</p>
+    </div>
+
+    <ol>
+      <li>An online video link of THE SPECIFIC ACT YOU ARE SUBMITTING is <strong>required.</strong></li>
+      <li>Solo acts must be <strong>FOUR MINUTES OR LESS</strong> and group acts must be <strong>FIVE MINUTES OR LESS</strong> (No Exceptions.)
+        <ul>
+          <li><b>Video Length:</b>Your video submission cannot be more than one (1:00) minute longer than the category limit. The Selection Committee is no longer able to evaluate portions of longer videos.</li>
+        </ul>
+        </li>
+      <li><strong>Absolutely NO FIRE, NO MYLAR CONFETTI, NO LOOSE GLITTER, NO OILS, NO SILICONE BASED LUBRICANTS, NO FOOD, AND NO LIQUIDS are permitted.</strong></li>
+	  <li><strong>Each applicant can submit a maximum of <em>two (2) applications per category</em></strong>. A maximum of two applications in the soloist category (<em>and two applications in the group category. If submitting two applications for the same group, both should be submitted from the same TroupeIt account.) See the full <a href="http://troupeit.com/bhof/rules" target="_blank">rules</a> for more details.</em></li>
+		<li><strong>You must perform your act to recorded music.</strong> (Please see the<a href="https://troupeit.com/bhof/rules">rules</a> for what to do if musical instruments are specifically part of your act.)</li>
+		<li><strong>Avoid props that use a significant amount of onstage preparation. We really mean it!</strong> You are responsible for all aspects of props (outside of stage handling specifically for your performance), including any and all costs. BHoF will not rent any equipment on your behalf, cover any freight costs, or provide extra labor for your setup.</li>
+		<li><strong>The BHoF Weekender is a museum fundraiser and therefore does not offer payment or reimbursement for any expenses. </strong>If offered a spot to perform, you receive backstage access on the night you perform only.&nbsp; You must purchase a weekend pass to attend the event. All expenses, including travel, lodging, props, materials, etc, are your full responsibility. Presale Weekend passes and hotel discount codes will be available in March.</li>
+    </ol>
+
+  </div>
+</div>
+<p align="center">
+  <strong> Yes, I agree that my act will be WITHIN TIME LIMIT and <BR>
+    contain no prohibited substances, and conform to all of the full rules.
+    </strong>
+  </strong>
+</p>
+<p align="center">
+  <% if current_user.bhof_member_id.blank? -%>
+  <a class="btn btn-warning" href="/bhof/page1">Take me back a page.</a>
+  <% else -%>
+  <a class="btn btn-warning" href="/bhof">Take me back a page.</a>
+  <% end -%>
+  <a class="btn btn-success" href="/bhof/page3">I understand. Take me to the last page.</a>
+</p>
+
+<script>
+    $(document).ready(function() {
+        /* This is basic - uses default settings */
+        $("a#iframe1").fancybox();
+        $("a#iframe2").fancybox();
+    });
+
+    /* Apply fancybox to multiple items */
+    $("a.group").fancybox({
+        'transitionIn'	:	'elastic',
+        'transitionOut'	:	'elastic',
+        'speedIn'		:	600,
+        'speedOut'		:	200,
+        'overlayShow'	:	false
+    });
+
+</script>

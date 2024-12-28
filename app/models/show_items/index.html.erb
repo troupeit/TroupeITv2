@@ -1,0 +1,21 @@
+<h1>Listing show_items</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @show_items.each do |show_item| %>
+  <tr>
+    <td><%= link_to 'Show', show_item %></td>
+    <td><%= link_to 'Edit', edit_show_item_path(show_item) %></td>
+    <td><%= link_to 'Destroy', show_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Show item', new_show_item_path %>

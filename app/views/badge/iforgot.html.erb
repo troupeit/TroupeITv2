@@ -1,0 +1,111 @@
+<div class="panel panel-default" style="max-width: 750px; margin-right: auto; margin-left: auto;">
+  <div class="panel-body" style="padding:50px;">
+    <h1>
+      <STRONG>Team Ides - Badge Sales</strong>
+    </h1>
+
+    <hr/>
+
+    <div class="text-center">
+      <h4>DEF CON 27 Unofficial Badge: da Bomb - MISSED PICKUP</h4>
+    </div>
+
+    <hr/>
+    
+  <p align="center">
+    <small>
+      Looking for support for your badge? You can get everything you need on
+      the <a href="https://ides.team/dabomb">Team Ides da Bomb support site!</a>
+    </small>
+  </p>
+
+  <h4>Missed the pickup at DEF CON?</h4>
+    <P>
+      We're sorry you missed the badge pickup. For $15, we'll ship your badge to you.
+    </p>
+    <p>
+      Please click the button above, provide a <b>VALID US ADDRESS</B>, and we will ship USPS
+      priority mail to your home.<BR>NO INTERNATIONAL SHIPPING.
+    </p>
+    <p>
+      <b>
+        WE ARE NOT DOING ANY MORE BADGE SALES AT THIS TIME. THIS MAY
+        CHANGE.
+      </B>
+    </p>
+    <p>
+      This page is for people with existing orders only. <br/>
+
+      You must have a valid order on file with us to proceed.</br>
+
+      If you do not have a valid order we will email you and issue a
+      refund.<br/>
+
+      Please use the ORIGINAL EMAIL ADDRESS from your Stripe or Kickstarter order on the payment page.
+    </p>
+    <p>
+      If you have an order on file, and you do not respond, we will be
+      forced to resell your badge.
+    </p>
+    <p>
+      Questions? Don't want your badge anymore? Mail
+      <a href="mailto:sales@retina.net">sales@retina.net</a>
+    </p>
+  </div>
+      <div class="text-center">
+      <img src="<%=asset_path 'badge/bomb1.jpg'%>" width="30%" alt="dabomb image"/>&nbsp;
+      <img src="<%=asset_path 'usps.jpg' %>" alt="USPS Priority" height="200px">
+      <div id="error-message"></div>
+      
+      <div class="row">
+        <div class="col-md-12 col-xs-12">
+          
+          <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+          <button
+             class="btn"
+             style="background-color:#6772E5;color:#FFF;padding:8px;margin:4px;border:0;border-radius:4px;font-size:1.25em"
+             id="checkout-button-sku_FbwRiR976etRI9"
+             role="link"
+             >
+            <B>Ship my badge - $15.00 USD</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+
+</div>
+
+<!-- Load Stripe.js on your website. -->
+<script src="https://js.stripe.com/v3"></script>
+
+<script>
+  var stripe = Stripe('pk_CMXcLed4EVpbhrBnME2oYMtrqZOVw');
+
+  var checkoutButton = document.getElementById('checkout-button-sku_FbwRiR976etRI9');
+  checkoutButton.addEventListener('click', function () {
+  // When the customer clicks on the button, redirect
+  // them to Checkout.
+  stripe.redirectToCheckout({
+  items: [{sku: 'sku_FbwRiR976etRI9', quantity: 1}],
+
+  // Do not rely on the redirect to the successUrl for fulfilling
+  // purchases, customers may not always reach the success_url after
+  // a successful payment.
+  // Instead use one of the strategies described in
+  // https://stripe.com/docs/payments/checkout/fulfillment
+  successUrl: window.location.protocol + '//troupeit.com/badge/success_ship',
+  cancelUrl: window.location.protocol + '//troupeit.com/badge/cancelled',
+  billingAddressCollection: 'required',
+  })
+  .then(function (result) {
+  if (result.error) {
+  // If `redirectToCheckout` fails due to a browser or network
+  // error, display the localized error message to your customer.
+  var displayError = document.getElementById('error-message');
+  displayError.textContent = result.error.message;
+  }
+  });
+  });
+</script>
+

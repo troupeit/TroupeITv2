@@ -1,0 +1,84 @@
+<div class="login-cover">
+</div>
+<div class="login-cover-bg">
+</div>
+
+<!-- begin login -->
+<div class="login login-v2" data-pageload-addclass="animated flipInX">
+  <!-- begin brand -->
+  <div class="login-header">
+    <div class="brand">
+      troupeIT
+        <small>simple stage management.</small>
+    </div>
+    <div class="icon">
+      <i class="fa fa-sign-in"></i>
+    </div>
+  </div>
+  <!-- end brand -->
+  <div class="login-content">
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => "mg-btm" } ) do |f| %>
+    <div class="login-buttons m-b-20 hidden-xs">
+
+      <a href="<%=omniauth_authorize_path(resource_name, 'facebook') %>" class="btn btn-primary btn-block btn-lg">
+        <span class="fa fa-facebook-official"></span> Sign in with Facebook
+      </a>
+      <a href="<%=omniauth_authorize_path(resource_name, 'twitter') %>" class="btn btn-primary btn-block btn-lg">
+        <span class="fa fa-twitter"></span> Sign in with Twitter
+      </a>
+      <p align="center">
+        <strong>or, log in below with your email address... </strong>
+      </p>
+    </div>
+    <div class="form-group m-b-20">
+      <%= f.email_field :email, :class=>"form-control input-lg",:placeholder=>"Email" %>
+    </div>
+    <div class="form-group m-b-20">
+      <%= f.password_field :password, :class=>"form-control input-lg", :placeholder=>"Password" %>
+    </div>
+    <% if devise_mapping.rememberable? -%>
+    <div class="checkbox m-b-20">
+      <label>
+        <%= f.check_box :remember_me %> Remember me
+      </label>
+    </div>
+    <% end -%>
+    <div class="login-buttons">
+      <div class="row visible-xs">
+        <div class="col-xs-8">
+
+          <a href="<%=omniauth_authorize_path(resource_name, 'facebook') %>" class="btn btn-primary btn-block btn-md">
+            <span class="fa fa-facebook-official"></span> Use Facebook
+          </a>
+        </div>
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-success btn-block btn-md">Login</button>
+        </div>
+      </div>
+
+      <div class="row hidden-xs">
+        <div class="col-xs-12">
+          <button type="submit" class="btn btn-success btn-block btn-lg">Sign me In</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="m-t-20">
+      <P>Not a member yet? Click <a href="/users/sign_up">here</a> to register.</P>
+      <P><a href="/users/password/new">Forgot your password?</a></p>
+    </div>
+    <% end -%>
+  </div>
+</div>
+<!-- end login -->
+
+<script>
+$(function() { 
+  $('input#user_email').focus();
+});
+</script>
+
+
+
+</DIV>
+</DIV>

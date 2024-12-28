@@ -3,7 +3,7 @@ class Act
    # possibly not part of this system.
    include Mongoid::Document
    include Mongoid::Timestamps
-   #   include ActsAsTaggable::Taggable
+   include ActsAsTaggable::Taggable
    include PublicActivity::Model
 
    tracked except: [ :update ],

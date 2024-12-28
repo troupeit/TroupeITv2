@@ -1,0 +1,213 @@
+<script src="https://js.stripe.com/v2/"></script>
+
+<%= form_tag "/settings/update_card", {:name => "update_card", :id => "update_card" }  %>
+  <div class="panel">
+  <div class="panel-body">
+    <div class="col-md-offset-2 col-md-8 col-md-offset-2">
+      <div class="row">
+        <h2>Card on File</h2>
+      </div>
+      <% if @stripe_customer.sources.data.length > 0 -%>
+      <div class="bs-callout bs-callout-info">
+          This card is used for your recurring subscriptions. To
+          replace it, update the card using the form below.
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p><b>Method</b></p>
+        </div>
+          <div class="col-md-6">
+          <p><b>Billing Address</b></p>
+          </div>
+      </div>
+
+      <% @lastcard = Hash.new
+
+         @stripe_customer.sources.data.each { |card|
+         @lastcard = card
+      -%>
+      <div class="row">
+        <div class="col-md-6">
+          <p>
+            <%=card.name %><br/>
+            **** **** **** <%=card.last4 %><br/>
+            <%=card.brand %>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <%=card.address_line1%><br/>
+            <% if card.address_line2.present? -%>
+              <%=card.address_line2%><br/>
+            <% end -%>
+            <%=card.address_city%>, <%=card.address_state%> <%=card.address_zip %>
+            <%=card.country%>
+          </p>
+        </div>
+      </div>
+      <% } -%>
+      <% else -%>
+      <div class="bs-callout bs-callout-danger">
+        <B> There are no credit cards currently on file for your account. </B> Your subscriptions can not be automatically renewed without a card on file.
+      </div>
+      <% end -%>
+      <div class="row">
+        <hr/>
+      </div>
+      <div class="row">
+        <h2>Update Card</h2>
+      </div>
+
+      <div class="row">
+        <div class="alert alert-danger" name="stripe_error" id="stripe_error" style="display: none;">
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class='form-group'>
+        <%= label_tag        :card_name, 'Name on Card', class: 'col-sm-2 control-label' %>
+        <div class='col-sm-10'>
+          <%= text_field_tag :card_name, @lastcard[:name].present? ? @lastcard[:name] : "" , class: 'form-control'  %>
+        </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class='form-group'>
+          <%= label_tag        :card_addr1, 'Address Line 1', class: 'col-sm-2 control-label' %>
+          <div class='col-sm-10'>
+            <%= text_field_tag :card_addr1, @lastcard[:address_line1].present? ? @lastcard[:address_line1] : "", class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class='form-group'>
+          <%= label_tag        :card_addr2, 'Address Line 2', class: 'col-sm-2 control-label' %>
+        <div class='col-sm-10'>
+          <%= text_field_tag :card_addr2, @lastcard[:address_line2].present? ? @lastcard[:address_line2] : "", class: 'form-control' %>
+        </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <div class="col-sm-2">
+            <%= label_tag        :card_city, 'City', class: 'control-label' %>
+          </div>
+          <div class="col-sm-10">
+            <div class="form-inline">
+              <div class='form-group'>
+                <%= text_field_tag :card_city, @lastcard[:address_city].present? ? @lastcard[:address_city] : "", class: 'form-control' %>
+              </div>
+              <%= label_tag        :card_state, 'State', class: 'control-label' %>
+              <div class='form-group'>
+                <%= text_field_tag :card_state, @lastcard[:address_state].present? ? @lastcard[:address_state] : "", class: 'form-control' %>
+              </div>
+              <%= label_tag        :card_zip, 'Zip', class: 'control-label' %>
+              <div class='form-group'>
+                <%= text_field_tag :card_zip, @lastcard[:address_zip].present? ? @lastcard[:address_zip] : "", class: 'form-control' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class='form-group'>
+          <%= label_tag        :card_number, 'Card Number', class: 'col-sm-2 control-label' %>
+            <div class='col-sm-10'>
+              <%= text_field_tag :card_number, nil, class: 'form-control', placeholder: 'We accept Visa, MasterCard, AMEX and Discover' %>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class='form-group'>
+        <%= label_tag        :card_cvc, 'Security Code', class: 'col-sm-2 control-label' %>
+        <div class='col-sm-10'>
+          <%= text_field_tag :card_cvc, nil, class: 'form-control', placeholder: 'CVV2 Code' %>
+        </div>
+      </div>
+      </div>
+
+      <div class="row">
+        <div class='form-group'>
+          <%= label_tag        :card_month, 'Expiration Date', class: 'col-sm-2 control-label' %>
+          <div class='col-sm-5'>
+            <%= select_month   nil, { add_month_numbers: true }, { id: 'card_month', class: 'form-control btm-space' } %>
+          </div>
+          <div class='col-sm-5'>
+            <%= select_year    nil, { start_year: Date.today.year, end_year: Date.today.year+15 }, { id: 'card_year', class: 'form-control btm-space' } %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">      
+        <div class='form-group'>
+          <div class='col-sm-4 col-sm-offset-8'>
+            <p></p>
+            <%= submit_tag 'Update', class: 'btn btn-success btn-block' %>
+          </div>
+        </div>
+        
+        <%= hidden_field_tag :stripe_card_token %>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+<script>
+
+var subscription;
+
+jQuery(function() {
+  Stripe.setPublishableKey("<%=@stripe_pk%>");
+  return subscription.setUpForm();
+});
+
+subscription = {
+  setUpForm: function() {
+    return $('#update_card').submit(function() {
+      $('input[type="submit"]').attr('disabled', true);
+      if ($('#card_number').length) {
+        subscription.updateCard();
+        return false;
+      } else {
+        return true;
+      }
+    });
+  },
+  updateCard: function() {
+    var card;
+    card = {
+      number: $('#card_number').val(),
+      cvc: $('#card_cvc').val(),
+      exp_month: $('#card_month').val(),
+      exp_year: $('#card_year').val(),
+      name: $('#card_name').val(),
+      address_line1: $('#card_addr1').val(),
+      address_line2: $('#card_addr2').val(),
+      address_city: $('#card_city').val(),
+      address_state: $('#card_state').val(),
+      address_zip: $('#card_zip').val()
+      
+    };
+
+    $('#stripe_error').hide();
+    return Stripe.createToken(card, subscription.handleStripeResponse);
+  },
+  handleStripeResponse: function(status, response) {
+    if (status === 200) {
+      $('#stripe_card_token').val(response.id);
+      return $('#update_card')[0].submit();
+    } else {
+      $('#stripe_error').show();
+      $('#stripe_error').text(response.error.message);
+      return $('input[type="submit"]').attr('disabled', false);
+    }
+  }
+};
+
+</script>
+

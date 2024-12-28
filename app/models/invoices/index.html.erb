@@ -1,0 +1,82 @@
+<h1>Billing History</h1>
+
+<div class="panel">
+  <div class="panel body">
+    <div class="well">
+      <% if @customer.charges.data.length == 0 and @customer.charges.data.length == 0 -%>
+      <p>You have no invoices on file.</p>
+      <% end -%>
+      <% if @customer.invoices.data.length > 0 -%>
+      <p>
+        If you need to update your billing information, go to the
+        <a href="/companies/">
+          manage companies
+        </a>
+        page.
+      </p>
+
+      <h3>Invoices</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <td>Number</td>
+            <td>Date</td>
+            <td>Description</td>
+            <td>Amount</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @customer.invoices.data.each { |i| -%>
+          <tr>
+            <td> <%=i.receipt_number %></td>
+            <td> <%=Time.at(i.date).in_time_zone(current_user.time_zone).strftime(SHORT_TIME_FMT_TZ)%></b> </td>
+            <td>
+              <b><%=i.lines.data[0].metadata["company_name"] ? i.lines.data[0].metadata["company_name"] : ""  %></b><br/>
+              <%=i.lines.data[0].plan.name %><br>
+              <%=Time.at(i.lines.data[0].period.start).in_time_zone(current_user.time_zone).strftime(SHORT_DATE_FMT)%> to
+              <%=Time.at(i.lines.data[0].period.end).in_time_zone(current_user.time_zone).strftime(SHORT_DATE_FMT)%>
+            </td>
+            <td> <%=number_to_currency(i.total * 0.01) %> <%=i.currency.upcase %> </td>
+          </tr>
+          <% } -%>
+        </tbody>
+      </table>
+      <% end -%>
+      
+      <% if @customer.charges.data.length > 0 -%>
+      <h3>Charges</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <td>Date</td>
+            <td>Description</td>
+            <td>Amount</td>
+            <td>Card</td>
+            <td>Status</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @customer.charges.data.each { |c| -%>
+          <tr>
+          <td> <%=Time.at(c.created).in_time_zone(current_user.time_zone).strftime(SHORT_TIME_FMT_TZ)%></b> </td>
+          <td> <%=c.description || "Invoice #{c.receipt_number}" %> </td>
+          <td>
+             <%=number_to_currency(c.amount * 0.01) %> <%=c.currency.upcase %>
+             <% if c.refunded == true -%>
+                <BR>
+                <div class="badge badge-danger">REFUNDED
+                  <%=Time.at(c.refunds.data[0].created).in_time_zone(current_user.time_zone).strftime(SHORT_TIME_FMT_TZ)%>
+                </div>
+             <% end -%>
+          </td>
+          <td> <%=c.source.name %><BR><%=c.source.brand %> <%=c.source.last4 %> </td>
+          <td> <%=c.status.titleize %> </td>
+          </tr>
+          <% } -%>
+        </tbody>
+        <% end -%>
+      </table>
+    </div>
+  </div>
+</div>
+  

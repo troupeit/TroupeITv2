@@ -1,0 +1,108 @@
+<div class='modal' id='emergModal' style='display: none' tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+     <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Emergency Message</h4>
+  </div>
+
+  <%= form_for :show, :html => { :class => "form-horiziontal" } do |f| -%>
+  <div class='modal-body'>
+    <P>This message will be seen by everyone viewing this show schedule.</P>
+
+    <div class="control-group">
+      <%= f.label :emergency_msg, "Message", :class=>"control-label" %>
+      <div class="controls">
+        <%= f.text_field :emergency_msg, :class=>"input-xlarge" %>
+      </div>
+    </div>
+  </div>
+
+  <div class='modal-footer'>
+    <%= f.hidden_field :show_id, :value=> @show.id  %>
+    <button class="btn btn-primary" id="emerg-form-submit">Update Message</button>
+    <button class="btn btn-primary" id="emerg-form-remove">Remove Message</button>
+
+  </div> <!-- /.modal-footer --> 
+  <% end -%>
+  </div> <!-- /.modal-content --> 
+ </div>  <!-- /.modal-dialog --> 
+</div> <!-- /.modal --> 
+
+<script>
+  //<![CDATA[
+    $(function() {
+      // wire up the buttons to dismiss the modal when shown
+      $("#emergModal").bind("show", function() {
+        $("#emergModal a.btn").click(function(e) {
+          // hide the dialog box
+          $("#emergModal").modal('hide');
+        });
+
+      });
+      // remove the event listeners when the dialog is hidden
+      $("#emergModal").bind("hide", function() {
+          // remove event listeners on the buttons
+          $("#emergModal a.btn").unbind();
+      });
+
+      // finally, wire up the actual modal functionality and show the dialog
+      $("#emergModal").modal({
+        "backdrop" : "static",
+        "keyboard" : true,
+        "show" : true // this parameter ensures the modal is shown immediately
+      });
+
+      $('#emerg-form-submit').on('click', function(e){
+      // We don't want this to act as a link so cancel the link action
+        e.preventDefault();
+
+        // first instance is  the add box, second instance is the length box.
+        var actdata = {
+          "authenticity_token" : AUTH_TOKEN,
+          'emergency_msg': "EMERGENCY: (<%=current_user.name%>) " + show_emergency_msg.value,
+        };
+
+        $("#emergModal").modal('hide');
+
+        // update the record
+        $.ajax({
+          type: 'PUT',
+              dataType: 'json',
+              url: '/shows/<%=@show.id%>.json',
+              contentType: 'application/json',
+              data: JSON.stringify(actdata),
+              success: function() { 
+                 showDT.fnReloadAjax();
+              }
+          });
+        });
+
+      $('#emerg-form-remove').on('click', function(e){
+      // We don't want this to act as a link so cancel the link action
+        e.preventDefault();
+
+        // first instance is  the add box, second instance is the length box.
+        var actdata = {
+          "authenticity_token" : AUTH_TOKEN,
+          'emergency_msg': "",
+        };
+
+        $("#emergModal").modal('hide');
+
+        // update the record
+        $.ajax({
+          type: 'PUT',
+              dataType: 'json',
+              url: '/shows/<%=@show.id%>.json',
+              contentType: 'application/json',
+              data: JSON.stringify(actdata),
+              success: function() { 
+                 showDT.fnReloadAjax();
+              }
+          });
+        });
+
+    });
+  //]]>
+</script>

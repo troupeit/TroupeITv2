@@ -1,0 +1,20 @@
+<tr>
+  <% if @showowner -%>
+      <td>
+        <% if act.user_id != nil -%>
+            <% u = User.find(act.user_id)
+
+               if u != nil
+            -%>
+                <a href="/users/<%= act.user_id %>"><%= u.name %></a><BR>
+            <% else -%>
+                <font color="#ff0000">Deleted User</font>
+            <% end -%>
+        <% end -%>
+      </td>
+  <% end -%>
+  <td><%= act.stage_name %></td>
+  <td><%= act.short_description %></td>
+  <td><%= link_to 'Edit', edit_act_path(act), :class => 'btn btn-primary btn-sm btn-block' %><br>
+  <%= link_to 'Destroy', act, method: :delete, :class => 'btn btn-danger btn-sm btn-block', data: {confirm: 'Are you sure?'} %></td>
+</tr>

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                      "http://www.w3.org/TR/html4/loose.dtd">
+<!-- %%NOWRAP%% -->
+<HTML xmlns:og="http://opengraphprotocol.org/schema/"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
+<HEAD>
+	<title>troupeIT | seamless show management</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <%=render 'layouts/meta' %>
+  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag "homepage", media: "all" %>
+
+	<!--[if lt IE 9]>
+		<%=javascript_include_tag "html5shiv.js" %></script>
+		<%=javascript_include_tag "respond.min.js" %></script>
+		<%=javascript_include_tag "excanvas.min.js" %></script>
+	<![endif]-->
+  <!-- js? -->
+  <STYLE TYPE="text/css">
+    #select-options .buynow a{
+    font-weight: bold;
+    font-family: open sans;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    padding: 7px 10px;
+    background: none;
+    border: 1px solid white;
+    border-radius: 3px;
+    }
+    #select-options .buynow a:hover{
+    background: rgba(255,255,255,0.2);
+    }
+    body
+    .fus-options a.color {
+    margin: 2px 0 0;
+    }
+  </style>
+  <body class="">
+    <%=render 'layouts/noscript' %>
+    <%= yield %>
+  </body>
+</html>
+
+

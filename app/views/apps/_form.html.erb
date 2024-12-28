@@ -1,0 +1,101 @@
+<%= form_for(@app, :html => {:class => "form-horizontal"}) do |f| %>
+<% if @app.errors.any? %>
+<div class="alert alert-danger">
+  <%= pluralize(@app.errors.count, "error") %> prohibited your application from being saved. Please
+  correct the errors below and try again.
+</div>
+<% end %>
+<fieldset>
+  <div class="form-group">
+    <%= f.label :description, "Short Title", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :description, :class => "form-control required" %>
+      <P>A short title that describes your act to display on your dashboard page</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :legal_name, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :legal_name, :class => "form-control required" %>
+      <P>Your full legal name</P>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :mailing_address, :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :mailing_address, :class => "form-control required" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :phone_primary, "Primary Phone Number", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :phone_primary, :class => "form-control required" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :phone_alt, "Alternate Phone Number", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :phone_alt, :class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :sm_facebook, "Your Facebook URL", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :sm_facebook, :class => "form-control" %><br>
+      (i.e. https://www.facebook.com/djnetik)
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :sm_twitter, "Your Twitter name", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :sm_twitter, :class => "form-control" %><br>
+      (i.e. @netik)
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :sm_instagram, "Your Instagram Handle", :class => "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :sm_instagram, :class => "form-control" %><br>
+      (i.e. @netik23)
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :phone_primary_has_sms, "SMS Ok?", :class => "col-sm-2 control-label" %>
+    <%= f.check_box :phone_primary_has_sms %>
+    <P>Check this box if your primary phone number can receive SMS text messages.</P>
+  </div>
+
+  <div class="well">
+    <P>
+      As the Main Contact Person, I agree, in full, to the following:
+    </P>
+    <ul>
+      <li> I agree that I meet age requirements and agree to abide by all Nevada state laws</li>
+      <li> I agree to take full responsibility for myself and
+        the act(s) I represent</li>
+      <li>I agree that if offered a spot to perform in the Weekender (in any capacity) to not
+        perform in any capacity in the Las Vegas metropolitan area for a period of ten days before the start of
+        the Weekender and seven days after the end of the Weekender</li>
+      <li>I agree to hold Burlesque Hall of Fame free from liability as spelled out in the complete rules for entry.
+      <li>I agree to abide by the rest of the &quot;Complete Rules for Entry&quot; for the Weekender.</li>
+    </ul>
+    <strong>I agree to the above rules</strong>&nbsp;&nbsp;<%= f.check_box :legal_accepted %>
+  </div>
+
+  <% if @app.locked == true -%> 
+  <P><strong>This application has been submitted and cannot be edited</strong></p>
+  <%= link_to 'Back to Dashboard', apps_path, :class => "btn btn-success" %>
+  <% else -%>
+  <div class="actions">
+    <%= link_to 'Cancel', apps_path, :class => "btn btn-danger" %>
+    <%= f.submit 'Save Page', :class=>"btn btn-primary" %>
+  </div>
+  <% end -%>
+
+</fieldset>
+<% end %>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>

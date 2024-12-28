@@ -382,9 +382,9 @@ namespace :showmanager do
 
   task fix_s3_perms: :environment do
     # make everything in the bucket public-read.
-    s3 = Aws::S3::Resource.new(region: Rails.application.secrets.aws_sqs_region,
-                               access_key_id: Rails.application.secrets.aws_access_key,
-                               secret_access_key: Rails.application.secrets.aws_secret_key)
+    s3 = Aws::S3::Resource.new(region: Rails.application.credentials.aws_sqs_region,
+                               access_key_id: Rails.application.credentials.aws_access_key,
+                               secret_access_key: Rails.application.credentials.aws_secret_key)
     bucket = s3.bucket("troupeit-uploads")
     bucket.objects.each do |obj|
       puts obj.key

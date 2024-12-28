@@ -22,6 +22,9 @@ module TroupeITv2
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
+    config.encoding = "utf-8"
+
+    config.autoload_paths += %W[#{config.root}/lib]
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -35,6 +38,13 @@ module TroupeITv2
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+
+    # Configure sensitive parameters which will be filtered from the log file.
+    config.filter_parameters += [ :password, :password_confirmation ]
+
+    # Enable escaping HTML in JSON.
+    config.active_support.escape_html_entities_in_json = true
 
     Mongoid.load! "./config/mongoid.yml"
   end

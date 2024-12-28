@@ -1,0 +1,33 @@
+<div class="panel panel-body">
+  <div class="col-md-12">
+    <h2>Your Companies</h2>
+    <P>
+      A Company is a collection of people involved with one or more
+      events.  Members in a company can work together with the company's media,
+      shows, events, and schedules.
+    </p>
+    
+    <P>
+      <a href="/companies/new" class="btn btn-success btn-sm">
+        <i class="white fa fa-plus"></i>&nbsp;Create a New Company
+      </a>
+
+      <% if current_user.stripe_customer_id.present? -%>
+      <a href="/invoices" class="btn btn-warning btn-sm">
+        <i class="white fa fa-history"></i>&nbsp;Show Billing History
+      </a>
+
+      <a href="/settings/edit_card" class="btn btn-warning btn-sm">
+        <i class="white fa fa-credit-card"></i>&nbsp;Update Billing Information
+      </a>
+      <% end -%>
+    </P>
+
+    <%=react_component 'ManagedCompanyList', {
+                       :companies => @companiesjson,
+                       :current_user => current_user } %>
+    
+  </div>
+</div>
+
+<%=react_component 'ConfirmModal', {} %>

@@ -1,0 +1,37 @@
+<%= form_for(@decider) do |f| %>
+  <% if @decider.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@decider.errors.count, "error") %> prohibited this decider from being saved:</h2>
+
+      <ul>
+      <% @decider.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :key %><br>
+    <%= f.text_field :key %>
+  </div>
+  <div class="description">
+    <%= f.label :description %><br>
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label "Production" %><br>
+    <%= f.text_field :value_f %>
+  </div>
+  <div class="field">
+    <%= f.label "Staging" %><br>
+    <%= f.text_field :value_f_staging %>
+  </div>
+  <div class="field">
+    <%= f.label "Test" %><br>
+    <%= f.text_field :value_f_test %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

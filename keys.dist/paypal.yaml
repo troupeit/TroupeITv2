@@ -1,0 +1,14 @@
+development: &sandbox # change to your own
+  username: 'xxx'
+  password: 'xxx'
+  signature: 'xxx'
+  sandbox: true
+
+test:
+  <<: *sandbox
+
+production: &production
+  username: 'yyy'
+  password: 'yyy'
+  signature: 'yyy'
+  sandbox: false

@@ -1,0 +1,69 @@
+<div class="well">
+  <% itemtime = @show.door_time -%>
+  <div class="perfindex_header">
+    <P><%= @show.title %><BR>
+      <%= @show.door_time.strftime("%A, %B %e")%>
+      / Doors at <%= @show.door_time.strftime(TIME_ONLY_FMT) %> / Show at <%= @show.show_time.strftime(TIME_ONLY_FMT) %></P>
+  </div>
+  <div class="schedRow">
+    <div class="row">
+      <span class="noprint">
+        <p class="pull-right">
+          <input type="checkbox" id="mcmode" name="mcmode">
+          Show MC Notes
+        </p>
+      </span>
+    </div>
+    
+    <div class="perfindex">
+      <P>&nbsp;</p>
+      
+      <% @show_items.each { |s| -%>
+      <TABLE class="table table-nolines">
+        <TR>
+          <% if @si_act[s.act_id] -%>
+          <TD width="200">
+            <B><%=itemtime.strftime(TIME_ONLY_FMT) %></b>
+          </TD>
+          <TD>
+            <%=@si_act[s.act_id].stage_name %>
+            <div class='mcnotes'>
+              <% if @si_act[s.act_id].mc_intro.length > 0 -%>
+              <P><I><%=@si_act[s.act_id].mc_intro %></I></P>
+              <% end -%>
+            </div>
+          </TD>
+          <% else -%>
+          <TD width="200">
+            <b><%=itemtime.strftime(TIME_ONLY_FMT) %></b>
+          </TD>
+          <TD ALIGN="CENTER">
+            <I><%=s.note %></I>
+          </TD>
+          <% end -%>
+          <% 
+             if s.duration != nil 
+               itemtime = itemtime + s.duration
+             end
+             %>
+        </TR>
+        <% } -%>
+      </TABLE>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript"> 
+  $( document ).ready(function() { 
+      $(".mcnotes").hide();
+      
+      $( 'input#mcmode' ).click(function(){
+      if ($(this).is(':checked')) {
+       $(".mcnotes").show();
+      } else {
+       $(".mcnotes").hide();
+     }
+  });
+});
+</script>
+

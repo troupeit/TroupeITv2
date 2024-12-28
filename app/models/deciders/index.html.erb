@@ -1,0 +1,38 @@
+  <div class="panel panel-body">
+  <h1>Deciders</h1>
+
+<P>
+	Runtime configuration parameters across all sites
+</P>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Description</th>
+      <th>Value (float)</th>
+      <th>Value (float) Staging</th>
+  	  <th>Value (float) Test</th>
+	    <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @deciders.each do |decider| %>
+      <tr>
+        <td><%= decider.key %></td>
+        <td><%= decider.description %></td>
+        <td><%= decider.value_f %></td>
+        <td><%= decider.value_f_staging %></td>
+		    <td><%= decider.value_f_test %></td>
+		    <td><%= link_to 'Show', decider, :class => "btn btn-info" %></td>
+        <td><%= link_to 'Edit', edit_decider_path(decider), :class => "btn btn-warning" %></td>
+        <td><%= link_to 'Destroy', decider, method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Decider', new_decider_path, :class => "btn btn-success" %>
+</div>

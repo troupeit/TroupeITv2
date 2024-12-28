@@ -1,0 +1,179 @@
+<%= form_for(@act, :html => {:class => "form-horizontal"}) do |f| %>
+  <fieldset>
+    <% if @act.errors.any? %>
+      <div class="alert alert-danger">
+        Ooops. It seems you've forgotten some things. Please correct the errors below and try again.
+      </div>
+    <% end %>
+
+
+					<h4>Act details</h4>
+					<div class="panel">
+						<table class="table table-striped table-hover"> 
+							<tbody>
+                <% if @act.persisted? -%>
+                <tr> 
+									<td width="25%"><strong>Owner</strong>
+                  </td> 
+                  <td>
+                    <table width=100%>
+                      <tr>
+                        <td>
+                          <%= react_component 'Avatar', {:name => @act.user.name.titleize, :facebookId => @act.user.uid, :round => true, :size => 30, :inline => true } %>
+                        </td>
+                        <td>
+                          <% if @act.user == current_user -%>
+                          <%= react_component 'AssignBtn', {:act => @act.id.to_s }%>
+                          <% end -%>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+								</tr> 
+                <% end -%>
+								<tr> 
+									<td width="25%"><strong>Act name *</strong><br/>
+                    <small>
+                      Provide a name for your performance, act, or talk here.
+                    </small>
+                  </td> 
+									<td><%= f.text_field :stage_name, :class => "form-control" %></td>
+								</tr> 
+								<tr> 
+									<td><strong>Performers</strong><br/><small>Who will be on stage?</small></td> 
+									<td><%= f.text_area :names_of_performers, :class => "form-control", :rows => 2, :cols => 200 %></td>
+								</tr> 
+								<tr> 
+									<td><strong>Description *</strong><br/><small>Describe your act or presentation, as best you can.</small></td> 
+									<td><%= f.text_area :short_description, :class => "form-control", :rows => 2, :cols => 200 %></td>
+								</tr>
+                <tr> 
+									<td width="25%"><strong>MC Intro</strong><br/><small>How would you like to be introduced?</small></td>
+									<td><%= f.text_area :mc_intro, :class => "form-control", :rows => 2, :cols => 200 %></td>
+								</tr> 
+
+                <tr>
+                  <td>
+                    <strong>Tags</strong><br/>
+
+                    <small>Add some tags so you can find your act easier. Seperate your tags with commas.
+                    </small>
+                    </td>
+                  <td><input data-role="tagsinput" type="text" name="tags" id="tags" value="<%= @act.tags.join(',') %>"></td>
+                </tr>
+							</tbody> 
+						</table> 
+					</div> <!-- /.act details panel -->
+
+					<h4>Files</h4>				
+					<div class="panel">			
+						<table class="table table-striped table-hover">
+							<tbody>
+								<tr> 
+									<td width="25%">
+										<strong>Audio, Video, Image, or Presentation Files</strong><br/>
+										<p>
+                      <small>Please try to keep your music in one audio file per act.</small>
+                    </p>
+                    <P>
+                      <small>Do not upload M4P files. They are DRM protected, copyrighted iTunes songs that can only be played by the original purchaser.</small>
+                    </p>
+                    <p>
+                      <small>                       
+                        <b>Using more than one file?</b><br/>Make sure the files are in the correct ORDER. They will be played in the order as displayed here. Use the arrows to change order.
+                      </small>
+                    </p>
+									</td> 
+									<td>
+                    <%=react_component 'MultiFileSelect', {:assets => @passetmap } %>
+									</td> 
+								</tr>
+							</tbody>
+						</table>
+					</div><!-- /.assets panel -->
+				
+					<h4>Tech details</h4>				
+					<div class="panel">			
+						<table class="table table-striped table-hover">
+							<tbody>
+								<tr> 
+									<td><strong>Duration *</strong><br/><small>In HH:MM:SS or MM:SS</small></td> 
+									<td><%= f.text_field :length, :class => "form-control" %></td>
+								</tr> 
+								<tr> 
+									<td width="25%">
+										<strong>Sound Cue and Notes</strong><br/>
+										<small>If your performance has music, when should
+										the music be started? (examples: "Enter to Music",
+										  "When seated", "When posed" etc.)</small><br/><br/>
+                    <small>Microphone and input needs can also be entered here.</small>
+									</td> 
+									<td>
+                    <%= f.text_area :sound_cue, :class => "form-control", :rows => 2, :cols => 200 %>
+									</td> 
+								</tr>
+								<tr> 
+									<td><strong>Lighting notes</strong><br/>
+                    <small>
+                      What do you need to look your best?
+                    </small>
+                  </td> 
+									<td><%= f.text_area :lighting_info, :class => "form-control", :rows => 2, :cols => 200 %></td>
+								</tr>
+								<tr> 
+									<td><strong>Prop notes</strong><br/>
+                    <small>
+                      Need something on stage with you? Godzilla
+                      puppet? Art? Background?
+                    </small>
+                  </td> 
+									<td><%= f.text_area :prop_placement, :class => "form-control", :rows => 2, :cols => 200 %></td>
+								</tr>
+								<tr> 
+									<td><strong>Clean-up notes</strong><br/><small>What needs to be removed from the stage after your performance?</small></td> 
+                  <td><%= f.text_area :clean_up, :class => "form-control", :rows => 2, :cols => 200 %></td>
+								</tr>
+								<tr> 
+									<td><strong>Crew notes</strong><br/><small>Any extra notes for the crew?</small></td> 
+									<td><%= f.text_area :extra_notes, :class => "form-control", :rows => 2, :cols => 200 %></td>
+								</tr>
+							</tbody>
+						</table>
+					</div> <!-- /.tech details panel -->
+
+    <div class="form-group">
+        <div class="col-md-6 pull-left">
+          <% if  @act.persisted? -%>
+            <%= link_to 'Delete', @act, method: :delete, :class => 'btn btn-danger', data: {confirm: 'Are you sure?'} %>
+          <% end -%>
+        </div>
+
+        <div class="col-md-6 pull-right">
+        <INPUT TYPE="HIDDEN" NAME="return_to" VALUE="<%= @return_to %>">
+          
+        <%= link_to 'Cancel', @return_to, :class => "btn btn-danger" %>
+
+        <% if @act.persisted? %>
+            <%= f.submit "Update act", :class => "btn btn-success" %>
+        <% else %>
+            <%= f.submit "Create act", :class => "btn btn-success" %>
+          </div>
+        <% end %>
+      </div>
+  </fieldset>
+<% end %>
+
+<%=react_component 'AssetPicker', { :name => current_user.name.titleize, :email => current_user.email, :facebookId => current_user.uid } %>
+<%=react_component 'AssignModal', { :id => current_user.id, :act => @act.id.to_s } %>
+
+<script>
+
+  /* expand all the textareas to fit their text on load */
+  $(function () {
+    $("textarea").each(function () {
+    this.style.height = (this.scrollHeight+20)+'px';
+    });
+  });
+</script>
+

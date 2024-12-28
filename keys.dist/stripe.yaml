@@ -1,0 +1,15 @@
+development: &sandbox # change to your own
+  secret_key: ''
+  publishable_key: ''
+
+test:
+  secret_key: ''
+  publishable_key: ''
+
+production: &production
+  secret_key: ''
+  publishable_key: ''
+
+
+
+

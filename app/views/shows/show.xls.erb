@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Sequence</Data></Cell>
+        <Cell><Data ss:Type="String">Start Time</Data></Cell>
+        <Cell><Data ss:Type="String">Duration (seconds)</Data></Cell>
+        <Cell><Data ss:Type="String">Cue Title</Data></Cell>
+        <Cell><Data ss:Type="String">Cue Description</Data></Cell>
+        <Cell><Data ss:Type="String">Sound Cue</Data></Cell>
+        <Cell><Data ss:Type="String">Lights</Data></Cell>
+        <Cell><Data ss:Type="String">Stage</Data></Cell>
+        <Cell><Data ss:Type="String">Clean Up</Data></Cell>
+        <Cell><Data ss:Type="String">Performer Notes</Data></Cell>
+      </Row>
+    <% @csvarry.each do |si| %>
+      <Row>
+        <Cell><Data ss:Type="Number"><%= si['seq'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= si['start_time'] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= si['duration'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= si['cue_title'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= si['cue_description'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= si['sound_cue'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= si['lights'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= si['stage'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= si['cleanup'] %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= si['performer_notes'] %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

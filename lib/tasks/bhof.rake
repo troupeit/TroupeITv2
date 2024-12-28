@@ -134,8 +134,8 @@ namespace :bhof do
 
 
   task fetch_members: :environment do
-    Pluot.account_id = Rails.application.secrets.wa_account_id
-    Pluot.api_key = Rails.application.secrets.wa_api_key
+    Pluot.account_id = Rails.application.credentials.wa_account_id
+    Pluot.api_key = Rails.application.credentials.wa_api_key
 
     # this takes some time,so we should cache it.
     c = Pluot.contacts.all

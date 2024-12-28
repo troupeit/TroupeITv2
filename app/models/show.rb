@@ -5,17 +5,17 @@ class Show
    include Mongoid::Timestamps
    include PublicActivity::Model
 
-   tracked except: [:update],
-           owner: Proc.new{ |controller, model| controller.current_user },
-           :params => {
-             :title => proc {|controller, model| (model.title)}
+   tracked except: [ :update ],
+           owner: Proc.new { |controller, model| controller.current_user },
+           params: {
+             title: proc { |controller, model| (model.title) }
            }
-  
+
    after_save :update_event_dates
    before_destroy :update_and_delete
    belongs_to :event
 
-   has_many :show_items, dependent: :destroy, :order => :seq.asc
+   has_many :show_items, dependent: :destroy, order: :seq.asc
    has_many :show_item_notes, dependent: :destroy
 
    validates_presence_of :title
@@ -44,7 +44,7 @@ class Show
    belongs_to :last_download_by, class_name: "User"
 
    # item sequences always start at one.
-   field :showitem_seq, type:  Integer, default: 
+   field :showitem_seq, type:  Integer, default: 1
 
    # have we sms'd this show out?
    field :notifications_sent, type:  Boolean, default:  false
@@ -52,7 +52,7 @@ class Show
    private
 
    def update_and_delete
-     update_event_dates(true) 
+     update_event_dates(true)
    end
 
    def update_event_dates(deleting = false)
@@ -62,7 +62,7 @@ class Show
      # needs to happen after every show save, and after every showitem modification.
      #
      # if deleting is true, we will act as if the current show does not exist.
-     # it is the caller's duty to notify other users after this occurs. 
+     # it is the caller's duty to notify other users after this occurs.
 
      mindate = nil
      maxdate = nil
@@ -73,7 +73,7 @@ class Show
 
      shows = Show.where(event_id: theevent.id)
 
-     # if we delete everything, clear the dates. 
+     # if we delete everything, clear the dates.
      if shows.count == 0
        theevent.startdate = nil
        theevent.enddate = nil
@@ -84,14 +84,14 @@ class Show
 
      shows.each { |s|
        next if s.id == self.id and deleting
-       
+
        if mindate.nil? or s.door_time <= mindate
          mindate = s.door_time
        end
-       
+
        show_length = ShowItem.where({ show_id: self.id }).sum(:duration)
        end_time = s.door_time + show_length.seconds
-       
+
        if maxdate.nil? or end_time >= maxdate
          maxdate = end_time
        end

@@ -131,8 +131,8 @@ development:
     # belongs_to_required_by_default: true
     
     # Raise an exception when a field is redefined. (default: false)
-    # duplicate_fields_exception: false
-    
+    duplicate_fields_exception: false
+
     # Include the root model name in json serialization. (default: false)
     # include_root_in_json: false
 
@@ -183,3 +183,13 @@ test:
         read:
           mode: :primary
         max_pool_size: 1
+
+production:
+  clients:
+    default:
+      database: hsm_production
+      hosts:
+        - localhost:27017
+      options:
+        user: ENV['MONGODB_USER']
+        password: ENV['MONGODB_PASSWORD']

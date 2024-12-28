@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '277c5aadff43b2fcb6c882a2ff024746099c42b98b76d98955ff03926fd3e04b3139458fc1634e6277ae2db1f3a37cde533a25295f923e8d5a44b2d8c955f58e'
+  config.secret_key = "24dd90be4a32be72f5da0e677f3bb9de2b71e7bd8de2a1b511f7f0b79a6179ea981516fe9ff0cf7893562aa58983d3bd97c307f8428b0f5199bb462453432c11"
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -58,12 +58,12 @@ Devise.setup do |config|
   # Configure which authentication keys should be case-insensitive.
   # These keys will be downcased upon creating or modifying a user and when used
   # to authenticate or find a user. Default is :email.
-  config.case_insensitive_keys = [ :email ]
+  config.case_insensitive_keys = [ :email, :username ]
 
   # Configure which authentication keys should have whitespace stripped.
   # These keys will have whitespace before and after removed upon creating or
   # modifying a user and when used to authenticate or find a user. Default is :email.
-  config.strip_whitespace_keys = [ :email ]
+  config.strip_whitespace_keys = [ :email, :username ]
 
   # Tell if authentication through request.params is enabled. True by default.
   # It can be set to an array that will enable params authentication only for the
@@ -90,7 +90,7 @@ Devise.setup do |config|
   # It will change confirmation, password recovery and other workflows
   # to behave the same regardless if the e-mail provided was right or wrong.
   # Does not affect registerable.
-  # config.paranoid = true
+  config.paranoid = true
 
   # By default Devise will store the user in session. You can skip storage for
   # particular strategies by setting this option.
@@ -188,7 +188,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  # config.timeout_in = 30.minutes
+  config.timeout_in = 1440.minutes
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
@@ -208,10 +208,10 @@ Devise.setup do |config|
 
   # Number of authentication tries before locking an account if lock_strategy
   # is failed attempts.
-  # config.maximum_attempts = 20
+  config.maximum_attempts = 20
 
   # Time interval to unlock the account if :time is enabled as unlock_strategy.
-  # config.unlock_in = 1.hour
+  config.unlock_in = 1.hour
 
   # Warn on the last attempt before the account is locked.
   # config.last_attempt_warning = true
@@ -266,12 +266,24 @@ Devise.setup do |config|
   # config.navigational_formats = ['*/*', :html, :turbo_stream]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
-  config.sign_out_via = :delete
+  config.sign_out_via = Rails.env.test? ? :get : :delete
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  config.omniauth :facebook, "308336679243664", "0e86926ef55938ef7287a4d4675b7c48",  {
+                    client_options: {
+                      site:          "https://graph.facebook.com/v2.11",
+                      authorize_url: "https://www.facebook.com/v2.11/dialog/oauth"
+                    },
+                    info_fields: "email,first_name,middle_name,last_name,picture,name",
+                    scope: "email,public_profile",
+                    auth_type: "reauthorize"
+                 }
+
+  # fuck elon.
+  # config.omniauth :twitter, Rails.application.credentials.twitter_api_key, Rails.application.credentials.twitter_api_secret
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

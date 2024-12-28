@@ -1,0 +1,118 @@
+<div class="row">
+  <div class="col-md-12">
+  <h1 style="margin-bottom: 20px;">
+    <small><%=@show.event.company.name %></small><BR>
+    <a href="/events/<%=@show.event.id.to_s %>/showpage"><%=@show.title%></a>
+  </h1>
+</div>
+</div>
+
+  <div class="well">
+   <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <h3>Download Show</h3>
+      <P>
+        <strong>Doors:</strong> <%=@show.door_time.strftime(SHORT_TIME_FMT)%> /
+        <strong>Show:</strong> <%=@show.door_time.strftime(SHORT_TIME_FMT)%>
+      </p>
+      <P>
+        There are <b><%=@stat_acts%> acts</b> in this show,
+        with <b><%=@stat_music%> audio files</b>, and <b><%=@stat_images%> image or video files</b>.
+      </p>
+    <P>
+      <% if @stat_music > 0 or @stat_images >0 -%>
+        <a href="/shows/<%=@show.id.to_s%>/download_redir">
+          <button class="btn btn-block btn-success">
+            <i class="fa fa-download"></i>
+            Download Show ZIP
+            (<%=number_to_human_size(@zipstat, :precision => 3)%> uncompresesd)
+          </button>
+          </a>
+          <% if @show.last_download_at.present? -%>
+          <p>
+            Show ZIP was last downloaded by <%= @show.last_download_by.name %> on <%= @show.last_download_at.strftime(LONG_DATE_FMT) %>
+          </p>
+          <% end -%>
+      <% else -%>
+        <button class="btn btn-block btn-danger">
+          <i class="fa fa-ban"></i>
+          This show contains no media.
+        </button>
+      <% end -%>
+    </div>
+  </div>
+</div>
+
+<h4>Pre-Show Check</h4>
+<% if @dupemedia.count > 0 -%>
+<div class="panel panel-inverse">
+  <div class="panel-heading">
+    <h3 class="panel-title">These acts use the same media</h3>
+  </div>
+  <div class="panel-body">
+    <% @dupemedia.each do |fl| -%>
+    <div class="row schedRow">
+      <div class="col-xs-6">
+        <i class="fa fa-exclamation-triangle" style="color: #f0ad4e;"></i>
+        <strong><%=fl[:act_user][:username].titleize %></strong>
+      </div>
+      <div class="col-xs-6">
+        <a href="/acts/<%=fl[:act_id]%>/edit"><%=fl[:act_owner] %></a><BR>
+        <% @filelist.each do |df| -%>
+          <% if df[:uuid] == fl[:uuid] and df[:act_id] != fl[:act_id] -%>
+             Duplicates:<BR><a href="/acts/<%=df[:act_id]%>/edit"><%=df[:act_user][:username].titleize %> - <%=df[:act_owner] %></a><BR>
+          <% end -%>
+        <% end -%>
+      </div>
+    </div>
+    <% end -%>
+  </div>
+</div>
+<% end -%>
+
+<% if @nomedia.count > 0 -%>
+<div class="panel panel-inverse">
+  <div class="panel-heading">
+    <h3 class="panel-title">Acts without Media</h3>
+  </div>
+  <div class="panel-body">
+    <% @nomedia.each do |fl| -%>
+    <div class="row schedRow">
+      <div class="col-xs-6">
+        <i class="fa fa-ban" style="color: #ff0000;"></i>
+        <strong><%=fl[:act_user][:username].titleize %></strong>
+      </div>
+      <div class="col-xs-6">
+        <a href="/acts/<%=fl[:act_id]%>/edit"><%=fl[:act_owner] %></a>
+      </div>
+    </div>
+    <% end -%>
+  </div>
+</div>
+<% end -%>
+
+<% if @stat_music > 0 or @stat_images >0 -%>
+<div class="panel panel-inverse">
+  <div class="panel-heading">
+    <h3 class="panel-title">Acts with media</h3>
+  </div>
+  <div class="panel-body">
+    <%  @filelist.each do |fl| -%>
+    <div class="row" style="padding-bottom: 10px;">
+      <div class="col-sm-4">
+        <i class="fa fa-check" style="color: #00ee00;"></i>
+        <strong><%=fl[:act_user][:username].titleize %></strong>
+      </div>
+      <div class="col-sm-6">
+        <a href="/acts/<%=fl[:act_id]%>/edit"><%=fl[:act_owner] %> - <%=fl[:filename] %></a>
+      </div>
+      <div class="col-sm-2 centered">
+        <a href="https://troupeit.com/gf/getfile?uuid=<%=fl[:uuid]%>&downloadas=<%=FileTools::sanitize_csv_filename(fl[:filename])%>">
+          <button class="btn btn-info btn-xs"><i class="fa fa-download"></i>&nbsp;Download</button>
+        </a>
+      </div>
+    </div>
+    <% end -%>
+  </div>
+</div>
+<% end -%>

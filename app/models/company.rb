@@ -1,7 +1,7 @@
 class Company
   include Mongoid::Document
   include Mongoid::Timestamps
-  # include ActsAsTaggable::Tagger
+  include ActsAsTaggable::Tagger
 
   belongs_to :user
   belongs_to :subscription_plan

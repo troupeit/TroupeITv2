@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ TITLE }}</title>
+
+  <style type="text/css">
+  @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
+
+  /* Take care of image borders and formatting */
+
+  img {
+    max-width: 600px;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+  }
+
+  u + #body a {
+          color: inherit;
+          text-decoration: none;
+          font-size: inherit;
+          font-family: inherit;
+          font-weight: inherit;
+          line-height: inherit;
+   }
+  
+  a {
+    text-decoration: none;
+    border: 0;
+    outline: none;
+    color: #bbbbbb;
+  }
+
+  a img {
+    border: none;
+  }
+
+  /* General styling */
+
+  td, h1, h2, h3  {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 400;
+  }
+
+  td {
+    text-align: center;
+  }
+
+  table {
+    border-collapse: collapse !important;
+  }
+
+  .contact a {color: #fff!important; text-decoration: underline!important;}
+  
+  .ii a[href] {color: #fff!important; text-decoration: underline!important;}
+
+ .force-full-width {
+    width: 100% !important;
+ }
+
+  </style>
+
+  <style type="text/css" media="screen">
+      @media screen {
+         /*Thanks Outlook 2013! http://goo.gl/XLxpyl*/
+        td, h1, h2, h3 {
+          font-family: 'Droid Sans', 'Helvetica Neue', 'Arial', 'sans-serif' !important;
+        }
+      }
+  </style>
+
+  <style type="text/css" media="only screen and (max-width: 480px)">
+    /* Mobile styles */
+    @media only screen and (max-width: 480px) {
+
+      table[class="w320"] {
+        width: 320px !important;
+      }
+
+
+    }
+  </style>
+</head>
+<body class="body" style="padding:0; margin:0; display:block; background:#ffffff; -webkit-text-size-adjust:none" background="#ffffff">
+<table style="margin:0 auto;" cellpadding="0" cellspacing="0">
+  <tr>
+    <td valign="top" style="background:#ffffff"  width="100%">
+        <table style="margin: 0 auto; background:#d24cac" cellpadding="0" cellspacing="0" width="600" class="w320">
+          <tr>
+            <td  valign="top">
+
+                <table cellpadding="0" cellspacing="0" width="100%" style="margin:0 auto; background: #333;">
+                  <tr>
+                    <td style="font-size: 30px; text-align:center; color: #999; background: #333; padding-top: 20px; padding-bottom: 20px;">
+                        troupeIT
+                    </td>
+                  </tr>
+                </table>
+
+                <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style='text-align: center;  background:#000; padding: 10px'>
+                      <img src="https://bhofweekend.com/wp-content/uploads/2016/01/bhoflogo.png" width="40%" height="20%" alt="main logo" />
+                   </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center; font-size: 36px; color: #fff; padding: 10px;background:#000">
+                         {{ HEADLINE }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                        <table style="margin: 0 auto" cellpadding="0" cellspacing="0" width="60%">
+                          <tr>
+                            <td style="color:#fff; text-align:center; padding:20px">
+                            {{ SUBHEADLINE }}
+                            </td>
+                          </tr>
+                        </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <table style="margin: 0 auto; background:#d24cac;" cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td>
+                        <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" width="60%">
+                          <tr>
+                            <td style="color:#E8D0D0; text-align: center;">
+                            <p>
+                                {{ BODY }}
+                            </p>
+                            {{ if BODY2 }}
+                            <p>
+                                {{ BODY2 }}
+                            </p>
+                            {{ end }}
+                            {{ if BODY3 }}
+                            <p>
+                                {{ BODY3}}
+                            </p>
+                            {{ end }}
+                            {{ if BODY4 }}
+                            <p>
+                                {{ BODY4 }}
+                            </p>
+                            {{ end }}
+                            <p>
+                              Log in to troupeIT now at <br/>
+                              <a href="https://troupeit.com/apps" style="color:#fff">https://troupeit.com/apps</a> <br/>
+                              to see your results.
+                            </p>
+                            </td>
+                          </tr>
+
+                        </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center;">
+                      <a href="{{ CTALINK }}" style="color:#fff;background:#672248;border-radius:6px;margin:20px;display:inline-block;font-size:16px;font-weight:bold;line-height:50px;text-align:center;width:200px;-webkit-text-size-adjust:none;">
+                        {{ CTA }}
+                        </a>
+                    </td>
+                  </tr>
+                </table>
+
+                <table cellpadding="0" cellspacing="0" style="margin: 0 auto; width:100%; background:#333">
+<!--
+                  <tr>
+                    <td style="background:#ac2ba1;text-align: center; padding: 20px">
+                      <a href="https://www.facebook.com/troupeit" style='border: none;'>
+                          <img src="https://www.burlesquehall.com/wp-content/plugins/wp-review-slider-pro-premium/public/partials/imgs/facebook_small_icon.png" alt="facebook">
+                      </a>
+                      <a href="https://www.twitter.com/troupeit" style='border: none;'>
+                          <img src="https://www.burlesquehall.com/wp-content/plugins/wp-review-slider-pro-premium/public/partials/imgs/twitter_small_icon.png" alt="twitter">
+                      </a>
+                    </td>
+                  </tr>
+-->
+                <tr>
+                    <td style="color:#eee; font-size:12px; text-align: center; padding:20px;">
+                      <a href="https://troupeit.com/" style="text-decoration: none; border: 0; outline: none; color: #bbbbbb;">
+                      troupeit.com</a> | 
+                      <a href="https://troupeit.com/" style="text-decoration: none; border: 0; outline: none; color: #bbbbbb;">
+                      Unsubscribe</a> | 
+                      <a href="mailto:support@troupeit.com" style="text-decoration: none; border: 0; outline: none; color: #bbbbbb;">
+                      Contact</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="color:#bbbbbb; font-size:12px;text-align:center; padding-top:20px; padding-bottom:20px;">
+                       &copy; {{ YEAR }} All Rights Reserved
+               
+                    </td>
+                  </tr>
+                </table>
+            </td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+
+

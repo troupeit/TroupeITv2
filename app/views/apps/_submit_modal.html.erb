@@ -1,0 +1,44 @@
+<div class='modal' id='submitModal' style='display: none' tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Submit Application</h4>
+      </div>
+
+      <%= form_for @app, :html => { :class => "form-horiziontal" } do |f| -%>
+          <input type="hidden" value="<%=@app.id%>" id="app_id">
+          <div class='modal-body'>
+
+              <P>Submitting your Application means that all information is correct and that you are done making changes. </P>
+              <P>You cannot make changes after you have submitted your application.</P>
+    
+          </div>
+
+          <div class='modal-footer'>
+            <button class="btn btn-danger" id="submit-modal-cancel" class="close" data-dismiss="modal">Cancel</button>
+			<%= link_to 'Submit and Lock', lock_app_path(@app), method: :post, class: "btn btn-success" %>
+          </div> <!-- /.modal-footer -->
+      <% end -%>
+    </div> <!-- /.modal-content -->x
+  </div>  <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
+
+<script>
+    //<![CDATA[
+    $(function() {
+            $("#submit-modal-cancel").click(function(e) {
+                // hide the dialog box
+                e.preventDefault();
+                $("#submitModal").modal('hide');
+            });
+
+        // finally, wire up the actual modal functionality and show the dialog
+        $("#submitModal").modal({
+            "backdrop" : "static",
+            "keyboard" : true,
+            "show" : true // this parameter ensures the modal is shown immediately
+        });
+    });
+    //]]>
+</script>

@@ -1,0 +1,134 @@
+</div> <!-- closes previously open container -->
+<%= javascript_include_tag "jquery.stickytableheaders.js" %>
+<style>
+body {
+   background-color: #000000;
+}
+
+.footer {
+   color: #888888;
+   background-color: #333333;
+}
+
+table { 
+   table-layout: fixed;
+}
+
+table tbody, table thead
+{
+  display: block;
+  overflow: visible;
+  background-color: #111111 !important;
+}
+
+table.cuetable {
+   padding-top: 50px !important;
+   padding-bottom: 20px;
+   box-sizing: border-box  !important;
+   border-spacing: 10px;
+   border-collapse: separate;
+}
+
+table.cuetablehead {
+   margin-top: -10px;
+   box-sizing: border-box;
+   border-spacing: 10px;
+   border-collapse: separate;
+   position: fixed;
+   border-spacing: 10px;
+}
+
+table.cuetablehead td, th {
+   position: relative;
+   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+   font-style: bold;
+   font-size: 18px;
+   padding: 0.5em 1em !important;
+   border-radius: .2em; 
+   margin: .5em;
+   vertical-align: top;
+   border-bottom: 5px solid #cccccc;
+}
+
+table.cuetablehead tr { 
+    background-color: #333333;
+    color: white;
+}
+
+table.cuetablehead th.focus,
+table.cuetablehead td.focus {
+  outline: 3px solid #3366FF;
+  outline-offset: -3px;
+}
+
+table.cuetable th.focus,
+table.cuetable td.focus {
+  outline: 3px solid #3366FF;
+  outline-offset: -3px;
+}
+
+table.cuetable td, th {
+   border-spacing: 0 5px;
+   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+   font-size: 16px;
+   padding: 0.5em 1em;
+   border-radius: .2em;
+   margin: .5em;
+   vertical-align: top;
+}
+
+
+table.cuetable tr { 
+    background-color: #333333;
+    color: white;
+}
+
+
+.cuetablewidth { 
+  width: 2710px;
+}
+
+div#cueHeadWrapper {
+ z-index: 999999;
+ background-color: #ff0000;
+ display:block;
+}
+
+/* stop collapsing? */
+.navbar-collapse.collapse {
+display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+margin-right: -15px !important;
+}
+
+.navbar-right {
+float: right!important;
+}
+@media (min-width: 768px)
+{
+.navbar-collapse.in{ overflow-y:visible;}
+}
+
+/* white on cue list page, black on show page */
+a.editable-click, a.editable-click:hover {
+  color: #fff !important;
+  font-weight: bold;
+}
+  
+
+</style>
+
+<%=react_component 'LiveViewGrid', {
+                   :initialColOrder => current_user.live_view_columnpref,
+                   :name => current_user.name.titleize,
+                   :email => current_user.email,
+                   :facebookId => current_user.uid,
+                   :show_id => @show.id.to_s,
+                   :event_id => @event.id.to_s } %>
+

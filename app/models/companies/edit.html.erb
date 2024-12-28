@@ -1,0 +1,28 @@
+<h3> <%=@company.name %></h3>
+
+<%= javascript_include_tag "ZeroClipboard.js" %>
+
+<ul class="nav nav-pills">
+  <li role="presentation" class="active"><a href="/companies/<%=@company.id%>/edit">Settings</a></li>
+  <% if DECIDER("momoney") == 1 -%>
+  <li role="presentation"><a href="/companies/<%=@company.id%>/billing">Plans and Billing</a></li>
+  <% end -%> 
+</ul>
+   
+<%= render 'form' %>
+<%=react_component 'InvitationPanel', {  :company => @company.id.to_s,
+                                         :company_owner => @company.user_id.to_s,
+                                         :crew_size => @crew_count,
+                                         :crew_limit => @current_plan.crew_size,
+                                      }
+%>
+
+<%=react_component 'AccessEditor',  {    :company => @company.id.to_s,
+                                         :company_owner => @company.user_id.to_s }
+%>
+
+<%=react_component 'CompanyDelete', {:company => @company } %>
+
+<%=react_component 'ConfirmModal', {} %>
+
+

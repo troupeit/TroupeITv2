@@ -1,0 +1,14 @@
+development: &sandbox
+  phone_number: "xxx"
+  account_sid: 'xxx'
+  auth_token: 'xxx'
+
+test:
+  phone_number: "xxx"
+  account_sid: 'xxx'
+  auth_token: 'xxx'
+
+production:
+  phone_number: "xxx"
+  account_sid: 'xxx'
+  auth_token: 'xxx'

@@ -1,0 +1,145 @@
+<!-- begin login -->
+<div class="login-cover">
+</div>
+
+<div class="login-cover-bg">
+</div>
+
+<div class="col-md-offset-2 col-md-8 col-md-offset-2">
+	<div class="row">
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {  :class=>"form-signup mg-btm" } ) do |f| %>
+    <h3 class="heading-desc">
+      Sign Up
+    </h3>
+    
+		<div class="social-box">
+			<div class="row mg-btm">
+        <div class="col-md-12">
+
+          <a href="<%=omniauth_authorize_path(resource_name, 'facebook') %>" class="btn btn-primary btn-block">
+            <span class="fa fa-facebook-official"></span> Sign Up with Facebook
+          </a>
+			  </div>
+			</div>
+		</div>
+		<div class="main">
+      <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <%= f.hidden_field :used_code, :value => params[:invite_code] %>
+          <%= f.label :username, "Username" %>
+          <%= f.text_field :username, :class=>"form-control" , :placeholder => "Username" %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <%= f.label :name, "Name" %>
+          <%= f.text_field :name, :class=>"form-control", :placeholder => "Full Name"  %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <%= f.label :email, "E-Mail", :id => "email" %>
+          <%= f.text_field :email, :class=>"form-control", :placeholder => "E-Mail" %>
+        </div>
+        <div class="col-md-3">
+          <div id="correction" class="pull-right"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <%= f.label :password, "Password" %>
+            <%= f.password_field :password, :class=>"form-control", :placeholder => "Password", oninput: "update_and_checkpw(this)"  %>
+            <%= f.text_field :password_confirmation, :class=>"form-control", :placeholder => "Password", oninput: "update_and_checkpw(this)", style: "display:none;" %>
+          <p>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="showpw" id="showpw" class="checkbox" value="1">&nbsp;Show password
+              </label>
+            </div>
+          </p>
+          <label>Password Strength (green is good!)</label>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="pwstrengthbar">
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+	    <span class="clearfix"></span>	
+    </div>
+		<div class="login-footer">
+		  <div class="row">
+        <div class="col-xs-8 col-md-8">
+          <div class="left-section">
+            
+  			    <P><a href="/users/sign_in">Already have an account?</a></p>
+            
+					</div>
+        </div>
+        <div class="col-xs-8 col-md-8 pull-right">
+          <button type="submit" class="btn btn-large btn-success pull-right">Sign Up</button>
+        </div>
+      </div>
+
+		</div>
+    <% end %>
+	</div>
+  </div>
+
+
+      
+
+<script>
+$(function() { 
+  $('input#user_username').focus();
+
+  $( "#showpw" ).click(function() {
+     if ($(this).is(':checked')) {
+       $( "#user_password" ).hide();
+       $( "#user_password_confirmation" ).show();
+     } else {
+       $( "#user_password" ).show();
+       $( "#user_password_confirmation" ).hide();
+     }
+  });
+
+});
+
+
+var $email = $('#user_email');
+var $correction = $("#correction");
+
+$email.on('blur',function() {
+  $correction.css('display', 'none').empty();
+  $(this).mailcheck({
+    suggested: function(element, suggestion) {
+      if(!$correction.html()) {
+        // First error - fill in/show entire correction element
+        var suggestion = "Did you mean <span class='suggestion'>" +
+            "<span class='address'>" + suggestion.address + "</span>"
+            + "@<a href='#' class='domain'>" + suggestion.domain +
+            "</a></span>?";
+        
+        $correction.html(suggestion).fadeIn(150);
+      } else {
+        // Subsequent errors
+        $(".address").html(suggestion.address);
+        $(".domain").html(suggestion.domain);
+      }
+    }
+  });
+});
+
+$correction.on('click', '.domain', function() {
+  // On click, fill in the field with the suggestion and remove the correction
+  $email.val($(".suggestion").text());
+  $correction.fadeOut(200, function() {
+    $(this).empty();
+  });
+  return false;
+});
+
+</script>
+
+

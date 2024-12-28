@@ -1,0 +1,63 @@
+<h1>Listing entry_techinfos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Entry</th>
+      <th>Song title</th>
+      <th>Song artist</th>
+      <th>Act duration secs</th>
+      <th>Act name</th>
+      <th>Act description</th>
+      <th>Costume description</th>
+      <th>Costume colors</th>
+      <th>Props</th>
+      <th>Other tech info</th>
+      <th>Setup needs</th>
+      <th>Setup time secs</th>
+      <th>Breakdown needs</th>
+      <th>Breakdown time secs</th>
+      <th>Sound cue</th>
+      <th>Microphone needs</th>
+      <th>Lighting needs</th>
+      <th>Mc intro</th>
+      <th>Aerial needs</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @entry_techinfos.each do |entry_techinfo| %>
+      <tr>
+        <td><%= entry_techinfo.entry_id %></td>
+        <td><%= entry_techinfo.song_title %></td>
+        <td><%= entry_techinfo.song_artist %></td>
+        <td><%= entry_techinfo.act_duration_secs %></td>
+        <td><%= entry_techinfo.act_name %></td>
+        <td><%= entry_techinfo.act_description %></td>
+        <td><%= entry_techinfo.costume_Description %></td>
+        <td><%= entry_techinfo.costume_colors %></td>
+        <td><%= entry_techinfo.props %></td>
+        <td><%= entry_techinfo.other_tech_info %></td>
+        <td><%= entry_techinfo.setup_needs %></td>
+        <td><%= entry_techinfo.setup_time_secs %></td>
+        <td><%= entry_techinfo.breakdown_needs %></td>
+        <td><%= entry_techinfo.breakdown_time_secs %></td>
+        <td><%= entry_techinfo.sound_cue %></td>
+        <td><%= entry_techinfo.microphone_needs %></td>
+        <td><%= entry_techinfo.lighting_needs %></td>
+        <td><%= entry_techinfo.mc_intro %></td>
+        <td><%= entry_techinfo.aerial_needs %></td>
+        <td><%= link_to 'Show', entry_techinfo %></td>
+        <td><%= link_to 'Edit', edit_entry_techinfo_path(entry_techinfo) %></td>
+        <td><%= link_to 'Destroy', entry_techinfo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Entry techinfo', new_entry_techinfo_path %>

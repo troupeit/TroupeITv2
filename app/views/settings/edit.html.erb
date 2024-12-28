@@ -1,0 +1,359 @@
+<script src="<%=asset_path "libphonenumber.js"%>"></script>
+<style>
+  .intl-tel-input {width: 100%;}
+</style>
+  <script>
+  function check_number() {
+    $('#user_phone_number').keyup(function() {
+      if ($("#user_phone_number").intlTelInput("isValidNumber")) { 
+        $('#btn_confirm_number').removeAttr("disabled");
+        $('#btn_confirm_number').attr("class", "btn btn-success");
+      } else {
+        $('#btn_confirm_number').attr("disabled","disabled");
+        $('#btn_confirm_number').attr("class", "btn");
+      }
+    });
+
+  }
+
+  $(document).ready(function() {
+    if ( $('#user_phone_number').val() == '') {
+      $('#btn_confirm_number').attr("disabled","disabled");
+      $('#btn_confirm_number').removeClass('btn-success');
+    }
+    
+    check_number();
+    
+    // block enter from submitting form, which will remove the person's phone number
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+
+    $("#user_phone_number").intlTelInput( { autoplaceholder: true, autoHideDialCode: false, formatOnInit: true} );
+    
+    $("#user_phone_number").on("blur", function() {
+      if ($("#user_phone_number").intlTelInput("isValidNumber")) {
+        var intlNumber = $("#user_phone_number").intlTelInput("getNumber");
+        var country    = $("#user_phone_number").intlTelInput("getNumber");
+        $("#user_phone_number").intlTelInput("setNumber", intlNumber);
+      }
+    });
+
+    $("#settingsform").on("submit", function() {
+      if ($("#user_phone_number").intlTelInput("isValidNumber")) {
+        var intlNumber = $("#user_phone_number").intlTelInput("getNumber");
+        $("#user_phone_number").val(intlNumber);
+      }
+    });
+  });
+</script>
+
+  <div class="panel">
+  <div class="panel-body">
+    <div class="col-md-offset-2 col-md-8 col-md-offset-2">
+      <div class="row">
+        <div class="col-md-3">
+            <%=react_component 'AvatarEditor', {:name => current_user.name.titleize, :email => current_user.email, :facebookId => current_user.uid, :src => current_user.avatar_uuid } %>
+        </div>
+        <div class="col-md-8">
+          <h1><%= current_user.name.titleize %></h1>
+        </div>
+      </div>
+      
+      <%= form_for(:user, :url => {:controller => "settings", :action => "update"}, :html => {:id => "settingsform", :method => :post, :class => "form-horizontal"}) do |f| %>
+      <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2>There are <%= pluralize(@user.errors.count, "error") %>:</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+      <% end %>
+
+      <h3>Details</h3>
+      <% if @user.provider.blank? == false -%>
+      <% if @user.provider == "facebook" -%>
+      <div class="bs-callout bs-callout-info">
+        <h4>Facebook Login</h4>
+        Your login is currently connected to your Facebook account. To change your password or other authentication information,
+        <a href="https://www.facebook.com/settings" target="_fb">update your Facebook settings on facebook.com.</a>
+      </div>
+      <% end -%>
+
+      <% if @user.provider == "twitter" -%>
+      <div class="bs-callout bs-callout-info">
+        <h4>Twitter Login</h4>
+        Your login is currently connected to your Twitter account. To change your password or other authentication information,
+        <a href="https://twitter.com/settings" target="_fb">update your Twitter settings on twitter.com.</a>
+      </div>
+      <% end -%>
+      <% end -%>
+      
+      <fieldset>
+        <div class="form-group">
+          <%= f.label :username, "Username", :class => "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.text_field :username, :class => "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :name, :class => "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.text_field :name, :class => "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :email, :class => "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.email_field :email, :class => "form-control" %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label :phone_number, "Mobile Number", :class => "col-sm-2 control-label"  %>
+          <div class="col-sm-10">
+            <% if current_user.sms_confirmed == true -%>
+  
+            <div class="input-group">
+              <%= f.text_field :phone_number, :class => "form-control", :disabled => true, :html => {:type => "tel" }%>
+              <div class="input-group-btn">
+              <%= f.submit "Remove your mobile number", :class => "btn btn-danger", :id => "btn_confirm_number", :name => "remove" %>
+              </div>
+
+            </div>
+             <p></p>
+            <% else -%>
+            <div class="input-group">
+              <%= f.text_field :phone_number, :class => "form-control" %>
+              <div class="input-group-btn">
+                 <%= f.submit "Confirm your mobile number", :class => "btn btn-success", :id => "btn_confirm_number", :name => "confirm" %>
+              </div>
+            </div>
+            <i>Confirming your mobile number allows you to use SMS notifications with TroupeIT</i>
+          </div>
+          <% end -%>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :time_zone, "Time Zone", :class => "col-sm-2 control-label" %> 
+          <div class="col-sm-10">
+            <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, {  :default => "Pacific Time (US & Canada)" } , { :class => "form-control"  } %>
+          </div>
+        </div>
+
+        <div class='row'><div class='span12'><hr></div></div>
+        <h3>About You</h3>
+        
+        <div class="form-group">
+          <%= f.label :location, "Location", :class => "col-sm-2 control-label" %> 
+          <div class="col-sm-10">
+            <%=react_component 'TeleportAutocomplete', :name => "user[location]", :initialValue => current_user.location %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :miniresume, "Mini-Resume", :class => "col-sm-2 control-label" %> 
+          <div class="col-sm-10">
+            <%= f.text_field :miniresume, { :class => "form-control" } %>
+            <em>This is displayed on your public profile. Tell the world what you do.<br/>Example: "I am a sound engineer for Hubba Hubba Revue. I make things go!"</em>
+          </div>
+        </div>
+
+        <div class='row'><div class='span12'><hr></div></div>
+        <h3>Privacy</h3>
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-1">
+              <%= f.check_box :share_phone, :class => "checkbox"  %>
+          </div>
+          <div class="col-sm-10">
+            <h4>Share my Phone Number</h4>
+            Shares your phone number with members of companies that you are part of.
+            Your phone number will appear on the company's profile page.
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-1">
+            <%= f.check_box :share_email, :class => "checkbox" %>
+          </div>
+          <div class="col-sm-10">
+            <h4>Share my E-Mail</h4>
+            Shares your e-mail address with members of companies that you are part of.
+            Your e-mail address will appear on the company profile page.
+          </div>
+        </div>
+
+        <div class='row'><div class='span12'><hr></div></div>
+        <h3>Help and Tips</h3>
+        
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-1">
+              <%= f.check_box :disable_tutorial, :class => "checkbox" %>
+          </div>
+          <div class="col-sm-10">
+            <h4>Tutorials Off</h4>
+            Disable the TroupeIT guided tour when I log in.
+          </div>
+        </div>
+        
+        <div class='row'><div class='span12'><hr></div></div>
+        <h3>Notifications</h3>
+
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-1">
+            <%= f.check_box :sms_notifications, :class => "checkbox" %>
+          </div>
+          <div class="col-sm-10">
+            <h4>SMS Notifications</h4>
+            Send me an SMS about shows that I am part of or when my company creates a new show.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-1">
+              <%= f.check_box :sms_sleep_enabled, :class => "checkbox" %>
+          </div>
+          <div class="col-sm-10">
+            <h4>SMS Sleep</h4>
+            Don't send me notifications between the hours of 
+            <%= f.select :sms_sleep_start_hh, {"12 AM" => 0}.merge!(1.upto(11).collect { |n| {"#{n} AM" => n} }.reduce(Hash.new, :merge)).merge!({"12 PM" => 12}).merge!(1.upto(11).collect { |n| {"#{n} PM" => n + 12} }.reduce(Hash.new, :merge)) %>
+            and 
+              <%= f.select :sms_sleep_end_hh, {"12 AM" => 0}.merge!(1.upto(11).collect { |n| {"#{n} AM" => n} }.reduce(Hash.new, :merge)).merge!({"12 PM" => 12}).merge!(1.upto(11).collect { |n| {"#{n} PM" => n + 12} }.reduce(Hash.new, :merge)) %>
+          </div>
+        </div>
+
+        
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-1">
+              <%= f.check_box :email_notifications, :class => "checkbox" %>
+          </div>
+          <div class="col-sm-10">
+            <h4>E-Mail Notifications</h4>
+            Mail me when changes occur in companies and events that I am a member of.
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-1">
+              <%= f.check_box :email_product_updates, :class => "checkbox" %>
+          </div>
+          <div class="col-sm-10">
+            <h4>Monthly newsletter</h4>
+            TroupeIT product tips and information.
+          </div>
+        </div>
+       <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-1">
+              <%= f.check_box :email_marketing, :class => "checkbox" %>
+          </div>
+          <div class="col-sm-10">
+            <h4>Promotions and Offers</h4>
+            Get access to exclusive offers for TroupeIT products and services.
+          </div>
+        </div>
+       
+        <% if @user.provider.blank? %> 
+        <div class='row'><div class='span12'><hr></div></div>
+        
+        <h3>Change Password</h3>
+        
+        <div class="form-group">
+          <label for="current_password" class="col-sm-2 control-label">Current Password</label>
+          
+          <div class="col-sm-10">
+            <%= f.password_field :current_password, :class => "form-control" %>
+            <p>We need your current password to confirm changes to your password or email address.</p>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label "New Password", :class => "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.password_field :password, :autocomplete => "off", :class => "form-control" %>
+            <P>Leave blank if you don't want to change your password.</p>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label "New Password (again)", :class => "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.password_field :password_confirmation, :class => "form-control" %>
+          </div>
+        </div>
+        <% end %>
+        <div class="form-group">
+          <div class="col-sm-10">
+            <%= f.submit "Update", :class => "btn btn-success", :name => 'update' %>
+          </div>
+        </div>
+        <% end -%>
+        
+        <% if @user.provider.blank? == true -%>
+        <div class='row'><div class='span12'><hr></div></div>
+        <h3>Two Factor Authentication</h3>
+        
+        <% if !current_user.otp_required %>
+        <P> Two factor is not enabled for your account. </P>
+        
+        <P> Protect your account with an extra layer of security by
+          requiring access to your phone or tablet. Once configured
+          you'll be required to enter a code from Google
+          Authenticator
+          (<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
+              target="_2fa">Android</a>,
+          <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_2fa">Apple Devices</A>),
+          
+          <a href="https://www.duosecurity.com/product/methods/duo-mobile" target="_2fa">Duo Mobile</a>,
+          or <a href="http://www.windowsphone.com/en-us/store/app/authenticator/021dd79f-0598-e011-986b-78e7d1fa76f8" target="_\
+                                                                                                                              2fa">Windows Phone Authenticator</a> 
+          
+          in order to sign in.
+          
+        </P>
+        <a href="/settings/otp_precheck" class="btn btn-success" role="button">
+          Enable Two-Factor
+        </a>
+        <% end %>
+        
+        <% if current_user.otp_required %>
+        <div class="row">
+          <%=form_tag settings_otp_deactivate_path do %>
+          <P><i class="glyphicon glyphicon-lock" style='color: green;'></i>&nbsp;Two factor authentication is enabled for your account. To deactivate it, enter your current password.</P>
+          <div class="col-md-3">
+            <input type="password" name="otp_password" class="form-control" placeholder="Current Password">
+          </div>
+          <div class="col-md-9">
+            <input type="submit" value="Deactivate Two-Factor" class="btn btn-success">
+          </div>
+          <% end -%>
+        </div>
+        <br>
+        <% end %>
+        <% end %>
+        
+        <HR>
+        <P><strong>Account Cancellation</strong></p>
+        
+        <p>
+          If you no longer wish to have an account, you can
+          <%= link_to "cancel here", registration_path(@user), :data => {:confirm => "Are you sure?"}, :method => :delete %>.</p>
+          All media, including your companies, shows, and events, will be deleted when you cancel.
+         </p>
+<p>
+  <B>If you have an active subscription:</B> All remaining time on your subscription will be lost when you cancel your account.
+  If you wish to just cancel a subscription but keep your account intact,
+  you can manage your subscription on
+  the <a href="/companies/">Company management page</>.
+</p>
+
+</div>
+</fieldset>
+</div>
+</div>
+</div>
+<%=react_component 'AssetPicker', { :name => current_user.name.titleize, :email => current_user.email, :facebookId => current_user.uid, :initialMimeType => "image/" } %>
+
