@@ -1,0 +1,2 @@
+module SignupInvitesHelper
+end
