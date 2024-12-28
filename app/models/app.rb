@@ -8,10 +8,10 @@ class App
   # a bhof member id that this is associated with
   field :memberid, type: Integer
   field :no_memberid, type: Mongoid::Boolean
-  
+
   # this would indicate the year
   field :event_code, type: String
-  
+
   field :legal_name, type: String
   field :mailing_address, type: String
   field :phone_primary, type: String
@@ -34,27 +34,27 @@ class App
 
   # stripe integration (2016)
   field :stripe_customer_id, type:  String
-  field :stripe_invoice_id, type:  String  # verify that we're using invoices... 
+  field :stripe_invoice_id, type:  String  # verify that we're using invoices...
 
   field :is_group, type:  Mongoid::Boolean # false if solo
 
   # upon submit, we lock the app. changes locked out after this point
   field :locked, type:  Mongoid::Boolean
-  field :forward_for_review, type:  Integer, :default => -1
-  field :final_decision, type:  Integer, :default => 0
+  field :forward_for_review, type:  Integer, default: 1
+  field :final_decision, type:  Integer, default:  0
 
   # true if the applicant is in, and has has accepted our decision
-  field :decision_rsvp, type:  Integer, :default => -1 
+  field :decision_rsvp, type:  Integer, default:  -1
 
   # social media stuffs
   field :sm_facebook, type:  String
   field :sm_twitter, type:  String
   field :sm_instagram, type:  String
-  
+
   validates_presence_of :legal_name, :mailing_address, :phone_primary, :phone_primary_has_sms, :description, :message => "Required"
 
-  validates_inclusion_of :legal_accepted, :in => [true], :message => "You must check this box to accept the agreement"
-  
+  validates_inclusion_of :legal_accepted, :in => [ true ], :message => "You must check this box to accept the agreement"
+
   validates_format_of :phone_primary,
         :message => "You must enter a valid telephone number",
         :with => /\A[\(\)0-9\- \+\.]{10,20} *[extension\.]{0,9} *[0-9]{0,5}\z/
@@ -108,15 +108,14 @@ class App
 
   def complete?
     # true if the application and it's subcomponents are complete
-    if self.entry and self.entry_techinfo and self.is_complete? and self.entry.is_complete? and self.entry_techinfo.is_complete? and self.purchased_at.present? 
+    if self.entry and self.entry_techinfo and self.is_complete? and self.entry.is_complete? and self.entry_techinfo.is_complete? and self.purchased_at.present?
       true
     else
       false
     end
-  end 
+  end
 
   def self.to_csv
-
     # include all of the associated entry fields
     keys = App.fields.keys
     Entry.fields.keys.each do |ek|
@@ -129,7 +128,7 @@ class App
     keys.push('compete_preference')
 
     # include a limited set of user fields
-    user_fields = ['email','name','username']
+    user_fields = [ 'email', 'name', 'username' ]
     user_fields.each do |ek|
       keys.push("user-" + ek)
     end
@@ -151,7 +150,6 @@ class App
         end
 
         csv << row
-
       end
     end
   end
@@ -165,5 +163,4 @@ class App
       :payer_id => express_payer_id
     }
   end
-
 end

@@ -44,10 +44,10 @@ class Show
    belongs_to :last_download_by, class_name: "User"
 
    # item sequences always start at one.
-   field :showitem_seq, type:  Integer, :default => 1
+   field :showitem_seq, type:  Integer, default: 
 
    # have we sms'd this show out?
-   field :notifications_sent, type:  Boolean, :default => false
+   field :notifications_sent, type:  Boolean, default:  false
 
    private
 

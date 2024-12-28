@@ -10,5 +10,5 @@ class Apikey
   field :temppin, type:  String
   field :secret, type:  String
 
-  field :valid_for_auth, type:  Boolean, :default => false
+  field :valid_for_auth, type:  Boolean, default:  false
 end

@@ -2,16 +2,16 @@ class ShowItem
   include Mongoid::Document
   include Mongoid::Timestamps
   include PublicActivity::Model
-  
+
   after_save :update_event_dates
   after_save :update_show_updated_at
-  
+
   belongs_to :show
   validates_presence_of :kind
 
   KIND_NOTE = 0
   KIND_ASSET = 32
-  
+
   field :kind, type:  Integer
 
   # sequence in this show
@@ -21,7 +21,7 @@ class ShowItem
   field :old_act_id, type:  String
   belongs_to :act
   has_many :show_item_notes, dependent: :destroy
-  
+
   # The way we handle times is as follows:
   #
   # if a time is set here, we use it, That's a 'fixed' time reference.
@@ -55,7 +55,7 @@ class ShowItem
   end
 
   # return a specific note for an event's show
-  def get_note(current_user,kind)
+  def get_note(current_user, kind)
     if self.show_item_notes.blank?
       return nil
     end
@@ -72,13 +72,13 @@ class ShowItem
 
     return ""
   end
-  
-  
+
+
   private
 
   def update_event_dates
     # housekeeping function to recalculate event start and end times based on event data.
-    # needs to happen after every show save, and after every showitem modification. 
+    # needs to happen after every show save, and after every showitem modification.
     mindate = nil
     maxdate = nil
 
@@ -95,22 +95,21 @@ class ShowItem
     shows.each { |s|
       show_length = ShowItem.where({ show_id: show.id }).sum(:duration)
       end_time = show.door_time + show_length.seconds
-      
+
       if maxdate.nil? or end_time >= maxdate
         maxdate = end_time
       end
-      
     }
 
-    if maxdate != origend 
+    if maxdate != origend
       theevent.enddate = maxdate
       # disable activity feed because this is an internal operation
       PublicActivity.enabled = false
       theevent.save
       PublicActivity.enabled = true
-      
+
       logger.debug("ShowItem #{self.id.to_s} Save: Event #{show.event_id} with end time #{theevent.enddate}")
-    end    
+    end
   end
 
   def update_show_updated_at
@@ -121,5 +120,4 @@ class ShowItem
     show.save
     PublicActivity.enabled = true
   end
-
 end

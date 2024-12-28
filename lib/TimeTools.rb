@@ -15,4 +15,3 @@ module TimeTools
       (Time.mktime(0) + n).strftime("%M:%S")
   end
 end
-

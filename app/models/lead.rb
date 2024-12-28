@@ -8,8 +8,8 @@ class Lead
   field :name, type:  String
   field :email, type:  String
 
-  field :contacted, type:  Boolean, :default => false
-  field :invited, type:  Boolean, :default => false
+  field :contacted, type:  Boolean, default:  false
+  field :invited, type:  Boolean, default:  false
 
   def first_name
     self.name.split.first

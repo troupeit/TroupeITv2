@@ -53,7 +53,7 @@ class Company
   end
 
   def has_member?(user)
-    # pass in a user and we'll tell you if that person is a member or not. 
+    # pass in a user and we'll tell you if that person is a member or not.
     CompanyMembership.all_of(company: self, user: user).count > 0
   end
 

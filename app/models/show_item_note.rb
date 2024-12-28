@@ -4,7 +4,7 @@ class ShowItemNote
 
   KIND_COMPANY = 0
   KIND_PRIVATE = 1
-  
+
   belongs_to :show_item
   belongs_to :user
   belongs_to :show

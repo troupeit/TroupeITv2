@@ -3,15 +3,15 @@ class Act
    # possibly not part of this system.
    include Mongoid::Document
    include Mongoid::Timestamps
-#   include ActsAsTaggable::Taggable
+   #   include ActsAsTaggable::Taggable
    include PublicActivity::Model
 
-   tracked except: [:update],
-           owner: Proc.new{ |controller, model| controller.current_user },
+   tracked except: [ :update ],
+           owner: Proc.new { |controller, model| controller.current_user },
            :params => {
-             :title => proc {|controller, model| (model.stage_name)}
+             :title => proc { |controller, model| (model.stage_name) }
            }
-   
+
    belongs_to :user
    belongs_to :show_item
 
@@ -30,10 +30,6 @@ class Act
 
    field :title, type:  String
 
-   # tear off the band aid and kill these fields.
-#   field :music, type:  String
-#   field :image, type:  String # image or video...
-
    field :sound_cue, type:  String
    field :prop_placement, type:  String
 
@@ -49,8 +45,7 @@ class Act
      else
        m = (self.length/60).floor
        s = self.length % 60
-       sprintf("%d:%2d",m,s)
+       sprintf("%d:%2d", m, s)
      end
    end
-
 end

@@ -3,12 +3,12 @@ class CompanyMembership
   include Mongoid::Timestamps
   include PublicActivity::Model
 
-  tracked except: [:update],
-          owner: Proc.new{ |controller, model| controller.current_user },
+  tracked except: [ :update ],
+          owner: Proc.new { |controller, model| controller.current_user },
           :params => {
-            :company_name => proc {|controller, model| (model.company.name)}
+            :company_name => proc { |controller, model| (model.company.name) }
            }
-  
+
   # has_many_through style table showing what users belong to what company names
 
   belongs_to :user
@@ -21,7 +21,7 @@ class CompanyMembership
 
   field :sort_name, type:  String
   field :sort_username, type:  String
-  field :access_level, type:  Integer, :default => 0
+  field :access_level, type:  Integer, default:  0
 
   def self.is_cohort?(usera, userb)
     # returns true if usera and userb are in any companies together
@@ -40,8 +40,6 @@ class CompanyMembership
       }
     }
 
-    false 
+    false
   end
-
-
 end

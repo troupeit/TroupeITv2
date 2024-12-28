@@ -27,28 +27,27 @@ class EntryTechinfo
   field :additional_stage_needs, type: String
 
   def is_complete?
-     if song_title.present? and 
-        song_artist.present? and 
-        act_duration.present? and 
-        act_name.present? and 
-        act_description.present? and 
-        costume_Description.present? and 
-        costume_colors.present? and 
-        props.present? and 
-        other_tech_info.present? and 
-        setup_needs.present? and 
-        setup_time.present? and 
-        breakdown_needs.present? and 
-        breakdown_time.present? and 
-        sound_cue.present? and 
-        microphone_needs.present? and 
-        lighting_needs.present? and 
-        mc_intro.present? and 
-        aerial_needs.present? 
+     if song_title.present? and
+        song_artist.present? and
+        act_duration.present? and
+        act_name.present? and
+        act_description.present? and
+        costume_Description.present? and
+        costume_colors.present? and
+        props.present? and
+        other_tech_info.present? and
+        setup_needs.present? and
+        setup_time.present? and
+        breakdown_needs.present? and
+        breakdown_time.present? and
+        sound_cue.present? and
+        microphone_needs.present? and
+        lighting_needs.present? and
+        mc_intro.present? and
+        aerial_needs.present?
       true
-    else 
+     else
       false
-    end
+     end
   end
-
 end

@@ -5,9 +5,8 @@ class Task
 
   validates_presence_of :txt
   belongs_to :event
-  
-  field :txt, type:  String
-  field :completed, type:  Boolean, :default => false
-  field :seq, type:  Integer
 
+  field :txt, type:  String
+  field :completed, type:  Boolean, default:  false
+  field :seq, type:  Integer
 end

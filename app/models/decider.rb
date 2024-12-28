@@ -20,5 +20,4 @@ class Decider
 
   # Value used when RAILS_ENV is test
   field :value_f_test, type: Float
-
 end

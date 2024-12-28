@@ -12,7 +12,7 @@ class Event
   field :startdate, type: DateTime
   field :enddate, type: DateTime
   field :submission_deadline, type: DateTime
-  
+
   # message of the day on the event page
   field :motd_changed_at, type: DateTime
   field :motd, type: String, default: ""

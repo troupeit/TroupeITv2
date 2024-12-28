@@ -6,7 +6,6 @@ class ActAsset
   belongs_to :passet
   validates_presence_of :seq
 
-  # sequence in this act 
+  # sequence in this act
   field :seq, type:  Integer
-  
 end

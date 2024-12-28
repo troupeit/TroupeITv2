@@ -51,6 +51,5 @@ class Ability
 
       can :manage, User, id: user.id
     end
-
   end
 end

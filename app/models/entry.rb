@@ -30,16 +30,15 @@ class Entry
   field :comments, type: String
 
   field :video_notes, type: String
-  
-  def is_part1_complete?
 
+  def is_part1_complete?
    if self.type.nil?
      return false
    end
-    
-   # if it's a group, these two need to be filled out. 
-   if self.type >= 2 and ( ! self.num_performers.present? or ! self.all_performer_names.present?)
-     return false 
+
+   # if it's a group, these two need to be filled out.
+   if self.type >= 2 and (! self.num_performers.present? or ! self.all_performer_names.present?)
+     return false
    end
 
    # we only care about this if we're type 1
@@ -55,18 +54,18 @@ class Entry
       self.compete_preference.present? and
       self.years_applied.present? and
       self.years_performed.present? and
-      self.other_stage_names.present?  
+      self.other_stage_names.present?
       true
-  else
+   else
       false
    end
   end
 
-  def is_part2_complete? 
+  def is_part2_complete?
     if self.comments.present? and
        self.video_notes.present?
       true
-    else 
+    else
       false
     end
   end
