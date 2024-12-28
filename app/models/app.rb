@@ -51,13 +51,13 @@ class App
   field :sm_twitter, type:  String
   field :sm_instagram, type:  String
 
-  validates_presence_of :legal_name, :mailing_address, :phone_primary, :phone_primary_has_sms, :description, :message => "Required"
+  validates_presence_of :legal_name, :mailing_address, :phone_primary, :phone_primary_has_sms, :description, message: "Required"
 
-  validates_inclusion_of :legal_accepted, :in => [ true ], :message => "You must check this box to accept the agreement"
+  validates_inclusion_of :legal_accepted, in: [ true ], message: "You must check this box to accept the agreement"
 
   validates_format_of :phone_primary,
-        :message => "You must enter a valid telephone number",
-        :with => /\A[\(\)0-9\- \+\.]{10,20} *[extension\.]{0,9} *[0-9]{0,5}\z/
+        message: "You must enter a valid telephone number",
+        with: /\A[\(\)0-9\- \+\.]{10,20} *[extension\.]{0,9} *[0-9]{0,5}\z/
 
   belongs_to :user
   embeds_one :entry, autobuild: true
@@ -123,12 +123,12 @@ class App
     end
 
     # extra entry fields
-    keys.push('type')
-    keys.push('category')
-    keys.push('compete_preference')
+    keys.push("type")
+    keys.push("category")
+    keys.push("compete_preference")
 
     # include a limited set of user fields
-    user_fields = [ 'email', 'name', 'username' ]
+    user_fields = [ "email", "name", "username" ]
     user_fields.each do |ek|
       keys.push("user-" + ek)
     end
@@ -158,9 +158,9 @@ class App
 
   def express_purchase_options
     {
-      :ip => purchase_ip,
-      :token => express_token,
-      :payer_id => express_payer_id
+      ip: purchase_ip,
+      token: express_token,
+      payer_id: express_payer_id
     }
   end
 end

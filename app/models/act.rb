@@ -8,18 +8,18 @@ class Act
 
    tracked except: [ :update ],
            owner: Proc.new { |controller, model| controller.current_user },
-           :params => {
-             :title => proc { |controller, model| (model.stage_name) }
+           params: {
+             title: proc { |controller, model| (model.stage_name) }
            }
 
    belongs_to :user
    belongs_to :show_item
 
-   has_many :act_asset, dependent: :destroy, :order => :seq.asc
+   has_many :act_asset, dependent: :destroy, order: :seq.asc
    has_many :event_submissions, dependent: :destroy
 
    validates_presence_of :stage_name, :short_description, :length
-   validates_numericality_of :length, :greater_than  => 0, :only_integer => true, :message => "Length must be in the form HH:MM:SS or MM:SS and not be zero."
+   validates_numericality_of :length, greater_than: 0, only_integer: true, message: "Length must be in the form HH:MM:SS or MM:SS and not be zero."
 
    # these fields required for part (1)
    field :stage_name, type:  String

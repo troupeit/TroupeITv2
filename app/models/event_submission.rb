@@ -5,11 +5,11 @@ class EventSubmission
 
   tracked except: [ :update ],
            owner: Proc.new { |controller, model| controller.current_user },
-           :params => {
-             :act_id => proc { |controller, model| (model.act_id) },
-             :event_id => proc { |controller, model| (model.event_id) },
-             :act_stage_name => proc { |controller, model| (model.act.stage_name) },
-             :event_title => proc { |controller, model| (model.event.title) }
+           params: {
+             act_id: proc { |controller, model| (model.act_id) },
+             event_id: proc { |controller, model| (model.event_id) },
+             act_stage_name: proc { |controller, model| (model.act.stage_name) },
+             event_title: proc { |controller, model| (model.event.title) }
            }
 
   belongs_to :event

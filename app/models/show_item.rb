@@ -47,9 +47,9 @@ class ShowItem
 
     if self.kind == ShowItem::KIND_ASSET
       if not  self.act.title.nil?
-        return self.act.stage_name + ": " + self.act.title
+        self.act.stage_name + ": " + self.act.title
       else
-        return self.act.stage_name
+        self.act.stage_name
       end
     end
   end
@@ -70,7 +70,7 @@ class ShowItem
       end
     }
 
-    return ""
+    ""
   end
 
 
@@ -108,7 +108,7 @@ class ShowItem
       theevent.save
       PublicActivity.enabled = true
 
-      logger.debug("ShowItem #{self.id.to_s} Save: Event #{show.event_id} with end time #{theevent.enddate}")
+      logger.debug("ShowItem #{self.id} Save: Event #{show.event_id} with end time #{theevent.enddate}")
     end
   end
 

@@ -32,16 +32,16 @@ class User
   has_one_time_password
 
   # validations
-  validates_presence_of :email, :message => "You must supply an e-mail address."
-  validates_email_format_of :email, :message => "Invalid e-mail address."
+  validates_presence_of :email, message: "You must supply an e-mail address."
+  validates_email_format_of :email, message: "Invalid e-mail address."
   validates_presence_of :encrypted_password
-  validates_presence_of :name, :message => "We need your full name."
-  validates_presence_of :username, :message => "User name is required."
-  validates :username, { length: { :minimum => 3, :maximum => 25 } }
+  validates_presence_of :name, message: "We need your full name."
+  validates_presence_of :username, message: "User name is required."
+  validates :username, { length: { minimum: 3, maximum: 25 } }
 
   # these must be valid image file names or we won't store them.
-  validates_format_of :cover_uuid, :with => /\A[0-9a-f-]+\.[a-zA-Z]+\Z/, :allow_blank => true
-  validates_format_of :avatar_uuid, :with => /\A[0-9a-f-]+\.[a-zA-Z]+\Z/, :allow_blank => true
+  validates_format_of :cover_uuid, with: /\A[0-9a-f-]+\.[a-zA-Z]+\Z/, allow_blank: true
+  validates_format_of :avatar_uuid, with: /\A[0-9a-f-]+\.[a-zA-Z]+\Z/, allow_blank: true
 
   ## Database authenticatable
   field :email,              type:  String, default: ""
@@ -175,7 +175,7 @@ class User
     # this generates a token for establishing trust between our servers
     # it should never be used externally. It serves as a weak authentication back to node.js
     # SECURITY: this needs an external dependency like week, or time, or something.
-    OpenSSL::HMAC.digest('sha256', Rails3MongoidDevise::Application.config.xauth_secret, self.id.to_s).unpack('H*').first
+    OpenSSL::HMAC.digest("sha256", Rails3MongoidDevise::Application.config.xauth_secret, self.id.to_s).unpack("H*").first
   end
 
   def need_two_factor_authentication?(request)
@@ -193,7 +193,7 @@ class User
 
   def self.find_for_facebook_oauth(auth, signed_in_resource = nil)
     logger.debug("find for fb :provider => #{auth.provider}, :uid => #{auth.uid}")
-    return_user = User.where(:provider => auth.provider, :uid => auth.uid).first
+    return_user = User.where(provider: auth.provider, uid: auth.uid).first
     unless return_user
       if self.where(email: auth.info.email).exists?
         logger.debug("fbauth: user with email #{auth.info.email} exists -- connecting")
@@ -227,7 +227,7 @@ class User
 
   def self.find_for_twitter_oauth(auth, signed_in_resource = nil)
     logger.debug("find for twitter :provider => #{auth.provider}, :uid => #{auth.uid}")
-    return_user = User.where(:provider => auth.provider, :uid => auth.uid).first
+    return_user = User.where(provider: auth.provider, uid: auth.uid).first
     unless return_user
       logger.debug("twitterauth: creating a new user")
       logger.debug(auth.extra)
@@ -257,7 +257,7 @@ class User
       size="normal"
     end
 
-    if self.provider == 'facebook'
+    if self.provider == "facebook"
       "https://graph.facebook.com/#{self.uid}/picture?type=#{size}"
     else
       ""
@@ -276,7 +276,7 @@ class User
 
   def last_name
     if self.name.split.count > 1
-      self.name.split[1..-1].join(' ')
+      self.name.split[1..-1].join(" ")
     end
   end
 

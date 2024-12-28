@@ -2,11 +2,11 @@ class Bhofreview
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  validates :score, :numericality => { :greater_than_or_equal_to => 0.0,
-                                       :less_than_or_equal_to => 10.0,
-                                       :message => "Score must be between 0.0 and 10.0" },  :allow_nil => false
+  validates :score, numericality: { greater_than_or_equal_to: 0.0,
+                                       less_than_or_equal_to: 10.0,
+                                       message: "Score must be between 0.0 and 10.0" },  allow_nil: false
 
-  validates :round, :inclusion => { :in => 1..3, :message => "Round must be between 1 and 3" }
+  validates :round, inclusion: { in: 1..3, message: "Round must be between 1 and 3" }
 
 
   belongs_to :judge, class_name: "User"

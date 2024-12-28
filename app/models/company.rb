@@ -48,7 +48,7 @@ class Company
     end
 
     if self.members_can_invite && suspect.in(id: self.company_memberships.map(&:user_id)) # member
-      return true
+      true
     end
   end
 

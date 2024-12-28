@@ -5,8 +5,8 @@ class CompanyMembership
 
   tracked except: [ :update ],
           owner: Proc.new { |controller, model| controller.current_user },
-          :params => {
-            :company_name => proc { |controller, model| (model.company.name) }
+          params: {
+            company_name: proc { |controller, model| (model.company.name) }
            }
 
   # has_many_through style table showing what users belong to what company names

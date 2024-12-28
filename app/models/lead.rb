@@ -17,7 +17,7 @@ class Lead
 
   def last_name
     if self.name.split.count > 1
-      self.name.split[1..-1].join(' ')
+      self.name.split[1..-1].join(" ")
     end
   end
 end

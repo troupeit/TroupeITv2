@@ -100,7 +100,7 @@ module AppsHelper
       curl = Curl::Easy.http_get(url)
       http_response, *http_headers = curl.header_str.split(/[\r\n]+/).map(&:strip)
       http_headers = Hash[http_headers.flat_map { |s| s.scan(/^(\S+): (.+)/) }]
-      url = http_headers['Location']
+      url = http_headers["Location"]
 
       if url.present?
         url.gsub!(/feature=youtu\.be/, "")
@@ -123,6 +123,6 @@ module AppsHelper
       return content_tag(:embed, nil, { src: "//player.vimeo.com/video/#{vimeo_id}", width: 420, height: 315 })
     end
 
-    return "Embedded video is not available for this URL."
+    "Embedded video is not available for this URL."
   end
 end
