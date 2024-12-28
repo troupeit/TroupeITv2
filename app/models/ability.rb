@@ -38,10 +38,10 @@ class Ability
     if user.has_role? :crew
       can :read, Act
       can :create, Act
-      can :manage, Act, :user_id => user.id
+      can :manage, Act, user_id: user.id
 
       can :read, Passet
-      can :manage, Passet, :user_id => user.id
+      can :manage, Passet, user_id: user.id
 
       # read-only for system properties
       can :read, Role
@@ -49,7 +49,7 @@ class Ability
       can :read, ShowItem
       can :read, Troupe
 
-      can :manage, User, :id => user.id
+      can :manage, User, id: user.id
     end
 
   end

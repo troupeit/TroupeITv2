@@ -15,7 +15,7 @@ class Show
    before_destroy :update_and_delete
    belongs_to :event
 
-   has_many :show_items, dependent: :destroyy_all, :order => :seq.asc
+   has_many :show_items, dependent: :destroy, :order => :seq.asc
    has_many :show_item_notes, dependent: :destroy
 
    validates_presence_of :title
@@ -27,7 +27,7 @@ class Show
    field :title, type:  String
    field :venue, type:  String
    field :goog_place_id, type:  String
-   
+
    field :room, type:  String
 
    field :show_time, type:  Time
@@ -48,7 +48,7 @@ class Show
 
    # have we sms'd this show out?
    field :notifications_sent, type:  Boolean, :default => false
-   
+
    private
 
    def update_and_delete
@@ -61,12 +61,12 @@ class Show
      # housekeeping function to recalculate event start and end times based on event data.
      # needs to happen after every show save, and after every showitem modification.
      #
-     # if deleteing is true, we will act as if the current show does not exist.
+     # if deleting is true, we will act as if the current show does not exist.
      # it is the caller's duty to notify other users after this occurs. 
-     
+
      mindate = nil
      maxdate = nil
-     
+
      theevent = Event.find(self.event_id)
      origstart = theevent.startdate
      origend = theevent.enddate
@@ -101,14 +101,14 @@ class Show
        theevent.startdate = mindate
        theevent.enddate = maxdate
 
-       # we may be writing nil's here. disable validation. 
-       if theevent.save(:validate => false)
-         logger.debug("Updated: Show #{self.id.to_s} Save: Event #{self.event_id} with end time #{theevent.enddate}")
+       # we may be writing nil's here. disable validation.
+       if theevent.save(validate: false)
+         logger.debug("Updated: Show #{self.id} Save: Event #{self.event_id} with end time #{theevent.enddate}")
        else
-         logger.debug("Update FAILED: Show #{self.id.to_s} Save: Event #{self.event_id} with end time #{theevent.enddate}")
+         logger.debug("Update FAILED: Show #{self.id} Save: Event #{self.event_id} with end time #{theevent.enddate}")
        end
      else
-       logger.debug("No Change: Show #{self.id.to_s} Save: Event #{self.event_id} with end time #{theevent.enddate}")
+       logger.debug("No Change: Show #{self.id} Save: Event #{self.event_id} with end time #{theevent.enddate}")
      end
   end
 end

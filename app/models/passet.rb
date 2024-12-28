@@ -1,21 +1,21 @@
 class Passet
-   # individual assets assigned to a user
+  # individual assets assigned to a user
   include Mongoid::Document
   include Mongoid::Timestamps
   include TimeTools
   include ActionView::Helpers::DateHelper
   include PublicActivity::Model
-   
-  tracked except: [:update],
-          owner: Proc.new{ |controller, model| controller.current_user },
-          :params => {
-            :title => proc {|controller, model| (model.filename)}
+
+  tracked except: [ :update ],
+          owner: Proc.new { |controller, model| controller.current_user },
+          params:  {
+            title: proc { |controller, model| (model.filename) }
           }
-  
+
   belongs_to :user
   belongs_to :act_asset
 
-#  field :created_at, type:  DateTime
+  # field :created_at, type:  DateTime
   field :created_by, type:  String
 
    field :uuid, type:  String
@@ -37,10 +37,10 @@ class Passet
    # sndchecker quality store
    field :sound_quality_score, type:  Float
 
-   field :processed, type:  Integer, :default => 1
+   field :processed, type:  Integer, default: 1
 
    before_destroy { |record| ActAsset.destroy_all(passet: record.id) }
-   
+
    # You can leave +height+ blank if you like.
    def thumb_path(w, h = nil)
      h ||= width / aspect_ratio

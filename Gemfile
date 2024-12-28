@@ -38,6 +38,8 @@ gem "mongoid", "~> 8.1.7"
 # add auth, jwt, and public_activity gems
 gem "devise"
 gem "two_factor_authentication", git: "https://github.com/netik/two_factor_authentication"
+# RBAC / Authorization
+gem "cancan"
 gem "omniauth"
 
 gem "jwt", "~> 2.9"
@@ -46,6 +48,9 @@ gem "validates_email_format_of"
 
 # ActsAsTaggable not supported anymore, try this
 gem "acts-as-taggable-on"
+
+# paginator
+gem "pagy"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

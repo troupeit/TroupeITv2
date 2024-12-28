@@ -2,7 +2,8 @@ class BhofMember
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  paginates_per 20
+  # pagination gem doesn't work?
+  # paginates_per 20
   
   field :first_name, type: String
   field :last_name, type: String
