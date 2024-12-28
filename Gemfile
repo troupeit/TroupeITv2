@@ -32,6 +32,21 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
+# Add mongoid
+gem "mongoid", "~> 8.1.7"
+
+# add auth, jwt, and public_activity gems
+gem "devise"
+gem "two_factor_authentication", git: "https://github.com/netik/two_factor_authentication"
+gem "omniauth"
+
+gem "jwt", "~> 2.9"
+gem "public_activity", "~> 3.0"
+gem "validates_email_format_of"
+
+# ActsAsTaggable not supported anymore, try this
+gem "acts-as-taggable-on"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
