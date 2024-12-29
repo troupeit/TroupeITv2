@@ -30,6 +30,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-on-rails": "^14.0.4",
+    "react-redux": "^9.2.0",
+    "redux": "^5.0.1",
     "shakapacker": "8.0.0",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.11",
