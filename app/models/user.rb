@@ -175,7 +175,7 @@ class User
     # this generates a token for establishing trust between our servers
     # it should never be used externally. It serves as a weak authentication back to node.js
     # SECURITY: this needs an external dependency like week, or time, or something.
-    OpenSSL::HMAC.digest("sha256", TroupeITv2::Application.config.xauth_secret, self.id.to_s).unpack("H*").first
+    OpenSSL::HMAC.digest("sha256", Rails.application.credentials.xauth_secret, self.id.to_s).unpack("H*").first
   end
 
   def need_two_factor_authentication?(request)
