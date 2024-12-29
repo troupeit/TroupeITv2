@@ -1,4 +1,0 @@
-BHOF_DISCOUNT_DEADLINE MOnday, December 30
-BHOF_FINAL_DEADLINE Sunday, January 23
-BHOF_WEEKEND_DATES June 1st, 2023 to June 4th, 2023
-BHOF_EMAIL applications@bhofweekend.com

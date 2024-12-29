@@ -317,6 +317,7 @@ GEM
       rubocop-minitest
       rubocop-performance
       rubocop-rails
+    ruby-prof (1.7.1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
@@ -396,6 +397,7 @@ DEPENDENCIES
   rails (~> 8.0.0)
   rmagick
   rubocop-rails-omakase
+  ruby-prof
   selenium-webdriver
   stimulus-rails
   thruster

@@ -58,6 +58,9 @@ gem "acts-as-taggable-on"
 gem "pagy"
 
 group :development, :test do
+  # profiler
+  gem "ruby-prof"
+
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
