@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root to: "home#index"
 
-  # policy wonking
+  # About Pages
   get "/about/privacy"
   get "/about/tos"
   get "/about/support"

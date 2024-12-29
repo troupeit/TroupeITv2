@@ -19,13 +19,6 @@
   <div class="login-content">
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => "mg-btm" } ) do |f| %>
     <div class="login-buttons m-b-20 hidden-xs">
-
-      <a href="<%=omniauth_authorize_path(resource_name, 'facebook') %>" class="btn btn-primary btn-block btn-lg">
-        <span class="fa fa-facebook-official"></span> Sign in with Facebook
-      </a>
-      <a href="<%=omniauth_authorize_path(resource_name, 'twitter') %>" class="btn btn-primary btn-block btn-lg">
-        <span class="fa fa-twitter"></span> Sign in with Twitter
-      </a>
       <p align="center">
         <strong>or, log in below with your email address... </strong>
       </p>
