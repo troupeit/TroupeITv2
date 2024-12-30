@@ -26,5 +26,5 @@ services:
     links:
       - mongodb
     volumes:
-      - ./db_dumps:/db_dumps
+      - ../db_dumps:/db_dumps
     entrypoint: /bin/bash

@@ -1,15 +1,15 @@
 <div class="noprint">
   <!-- layouts/footer -->
-  <div id="footer" class="hidden-xs">
+  <div id="footer" class="d-none d-sm-block">
     <div class="container">
       <nav>
-        <ul class="nav navbar-nav">  
-          <li><a href="#">&copy; <%=Time.new.year%> TroupeIT, Inc.</a></li>
-          <li><%= link_to "Support", "/about/support" %></li>
-          <li><%= link_to "Privacy Policy", "/about/privacy" %></li>
-          <li><%= link_to "Terms of Service", "/about/tos" %></li>
-          <li><%= link_to "Blog", "/blog" %></li>
-          <li><%= link_to "BHOF", "/bhof" %></li>
+        <ul class="nav">  
+          <li class="nav-item"><a class="nav-link" href="#">&copy; <%=Time.new.year%> TroupeIT, Inc.</a></li>
+          <li class="nav-item"><%= link_to "Support", "/about/support", class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Privacy Policy", "/about/privacy", class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Terms of Service", "/about/tos", class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Blog", "/blog", class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "BHOF", "/bhof", class: "nav-link" %></li>
         </ul>
       </nav>
     </div>

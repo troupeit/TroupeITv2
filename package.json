@@ -17,21 +17,29 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
     "@babel/runtime": "^7.26.0",
+    "@popperjs/core": "^2.11.8",
     "@types/babel__core": "^7.20.5",
     "@types/webpack": "^5.28.5",
+    "autoprefixer": "^10.4.20",
     "babel-loader": "^8.4.1",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "compression-webpack-plugin": "^9.2.0",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "mini-css-extract-plugin": "^2.9.2",
+    "nodemon": "^3.1.9",
+    "postcss": "^8.4.49",
+    "postcss-cli": "^11.0.0",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-on-rails": "^14.0.4",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
+    "sass": "^1.83.0",
     "shakapacker": "8.0.0",
     "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.3.11",
@@ -44,5 +52,8 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "react-refresh": "^0.16.0",
     "webpack-dev-server": "^4.15.2"
+  },
+  "scripts": {
+    "build:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
   }
 }
