@@ -5,7 +5,7 @@ Notes:
 * We are running mongo version 3.x in prod. 
 * We want to get up to monogdb version 7 or better.
 * The upgrade process is 5 -> 6 -> 7
-* This work only gets us to version 5.
+* This work only gets us to version 5 -- going to stop there for now.
 
 Things I had to do to get access:
 
@@ -47,13 +47,14 @@ mongorestore --nsInclude hsm_production.\* --nsFrom "hsm_production.*" --nsTo "h
 db.createUser({ user: "hsm_develop", pwd: "hsm_develop", roles: [ { role: "readWrite", db: "hsm_develop" } ]})
 ```
 
-Major changes
+Other notes
 -------
-ActsAsTaggable not supported in Rails 8 - Moving to gem 'acts-as-taggable-on' with the
-following setup:
+Once the mongodb database is running in docker, it can be exported via:
 
 ```
-rake acts_as_taggable_on_engine:install:migrations
-rake db:migrate
+mkdir backup
+docker run --rm --volumes-from troupeitv2-mongodb-1 -v `pwd`:/backup ubuntu tar cvf /backup/backup.tar /data
 ```
 
+And then you can restore that volume again into a newly started mongodb container.
+We should move this to a bind-mount as container-volumes are a real pain to manage.
