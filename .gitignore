@@ -49,3 +49,9 @@ yarn-debug.log*
 # emacs junk
 *~
 .*~
+\#*#
+\#*\#
+.\#*
+
+# ignore backup folder
+/backup
