@@ -1,0 +1,7 @@
+@use "../variables";
+
+.badge {
+	display: inline;
+	padding: variables.$badge-padding-y variables.$badge-padding-x;
+	vertical-align: middle;
+}

@@ -42,7 +42,7 @@
     "react-on-rails": "^14.0.4",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
-    "sass": "^1.32.13",
+    "sass": "^1.44.0",
     "sass-loader": "^16.0.4",
     "shakapacker": "8.0.0",
     "style-loader": "^4.0.0",

@@ -1,0 +1,110 @@
+@use "../functions";
+@use "../variables";
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+.btn {
+	&.btn-icon {
+		width: functions.rem(28px);
+		height: functions.rem(28px);
+		padding: 0;
+		border: none;
+		line-height: functions.rem(28px);
+		text-align: center;
+		font-size: functions.rem(14px);
+		border-radius: 28px;
+		
+		&.btn-xs {
+			width: functions.rem(16px);
+			height: functions.rem(16px);
+			font-size: functions.rem(8px);
+			line-height: functions.rem(16px);
+		}
+		&.btn-sm {
+			width: functions.rem(22px);
+			height: functions.rem(22px);
+			font-size: functions.rem(11px);
+			line-height: functions.rem(22px);
+		}
+		&.btn-lg {
+			width: functions.rem(34px);
+			height: functions.rem(34px);
+			font-size: functions.rem(17px);
+			line-height: functions.rem(34px);
+		}
+	}
+	&.btn-primary {
+		background: var(--#{variables.$prefix}app-theme);
+		color: var(--#{variables.$prefix}app-theme-color);
+		border-color: transparent;
+		
+		&:hover {
+			background: rgba(var(--#{variables.$prefix}app-theme-rgb), .75);
+			border-color: transparent;
+		}
+	}
+	&.btn-xs {
+		font-size: variables.$font-size-sm;
+		padding: functions.rem(2px) functions.rem(6px);
+	}
+	&[class*="btn-outline-"]:not(.btn-yellow):not(.btn-white) {
+		&:hover {
+			color: variables.$white;
+		}
+	}
+}
+
+@each $color, $value in variables.$theme-colors {
+  .btn-#{$color} {
+		$bg:                 $value;
+		$border:             $value;
+		$textColor:          variables.$white;
+		$hoverBg:            functions.shade-color($value, 25%);
+		$hoverBorder:        functions.shade-color($value, 25%);
+		$hoverTextColor:     variables.$white;
+		$activeBg:           functions.shade-color($value, 25%);
+		$activeBorder:       functions.shade-color($value, 25%);
+		$activeTextColor:    variables.$white;
+		$disabledBg:         functions.tint-color($value, 25%);
+		$disabledBorder:     functions.tint-color($value, 25%);
+		$disabledTextColor:  variables.$white;
+		
+		@if $color == 'yellow' or $color == 'default' or $color == 'white' {
+			$textColor: variables.$gray-900;
+			$hoverTextColor: variables.$gray-900;
+			$activeTextColor: variables.$gray-900;
+			$disabledTextColor: variables.$gray-900;
+		}
+		@if $color == 'default' {
+			$hoverBg: variables.$gray-400;
+			$hoverBorder: variables.$gray-400;
+			$activeBg: variables.$gray-400;
+			$activeBorder: variables.$gray-400;
+		}
+		@if $color == 'white' {
+			$border: variables.$gray-400;
+			$hoverBg: variables.$gray-200;
+			$hoverBorder: variables.$gray-500;
+			$activeBg: variables.$gray-200;
+			$activeBorder: variables.$gray-500;
+			$disabledBg: functions.tint-color(variables.$gray-200, 25%);
+			$disabledBorder: functions.tint-color(variables.$gray-500, 25%);
+		}
+		
+		@include button-variant(
+			$bg, $border, $textColor, $hoverBg, 
+			$hoverBorder, $hoverTextColor, 
+			$activeBg, $activeBorder, $activeTextColor,  
+			$disabledBg, $disabledBorder, $disabledTextColor
+		);
+		
+		.btn-group > .btn + &,
+		.input-group > .btn + &,
+		.input-group > .btn + .dropdown-menu + & {
+			@if variables.$enable-rtl {
+				border-right: 1px solid $hoverBorder;
+			} @else {
+				border-left: 1px solid $hoverBorder;
+			}
+		}
+  }
+}
