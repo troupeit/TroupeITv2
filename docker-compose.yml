@@ -8,6 +8,9 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ../mongodata/data/db:/data/db
+      - ../mongodata/data/configdb:/data/configdb
 
   mongo-express:
     image: mongo-express
@@ -20,11 +23,15 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongodb:27017/
       ME_CONFIG_BASICAUTH: false
 
-  # temporary so we can import the db and have access to console
+  # Temporary so we can import the db and have access to console
+  # It will only start when using the manual profile
   mongo-seed:
     image: mongo:5.0-rc-focal
+    profiles:
+      - manual
     links:
       - mongodb
     volumes:
       - ../db_dumps:/db_dumps
+      - ../mongodata/data:/data
     entrypoint: /bin/bash

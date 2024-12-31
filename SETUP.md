@@ -7,6 +7,16 @@ Notes:
 * The upgrade process is 5 -> 6 -> 7
 * This work only gets us to version 5 -- going to stop there for now.
 
+## Build Ruby First
+
+First you'll need a working copy of Ruby. We are using 3.3.6.
+Building this with openssl and arm leads to all sorts of problems.
+We are dping:
+
+```
+rvm install 3.3.6 --with-openssl-dir=$(brew --prefix openssl)
+```
+
 Things I had to do to get access:
 
 1. `docker-compose up`

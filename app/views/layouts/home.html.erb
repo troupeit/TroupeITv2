@@ -7,15 +7,15 @@
 	<title>troupeIT | seamless show management</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
   <%=render 'layouts/meta' %>
-  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+
+  <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    
+  <%= javascript_importmap_tags %>
+  <%= javascript_pack_tag 'application' %>
+  <%= stylesheet_pack_tag 'application' %>
+
   <%= stylesheet_link_tag "homepage", media: "all" %>
 
-	<!--[if lt IE 9]>
-		<%=javascript_include_tag "html5shiv.js" %></script>
-		<%=javascript_include_tag "respond.min.js" %></script>
-		<%=javascript_include_tag "excanvas.min.js" %></script>
-	<![endif]-->
-  <!-- js? -->
   <STYLE TYPE="text/css">
     #select-options .buynow a{
     font-weight: bold;
