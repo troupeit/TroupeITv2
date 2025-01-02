@@ -19,8 +19,10 @@ const commonOptions = {
       message: /Deprecation Warning/, // Ignore specific warning messages
     }
   ],
-  exclude: [
-    /.DS_Store/
+  plugins: [
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.DS_Store$/,
+    }),
   ]
 };
 

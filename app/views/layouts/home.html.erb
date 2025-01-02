@@ -13,29 +13,9 @@
   <%= javascript_importmap_tags %>
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application' %>
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
-  <STYLE TYPE="text/css">
-    #select-options .buynow a{
-    font-weight: bold;
-    font-family: open sans;
-    font-style: normal;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 12px;
-    padding: 7px 10px;
-    background: none;
-    border: 1px solid white;
-    border-radius: 3px;
-    }
-    #select-options .buynow a:hover{
-    background: rgba(255,255,255,0.2);
-    }
-    body
-    .fus-options a.color {
-    margin: 2px 0 0;
-    }
-  </style>
-  <body class="">
+  <body data-bs-spy='scroll' data-bs-target='#header' data-bs-offset='51'>
     <%=render 'layouts/noscript' %>
     <%= yield %>
   </body>
