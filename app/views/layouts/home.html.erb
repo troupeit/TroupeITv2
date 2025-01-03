@@ -9,14 +9,14 @@
   <%=render 'layouts/meta' %>
 
   <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    
+
   <%= javascript_importmap_tags %>
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application' %>
   <%= javascript_import_module_tag "@fortawesome/fontawesome-free" %>
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
-  <body data-bs-spy='scroll' data-bs-target='#header' data-bs-offset='51'>
+  <body class="pace-done pace-top" data-bs-spy='scroll' data-bs-target='#header' data-bs-offset='51'>
     <%=render 'layouts/noscript' %>
     <%= yield %>
   </body>
