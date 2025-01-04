@@ -91,7 +91,7 @@ gem "bootstrap", "~> 5.3.3"
 
 gem "shakapacker", "= 8.0"
 
-gem "react_on_rails", "= 14.0.4"
+gem "react_on_rails", "14.0.5"
 
 gem "foreman", "~> 0.88.1"
 
