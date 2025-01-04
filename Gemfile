@@ -89,7 +89,7 @@ gem "dartsass-rails"
 
 gem "bootstrap", "~> 5.3.3"
 
-gem "shakapacker", "= 8.0"
+gem "shakapacker", "8.0.2"
 
 gem "react_on_rails", "= 14.0.4"
 
