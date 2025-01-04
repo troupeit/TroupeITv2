@@ -3,7 +3,7 @@ require "bcrypt"
 class ApplicationController < ActionController::Base
   include PublicActivity::StoreController
   include DecidersHelper
-  
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def profile
-    RubyProf.measure_mode = RubyProf::WALL_TIME
+#    RubyProf.measure_mode = RubyProf::WALL_TIME
     if params[:profile] && result = RubyProf.profile { yield }
       out = StringIO.new
       RubyProf::GraphHtmlPrinter.new(result).print out, min_percent: 0

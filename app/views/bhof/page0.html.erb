@@ -13,10 +13,7 @@
     </div>
     <div class="row">
       <div class="col-md-4">
-        <span class="fa-stack fa-3x">
-          <i class="fa fa-calendar fa-stack-1x"></i>
-          <i class="fa fa-circle-thin fa-stack-2x"></i>
-        </span>
+        <iconify-icon icon="tabler:calendar-heart" width="5em" height="5em"></iconify-icon>
         <P><strong>Dates to Remember:</strong></p>
         
         <table data-toggle="table" data-url="data1.json" data-cache="false" class="table">
@@ -26,6 +23,7 @@
               <th data-field="what">Event</th>
             </tr>
           </thead>
+          <tbody>
           <TR>
             <TD><%=::BHOF_DISCOUNT_DEADLINE.strftime(LONG_DATE_FMT) %> Pacific Time</TD><TD>Early Bird Deadline</TD>
           </TR>
@@ -44,13 +42,11 @@
           <TR>
             <TD><%=::BHOF_WEEKEND_DATES %></TD><TD><%=::BHOF_YEAR %> Weekender</TD>
           </TR>
+          </tbody>
         </table>
       </div>
       <div class="col-md-4">
-        <span class="fa-stack fa-3x">
-          <i class="fa fa-users fa-stack-1x"></i>
-          <i class="fa fa-circle-thin fa-stack-2x"></i>
-        </span>
+        <iconify-icon icon="fa6-solid:users-gear" width="5em" height="5em"></iconify-icon>
         <p><strong>What's TroupeIT?</strong></p>
         <p>
         TroupeIT is a simple show and media management system for
@@ -73,10 +69,7 @@
 
       </div>
       <div class="col-md-4">
-        <span class="fa-stack fa-3x">
-          <i class="fa fa-question fa-stack-1x"></i>
-          <i class="fa fa-circle-thin fa-stack-2x"></i>
-        </span>
+        <iconify-icon icon="fa:question" width="5em" height="5em"></iconify-icon>
         <P><strong>FAQs and Information</strong></p>
         <a href="/bhof/rules" target="_blank">Full Rules</a><BR>
         <a href="/bhof/judging_criteria" target="_blank">Judging Criteria</a><BR>
@@ -84,9 +77,9 @@
         <hr/>
         <P><strong>Questions about the application process?</strong></p>
         <p>Please email the application team at <a href="<%=::BHOF_EMAIL %>"><%=::BHOF_EMAIL %></a></p>
-<hr>            
+<hr/>            
 <% if current_user -%>
-  <% if current_user.bhof_member_id.present? -%>
+  <% if current_user.bhof_member_id.present? -%>  
   <p>
     <a href="/apps/">
       Skip the rule review &mdash; Just take me to my applications
@@ -95,7 +88,9 @@
   <% end -%>
   <p align="center">
     <a href="/bhof/page1">
-      <button class="btn btn-success btn-block" style="margin-bottom: 20px;">Next <i class="fa fa-angle-right"></i></button>
+      <button class="btn btn-success btn-block" style="margin-bottom: 20px;">Next&nbsp;
+      <iconify-icon inline icon="fa:arrow-right"></iconify-icon>
+      </button>
     </a>
   </p>
   <% else -%>
@@ -104,14 +99,13 @@
     <BR/>
   </p>
   <p>
-    <a href="/bhof/page1"><button class="btn btn-block btn-success">Next <i class="fa fa-angle-right"></i></button>
+    <a href="/bhof/page1"> 
+    <button class="btn btn-success btn-block" style="margin-bottom: 20px;">Next&nbsp;
+      <iconify-icon inline icon="fa:arrow-right"></iconify-icon>
+    </button>
     </a>
   </p>
   <% end -%>
       </div>
   </div>
-</div>
-</div>
-
-
 </div>

@@ -29,7 +29,7 @@ class User
 
   # Role-Based Access Control
   has_and_belongs_to_many :roles
-  #has_one_time_password
+  # has_one_time_password
 
   # validations
   validates_presence_of :email, message: "You must supply an e-mail address."

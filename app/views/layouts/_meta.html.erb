@@ -30,6 +30,7 @@
     <%= yield :head %>
 
   	<%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+    
     <% if params[:controller] == "companies" or params[:controller] == "apps" -%>
     <%= javascript_include_tag "https://checkout.stripe.com/checkout.js" %>
     <% end -%>
