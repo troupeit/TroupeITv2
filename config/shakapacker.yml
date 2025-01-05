@@ -26,10 +26,6 @@ default: &default
   # See https://github.com/shakacode/shakapacker#deployment
   shakapacker_precompile: true
 
-  # jna test
-  compile: true
-  extract_css: true
-
   # Location for manifest.json, defaults to {public_output_path}/manifest.json if unset
   # manifest_path: public/packs/manifest.json
 
@@ -38,7 +34,7 @@ default: &default
   additional_paths: []
 
   # Reload manifest.json on all requests so we reload latest compiled packs
-  cache_manifest: true
+  cache_manifest: false
 
   # Select loader to use, available options are 'babel' (default), 'swc' or 'esbuild'
   webpack_loader: 'babel'

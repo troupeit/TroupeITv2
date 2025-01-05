@@ -15,6 +15,10 @@
 // const imagePath = (name) => images(name, true)
 
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
-import "@fortawesome/fontawesome-free";
+//import "@fortawesome/fontawesome-free";
+
+// without this all of the bootstrap stuff fails. 
 import "./vendor.min";
-import "./app.min";
+//import "./app.min";
+
+
