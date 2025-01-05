@@ -21,4 +21,6 @@
 import "./vendor.min";
 //import "./app.min";
 
-
+// import all of the javascript packs here. 
+import "./hello-world-bundle";
+import "./ui-bundle";

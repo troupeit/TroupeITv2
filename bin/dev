@@ -1,11 +1,30 @@
-#!/usr/bin/env sh
+#!/usr/bin/env ruby
+# frozen_string_literal: true
 
-if gem list --no-installed --exact --silent foreman; then
-  echo "Installing foreman..."
-  gem install foreman
-fi
+def installed?(process)
+  IO.popen "#{process} -v"
+rescue Errno::ENOENT
+  false
+end
 
-# Default to port 3000 if not specified
-export PORT="${PORT:-3000}"
+def run(process)
+  system "#{process} start -f Procfile.dev"
+rescue Errno::ENOENT
+  warn <<~MSG
+    ERROR:
+    Please ensure `Procfile.dev` exists in your project!
+  MSG
+  exit!
+end
 
-exec foreman start -f Procfile.dev --env /dev/null "$@"
+if installed? "overmind"
+  run "overmind"
+elsif installed? "foreman"
+  run "foreman"
+else
+  warn <<~MSG
+    NOTICE:
+    For this script to run, you need either 'overmind' or 'foreman' installed on your machine. Please try this script after installing one of them.
+  MSG
+  exit!
+end

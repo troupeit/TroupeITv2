@@ -7,23 +7,9 @@ const { generateWebpackConfig, merge } = require('shakapacker');
 const baseClientWebpackConfig = generateWebpackConfig();
 
 const commonOptions = {
-  // Or selectively suppress specific warnings:
   resolve: {
     extensions: ['.css', '.ts', '.tsx'],
   },
-  ignoreWarnings: [
-    {
-      module: /bootstrap/,  // Ignore warnings from bootstrap
-    },
-    {
-      message: /Deprecation Warning/, // Ignore specific warning messages
-    }
-  ],
-  plugins: [
-    new webpack.IgnorePlugin({
-      resourceRegExp: /^\.DS_Store$/,
-    }),
-  ]
 };
 
 // Copy the object using merge b/c the baseClientWebpackConfig and commonOptions are mutable globals

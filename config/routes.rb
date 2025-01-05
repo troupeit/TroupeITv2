@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'hello_world', to: 'hello_world#index'
   # Defines the root path route ("/")]
   root to: "home#index"
 

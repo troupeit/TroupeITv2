@@ -1,26 +1,26 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import * as style from './HelloWorld.module.css';
 
-const HelloWorld = ({ name, updateName }) => (
-  <div>
-    <h3>
-      Hello,
-      {name}!
-    </h3>
-    <hr />
-    <form>
-      <label className={style.bright} htmlFor="name">
-        Say hello to:
-        <input id="name" type="text" value={name} onChange={(e) => updateName(e.target.value)} />
-      </label>
-    </form>
-  </div>
-);
+const HelloWorld = (props) => {
+  const [name, setName] = useState(props.name);
+
+  return (
+    <div>
+      <h3>Hello, {name}!</h3>
+      <hr />
+      <form>
+        <label className={style.bright} htmlFor="name">
+          Say hello to:
+          <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        </label>
+      </form>
+    </div>
+  );
+};
 
 HelloWorld.propTypes = {
-  name: PropTypes.string.isRequired,
-  updateName: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired, // this is passed from the Rails view
 };
 
 export default HelloWorld;
