@@ -1,6 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-import { ACCESS_PRODUCER } from "./constants";
+import { 
+  ACCESS_PRODUCER, 
+  ACCESS_TECHCREW 
+} from "./constants";
+
 import { checkCompanyAccess } from "./util";
 
 import Show from "./Show";
@@ -32,7 +36,7 @@ const ShowList = (props) => {
 
   useEffect(() => {
     reloadShows();
-  });
+  }, []);
   
   const postChange = () => {
     console.log("post change");  
@@ -45,23 +49,22 @@ const ShowList = (props) => {
       reloadShows(); 
     }
 
-    newstate = !expanded
-    setExpanded(newstate);
+    let newState = !expanded
+    setExpanded(newState);
 
-    if (newstate == true) {
-
-      this.setState({showform_expanded: false});
+    if (newState == true) {
+      setShowFormExpanded(false);
     }
     
     e.preventDefault(); 
   };
 
   const toggleShowForm = (e) => {
-      newstate = !showform_expanded;    
-      setShowFormExpanded(newstate);
+      let newState = !showform_expanded;    
+      setShowFormExpanded(newState);
 
       /* state doesn't immediately update */
-      if (newstate == true) { 
+      if (newState == true) { 
         setExpanded(false);
       }
 
@@ -117,7 +120,7 @@ const ShowList = (props) => {
   }
     
   if (checkCompanyAccess(user, company._id.$oid, ACCESS_PRODUCER)) { 
-    var showaddbtn = ( <button className="btn btn-sm btn-success" onClick={this.toggleShowForm}>
+    var showaddbtn = ( <button className="btn btn-sm btn-success" onClick={toggleShowForm}>
                         <i className="glyphicon glyphicon-plus"></i>
                         <span>&nbsp;Add Show</span>
                         </button> );
@@ -146,7 +149,7 @@ const ShowList = (props) => {
       
       return (
               <div>
-                <button className="btn btn-sm btn-success" onClick={this.expand}>
+                <button className="btn btn-sm btn-success" onClick={expand}>
                 <i className={arrowClass}></i>
                 <span>&nbsp;Shows</span>
                 </button>

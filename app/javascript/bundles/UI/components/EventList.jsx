@@ -1,7 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-
 import Event from './Event';
+
+import { revArr } from './util';
 
 const EventList = (props) => {
   const { data, company, type, reloadCallback, companies, user } = props;
