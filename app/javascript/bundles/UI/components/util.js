@@ -1,15 +1,6 @@
-// utility functions used across all components
-var ACCESS_PRODUCER = 8;
-var ACCESS_STAGEMGR = 4;
-var ACCESS_TECHCREW = 2;
-var ACCESS_PERFORMER = 0;
-
-var ACCESS_S = { 0 : "Performer",
-                 2 : "Technical Crew",
-                 4 : "Stage Manager",
-                 8 : "Producer" };
-
-var ASSET_SERVER = "https://d2x9yi7v90o6mz.cloudfront.net";
+// util.js
+import moment from 'moment';
+import { ACCESS_TECHCREW } from './constants';
 
 /**
  * Protect window.console method calls, e.g. console is not defined on IE
@@ -133,16 +124,16 @@ function checkCompanyAccess(cmdata, company_id, minaccess) {
   var access=false;
   $.each(cmdata, function (index, value) {
     if ((value.company_id.$oid == company_id) || (company_id == 'any')) {
-      now = moment().utc();
+      let now = moment().utc();
       /* if trial expired, maximum access can only be tech crew */
       if (minaccess >= ACCESS_TECHCREW) {
         if (value.company.paid_through != null) {
-          paid_through = moment(value.company.paid_through).utc();
+          let paid_through = moment(value.company.paid_through).utc();
           if (paid_through.isAfter(now) && value.access_level >= minaccess) {
             access = true;
           }
         } else { 
-          trial_expires = moment(value.company.user.trial_expires_at).utc();
+          let trial_expires = moment(value.company.user.trial_expires_at).utc();
           if (trial_expires.isAfter(now) && value.access_level >= minaccess) {
             access = true;
           }
@@ -398,25 +389,19 @@ function get_fa_icon(mimetype) {
   }
 }
 
-module.exports = {
-  ACCESS_PERFORMER,
-  ACCESS_TECHCREW,
-  ACCESS_STAGEMGR,
-  ACCESS_PRODUCER,
-  ACCESS_S,
-  ASSET_SERVER,
-  checkCompanyAccess: checkCompanyAccess,
-  check_pwstrength: check_pwstrength,
-  createCookie: createCookie,
-  durationToSec: durationToSec,
-  eraseCookie: eraseCookie,
-  formatDuration: formatDuration,
-  pad: pad,
-  readCookie: readCookie,
-  renderSwitcher: renderSwitcher,
-  revArr: revArr,
-  titleize: titleize,
-  update_and_checkpw: update_and_checkpw,
-  bytesToSize: bytesToSize,
-  truncateFilename: truncateFilename
-}
+export {
+  checkCompanyAccess,
+  check_pwstrength,
+  createCookie,
+  durationToSec,
+  eraseCookie,
+  formatDuration,
+  pad,
+  readCookie,
+  renderSwitcher,
+  revArr,
+  titleize,
+  update_and_checkpw,
+  bytesToSize,
+  truncateFilename,
+};

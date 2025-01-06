@@ -2,8 +2,9 @@ import {
   ACCESS_PRODUCER,
   ACCESS_STAGEMGR,
   ACCESS_S,
-  truncateFilename
-} from "./troupeitutil";
+} from "./constants.js";
+
+import { truncateFilename } from "./util.js";
 
 import moment from 'moment';
 

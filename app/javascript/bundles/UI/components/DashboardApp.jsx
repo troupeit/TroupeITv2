@@ -144,6 +144,8 @@ const DashboardApp = (props) => {
   };
 
   /*
+  JNA: This is for the walk through / trial account work, leave it out for now.
+
   componentDidUpdate: function() {
     $('.trialhelp').popover({
       'title': 'Trial Account',
@@ -178,10 +180,8 @@ const DashboardApp = (props) => {
   
   // render 
 
-  /* group all of the alerts in one place, organized. This prevents
-    * clobbering when multiple alerts are active
-  */
-  
+  // group all of the alerts in one place, organized. This prevent clobbering
+  // when multiple alerts are active
   var cnt=0;
   var alertHeaders = alerts.map(function(a) {
     cnt++;
@@ -233,7 +233,13 @@ const DashboardApp = (props) => {
             {hasCompaniesBlock}
           </div>
           <div className="col-sm-8">
-          { <EventsDashboard company={company} companies={companyMemberships} user={userRecord} reloadCallback={reloadCompanyMemberships}/> }
+            { 
+              <EventsDashboard 
+                  company={company} 
+                  companies={companyMemberships} 
+                  user={userRecord} 
+                  reloadCallback={reloadCompanyMemberships}/>
+            }
             <div className="panel panel-inverse">
               <div className="panel-heading">
                   <div className="btn-group pull-right">
