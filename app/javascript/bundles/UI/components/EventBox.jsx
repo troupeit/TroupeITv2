@@ -13,7 +13,6 @@ const EventBox = (props) => {
 
   useEffect(() => { 
     var initialvisible = false;
-    var initialadding = false;
     
     if (type == "upcoming") {
       var initialvisible = true;
@@ -21,7 +20,7 @@ const EventBox = (props) => {
 
     /* if this is set, we will open with the new event box available */
     if (window.location.search == "?sc=1") {
-      var initialadding = true;
+      setAdding(true);
     }
   
     setVisible(initialvisible);
@@ -88,10 +87,10 @@ const EventBox = (props) => {
     if (checkCompanyAccess(props.companies, 'any', ACCESS_PRODUCER)) {
       if (adding) { 
         var newEventLink = ( <a href="#" onClick={handleClick}><button type="button" className="btn btn-danger btn-xs">
-                              <i className="fa fa-times"></i>&nbsp;
+                              <i className="fa-solid fa-times"></i>&nbsp;
                               Cancel</button></a>);
       } else { 
-        var newEventLink = ( <a href="#" onClick={handleClick}><button type="button" className="btn btn-info btn-xs"><i className="glyphicon glyphicon-plus"></i> Create Event</button></a>);
+        var newEventLink = ( <a href="#" onClick={handleClick}><button type="button" className="btn btn-info btn-xs"><i className="fa-solid fa-plus"></i> Create Event</button></a>);
       }
     } else {
       var newEventLink = "";
@@ -107,12 +106,12 @@ const EventBox = (props) => {
     
   return (<div className="panel panel-inverse" id={props.type}>
             <div className="panel-heading">
-              <div className="btn-group float-end">
-                {newEventLink}
-              </div>
               <h3 className="panel-title">
                 <a className={acClassList} onClick={toggleVisible} href={typelink}>{title}</a>
               </h3>
+              <div className="btn-group float-end">
+                {newEventLink}
+              </div>
             </div>
             <div id={props.type} className={classList}>
               <div className="panel-body">

@@ -2,8 +2,6 @@ const CompanySelect = (props) => {
   if (props.companies == undefined) {
     return (<div><i className="fa fa-spinner fa-spin"></i></div>);
   }
-
-  console.log("CompanySelect", props.companies);
   
   var companyNodes = props.companies.map(function (company) {
     return (

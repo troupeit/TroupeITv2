@@ -18,6 +18,6 @@ class EventSubmission
 
   index({ act_id: 1, event_id: 1 }, { unique: true })
 
-  field :accepted, type:  Boolean, default: alse
+  field :accepted, type:  Boolean, default: false
   field :is_alternate, type:  Boolean, default:  false
 end

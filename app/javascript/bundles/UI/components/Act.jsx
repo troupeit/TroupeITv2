@@ -54,19 +54,21 @@ const Act = (props) => {
   }
       
   return (
-    <li className="media">
-    <div className="media-body">
-      <h4 className="media-heading">
-        <a href={actlink}>{mergedtitle}</a>
-      </h4>
-      <p>{props.act.short_description}</p>
-      </div>
-      <div className="media-right" style={{textAlign:'right'}}>
+    <>
+      <div className="media">
+        <div className="media-body">
+          <h4 className="mt-0 mb-1">
+            <a href={actlink}>{mergedtitle}</a>
+          </h4>
+          <p>{props.act.short_description}</p>
+          <i>{tinfo}</i>
+        </div>
+        <div className="ml-3" style={{textAlign:'right'}}>
           {formatDuration(props.act.length)}<br/>
           <button className="btn btn-info btn-xs" onClick={showSubmitModal}>Submit to Event</button>
+        </div>
       </div>
-      <i>{tinfo}</i>
-    </li>
+    </>
   );
 };
 
