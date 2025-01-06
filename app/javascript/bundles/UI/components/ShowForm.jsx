@@ -150,7 +150,7 @@ const ShowForm = (props) => {
     door_time_s = door_time.format('YYYY-MM-DDTHH:mm')
   }
 
-  if (checkCompanyAccess(user, company._id.$oid, ACCESS_PRODUCER) && id != undefined) { 
+  if (checkCompanyAccess(user, company._id, ACCESS_PRODUCER) && id != undefined) { 
     var delbutton = ( <button className="btn btn-danger" onClick={onCancel}>Delete Show</button> );
   }
 
@@ -246,7 +246,7 @@ const ShowForm = (props) => {
         <div className="col-md-2">
           {delbutton}
         </div>
-        <div className="col-md-10 pull-right">
+        <div className="col-md-10 float-end">
           <button className="btn btn-danger btn-sm" key="cancel_btn" onClick={onCancel}>Cancel</button>&nbsp;&nbsp;
           <button className="btn btn-primary btn-sm" key="save_btn" onClick={handleUpdate}>Save</button>
         </div>

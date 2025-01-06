@@ -41,12 +41,12 @@
     <% if @company.subscription_plan.present? and
           @company.subscription_plan.stripe_id != 'FREE' and
           @cancelled_plan == false -%>
-      <a href="/subscription_plan/<%=@company.id%>/cancel" data-method="post"><button class="btn btn-xs btn-danger pull-right">Cancel this Subscription</button></a>
+      <a href="/subscription_plan/<%=@company.id%>/cancel" data-method="post"><button class="btn btn-xs btn-danger float-end">Cancel this Subscription</button></a>
       <% end %>
 
 
       <% if @cancelled_plan == true -%>
-      <div class="badge badge-danger pull-right">
+      <div class="badge badge-danger float-end">
         Plan has been cancelled and will end soon.
       </div>
       <% end -%>

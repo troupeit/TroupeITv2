@@ -33,7 +33,7 @@ const ActivityFeed = (props) => {
     var activityItems = activities.activities.map(function (a) {
       return (
         <ActivityItem
-          key={a.activity._id.$oid}
+          key={a.activity._id}
           activity={a}
           detailed={detailed}
         />

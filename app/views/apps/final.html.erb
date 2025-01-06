@@ -272,8 +272,8 @@ $(document).ready(function () {
            $this.removeAttr('review_id');
            $this.parent().parent().find("input:eq(1)").removeAttr("review_id");
          } else  { 
-           $this.attr('review_id', response._id.$oid);
-           $this.parent().parent().find("input:eq(1)").attr('review_id', response._id.$oid);
+           $this.attr('review_id', response._id);
+           $this.parent().parent().find("input:eq(1)").attr('review_id', response._id);
          }
 
          if (response.recused) {

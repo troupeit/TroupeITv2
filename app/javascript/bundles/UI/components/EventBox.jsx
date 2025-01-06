@@ -29,10 +29,11 @@ const EventBox = (props) => {
    }, []);
   
   const toggleVisible = (event) => {
-    setVisible(!visible);
+    let newState = !visible;
+    setVisible(newState);
     
     if ( newState == false && adding == true) {
-      setState({adding: false});
+      setAdding(false);
     }
   };
 
@@ -106,7 +107,7 @@ const EventBox = (props) => {
     
   return (<div className="panel panel-inverse" id={props.type}>
             <div className="panel-heading">
-              <div className="btn-group pull-right">
+              <div className="btn-group float-end">
                 {newEventLink}
               </div>
               <h3 className="panel-title">

@@ -78,13 +78,12 @@ function pad(n) {
 
 function formatDuration(n, addPlus) {
   
-  h = Math.floor(n / 3600);
-  m = Math.floor((n - (h * 3600)) / 60);
-  s = n - h * 3600 - m * 60;
-  
-  if (addPlus == false) {
-    plus_s = "";
-  } else {
+  let h = Math.floor(n / 3600);
+  let m = Math.floor((n - (h * 3600)) / 60);
+  let s = n - h * 3600 - m * 60;
+  let plus_s = "";
+
+  if (addPlus) {
     plus_s = "+";
   }
   
@@ -123,7 +122,7 @@ function checkCompanyAccess(cmdata, company_id, minaccess) {
 
   var access=false;
   $.each(cmdata, function (index, value) {
-    if ((value.company_id.$oid == company_id) || (company_id == 'any')) {
+    if ((value.company_id == company_id) || (company_id == 'any')) {
       let now = moment().utc();
       /* if trial expired, maximum access can only be tech crew */
       if (minaccess >= ACCESS_TECHCREW) {

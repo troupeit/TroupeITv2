@@ -7,14 +7,14 @@ const CompanySelect = (props) => {
   
   var companyNodes = props.companies.map(function (company) {
     return (
-        <option key={company.company_id.$oid} value={company.company_id.$oid}>{company.company.name}</option>
+        <option key={company.company_id} value={company.company_id}>{company.company.name}</option>
     );
   });
 
   if (props.showAll == true) {
     // have to do this as two vars or the select will fail.
-    var showall=(<option value="all">All events in all companies</option>);
-    var showallsep=(<option value="" disabled className="separator"></option>);
+    var showall=(<option key="all" value="all">All events in all companies</option>);
+    var showallsep=(<option key="--" value="" disabled className="separator"></option>);
   }
 
   return (

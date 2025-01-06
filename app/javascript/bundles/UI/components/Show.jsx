@@ -65,7 +65,7 @@ const Show = (props) => {
   var door_date_s = ddate.tz(time_zone).format('dddd, MMMM Do YYYY, h:mm A z');
   var content;
 
-   if (checkCompanyAccess(user, company._id.$oid, ACCESS_STAGEMGR)) { 
+   if (checkCompanyAccess(user, company._id, ACCESS_STAGEMGR)) { 
      var editdelbtns = ( <div>
                            <button onClick={this.toggleEdit}
                                    className="btn btn-sm btn-warning glyphicon glyphicon-pencil"

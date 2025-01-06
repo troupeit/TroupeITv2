@@ -79,7 +79,7 @@ const ActivityItem = (props) => {
         ' a task, "' +
         props.activity.activity.parameters.txt +
         '", in the event ';
-      var eventlink = "/events/" + props.activity.event._id.$oid + "/showpage";
+      var eventlink = "/events/" + props.activity.event._id + "/showpage";
       var title_s = (
         <span>
           {" "}
@@ -93,10 +93,10 @@ const ActivityItem = (props) => {
         var object_s = " the act ";
         var eventlink =
           "/events/" +
-          props.activity.activity.parameters.event_id.$oid +
+          props.activity.activity.parameters.event_id +
           "/showpage";
         var actlink =
-          "/acts/" + props.activity.activity.parameters.act_id.$oid + "/edit";
+          "/acts/" + props.activity.activity.parameters.act_id + "/edit";
         var title_s = (
           <span>
             {" "}
@@ -118,12 +118,12 @@ const ActivityItem = (props) => {
       var object_s = " a cue in show ";
       if (props.activity.event != undefined) {
         var eventlink =
-          "/events/" + props.activity.event._id.$oid + "/showpage";
+          "/events/" + props.activity.event._id + "/showpage";
         var showlink =
           "/events/" +
-          props.activity.event._id.$oid +
+          props.activity.event._id +
           "/showpage?active_show=" +
-          props.activity.show._id.$oid;
+          props.activity.show._id;
         var title_s = (
           <span>
             <a href={eventlink}>{props.activity.event.title}</a>:{" "}
@@ -133,7 +133,7 @@ const ActivityItem = (props) => {
       } else {
         console.log(
           "No event for activity " +
-            props.activity.activity._id.$oid +
+            props.activity.activity._id +
             " - skipping"
         );
         return <div></div>;
@@ -153,7 +153,7 @@ const ActivityItem = (props) => {
       switch (props.activity.activity.trackable_type.toLowerCase()) {
         case "act":
           var actlink =
-            "/acts/" + props.activity.activity.trackable_id.$oid + "/edit";
+            "/acts/" + props.activity.activity.trackable_id + "/edit";
           var title_s = (
             <a href={actlink}>{props.activity.activity.parameters.title}</a>
           );
@@ -162,9 +162,9 @@ const ActivityItem = (props) => {
           if (props.activity.activity.event != undefined) {
             var showlink =
               "/events/" +
-              props.activity.event._id.$oid +
+              props.activity.event._id +
               "/showpage?active_show=" +
-              props.activity.show._id.$oid;
+              props.activity.show._id;
           }
           var title_s = (
             <a href={showlink}>{props.activity.activity.parameters.title}</a>
@@ -173,7 +173,7 @@ const ActivityItem = (props) => {
         case "event":
           var eventlink =
             "/events/" +
-            props.activity.activity.trackable_id.$oid +
+            props.activity.activity.trackable_id +
             "/showpage";
           var title_s = (
             <a href={eventlink}>{props.activity.activity.parameters.title}</a>

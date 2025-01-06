@@ -89,7 +89,7 @@ const Event = (props) => {
     var editurl = "/events/" + id + "/showpage";
     var eventeditbtns="";
       
-    if (checkCompanyAccess(user, company._id.$oid, ACCESS_PRODUCER ) == true) { 
+    if (checkCompanyAccess(user, company._id, ACCESS_PRODUCER ) == true) { 
       var eventeditbtns = (<div className="eventControls">
                             <button onClick={handleEdit}
                                     className="btn btn-sm btn-success glyphicon glyphicon-pencil"
@@ -139,7 +139,7 @@ const Event = (props) => {
     var content = (
       <div className="eventEdit">
         <h4>Edit "{title}"
-            <div className="pull-right">
+            <div className="float-end">
               <a href="#" onClick={endEditing} className="btn btn-danger btn-sm"><i className="fa fa-times"></i>&nbsp;Cancel</a>
             </div>
         </h4>
@@ -147,7 +147,7 @@ const Event = (props) => {
           start_date={startdate} 
           end_date={enddate} 
           title={title} 
-          defaultCompany={company._id.$oid} 
+          defaultCompany={company._id} 
           onCreate={endEditing} 
           companies={companies} 
           id={id} 

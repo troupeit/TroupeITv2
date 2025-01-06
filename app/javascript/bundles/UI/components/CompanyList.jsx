@@ -29,7 +29,7 @@ const CompanyList = (props) => {
     } else {
       companyNodes = companies.map(function (company) {
         return (
-            <CompanyListItem company={company} key={company.company._id.$oid} thisuser={company.user_id.$oid} owner={company.company.user} accesslevel={company.access_level} callback={props.changeCallback.bind(null,company.company._id.$oid)} />
+            <CompanyListItem company={company} key={company.company._id} thisuser={company.user_id} owner={company.company.user} accesslevel={company.access_level} callback={props.changeCallback.bind(null,company.company._id)} />
         );
       });
     }
@@ -38,22 +38,21 @@ const CompanyList = (props) => {
   return (
       <div className="panel panel-inverse">
         <div className="panel-heading">
-          <div className="btn-group pull-right">
+        <h3 className="panel-title float-start">
+          Companies
+        </h3>
+          <div className="btn-group float-end">
             <a href="/companies/new">
-              <button type="button" className="btn btn-xs btn-info">
+              <button type="button" className="btn btn-xs btn-info me-1">
               <i className="fa fa-plus"></i>&nbsp;<span>New</span>
               </button>
-              <span>&nbsp;&nbsp;</span>
             </a>
             <a href="/companies/">
               <button className="btn btn-xs btn-info">
-                <i className="fa fa-edit"></i>&nbsp;<span>Manage</span>
+                <i className="fa fa-edit"></i><span>Manage</span>
               </button>
             </a>
           </div>
-        <h3 className="panel-title">
-          Companies
-        </h3>
         </div>
         <ul className="list-group">
         {companyNodes}

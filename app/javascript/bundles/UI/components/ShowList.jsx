@@ -11,17 +11,15 @@ import Show from "./Show";
 import ShowForm from "./ShowForm";
 
 const ShowList = (props) => {
-
   const { reloadCallback, company, user, event_id, time_zone } = props;
 
   const [ data, setData ] = useState([]);
-  const [ editing, setEditing ] = useState(false);
-  const [ adding, setAdding ] = useState(false);
   const [ expanded, setExpanded ] = useState(false);
-  const [ showform_expanded, setShowFormExpanded ] = useState(false);
+  const [ showFormExpanded, setShowFormExpanded ] = useState(false);
 
   const reloadShows = () => {
-    console.log("reload shows event.");
+    console.log(`reload shows event ${event_id}`);
+
     $.ajax({
       url: '/shows.json?event_id=' + event_id,
       dataType: 'json',
@@ -60,7 +58,7 @@ const ShowList = (props) => {
   };
 
   const toggleShowForm = (e) => {
-      let newState = !showform_expanded;    
+      let newState = !showFormExpanded;    
       setShowFormExpanded(newState);
 
       /* state doesn't immediately update */
@@ -107,7 +105,7 @@ const ShowList = (props) => {
     var arrowClass = "glyphicon glyphicon-chevron-down";
   };
 
-  if (showform_expanded) {
+  if (showFormExpanded) {
     var showNodes = (
       <ShowForm 
         event_id={event_id}
@@ -119,7 +117,7 @@ const ShowList = (props) => {
     );
   }
     
-  if (checkCompanyAccess(user, company._id.$oid, ACCESS_PRODUCER)) { 
+  if (checkCompanyAccess(user, company._id, ACCESS_PRODUCER)) { 
     var showaddbtn = ( <button className="btn btn-sm btn-success" onClick={toggleShowForm}>
                         <i className="glyphicon glyphicon-plus"></i>
                         <span>&nbsp;Add Show</span>
@@ -135,7 +133,7 @@ const ShowList = (props) => {
     );
   }
 
-      if (checkCompanyAccess(user, company._id.$oid, ACCESS_TECHCREW)) {
+      if (checkCompanyAccess(user, company._id, ACCESS_TECHCREW)) {
         livelink = "/events/" + event_id + "/live";
         var liveviewbtn = ( <a href={livelink}>
                              <button className="btn btn-inverse btn-sm">

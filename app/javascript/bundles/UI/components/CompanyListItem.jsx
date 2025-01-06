@@ -14,14 +14,14 @@ const CompanyListItem = (props) => {
     // broadcast the event to the window. we'll pick this up in the Modal. 
     evt = new CustomEvent("showInviteModal", {
       detail: {
-        company: props.company.company._id.$oid
+        company: props.company.company._id
       }
     });
     window.dispatchEvent(evt);
     e.preventDefault();
   };
 
-  var company_id = props.company.company._id.$oid;
+  var company_id = props.company.company._id;
   var mylink    = "/profiles/" + company_id  + "/company";
   var fileslink = "/passets/?company_id=" + company_id;
   var actslink  = "/acts/?company_id=" + company_id;
@@ -33,8 +33,8 @@ const CompanyListItem = (props) => {
     var invitelink = (<a href="#" onClick={showInviteModal}><button className="btn btn-info btn-xs">Invite</button></a>);
   }
 
-  if (props.thisuser == props.owner._id.$oid) {
-    var ownerbadge = (<span className="badge pull-right">OWNER</span>);
+  if (props.thisuser == props.owner._id) {
+    var ownerBadge = (<span className="badge pill-rounded bg-dark float-end">OWNER</span>);
   }
 
   var now = moment().utc();
@@ -57,7 +57,7 @@ const CompanyListItem = (props) => {
   if (typeof(paid_through) !== "undefined" ) { 
     /* previously paid customer logic here */
     if (now.isAfter(paid_through)) {
-      var ownerbadge = (<a href={paylink}><span className="badge badge-danger pull-right"
+      var ownerBadge = (<a href={paylink}><span className="badge pill-rounded badge-danger float-end"
                         data-toggle="tooltip"
                         data-placement="left"
                         title="Payment for this company could not be completed and your company is now read-only. Click to purchase a subscription.">PAYMENT DUE</span></a>);
@@ -66,18 +66,18 @@ const CompanyListItem = (props) => {
     /* never paid for but after trial */
     if (now.isAfter(trial_expires_at)) {
       if (props.company.company.last_payment == null) {
-        var ownerbadge = (<a href={paylink}><span className="badge badge-danger pull-right"
-                        data-toggle="tooltip"
-                        data-placement="left"
+        var ownerBadge = (<a href={paylink}><span className="badge pill-rounded badge-danger float-end"
+                          data-toggle="tooltip"
+                          data-placement="left"
                           title="The trial period for your account has ended and your company is now read-only. Click to purchase a subscription.">TRIAL ENDED</span></a>);
       } else {
-        var ownerbadge = (<a href={paylink}><span className="badge badge-danger pull-right"
+        var ownerBadge = (<a href={paylink}><span className="badge pill-rounded badge-danger float-end"
                           data-toggle="tooltip"
                           data-placement="left"
                           title="Payment for this company could not be completed and your company is now read-only. Click to select a new plan.">CANCELLED</span></a>);
       }
     } else {
-      var ownerbadge = (<a href={paylink}><span className="badge badge-success pull-right"
+      var ownerBadge = (<a href={paylink}><span className="badge pill-rounded badge-success float-end"
                         data-toggle="tooltip"
                         data-placement="left"
                         title={trial_expires_str}>TRIAL</span></a>);
@@ -85,7 +85,7 @@ const CompanyListItem = (props) => {
   }
 
   if (props.accesslevel >= ACCESS_STAGEMGR) {  
-    var linkblock = ( <div className="pull-right">
+    var linkblock = ( <div className="float-end">
                       {invitelink}&nbsp;
                       <a href={fileslink}><button className="btn btn-info btn-xs">Files</button></a>&nbsp;
                       <a href={actslink}><button className="btn btn-info btn-xs">Acts</button></a>&nbsp;
@@ -95,7 +95,7 @@ const CompanyListItem = (props) => {
   
   return (
     <li className="list-group-item">
-      <h5><a href={mylink}>{truncateFilename(props.company.company.name, 30)}</a>{ownerbadge}</h5>
+      <h5><a href={mylink}>{truncateFilename(props.company.company.name, 30)}</a>{ownerBadge}</h5>
       {ACCESS_S[props.accesslevel]}
       {linkblock}<br/>
     </li>

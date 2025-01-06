@@ -4,6 +4,10 @@ import ConfirmModal from './ConfirmModal';
 import CompanyList from './CompanyList';
 import EventsDashboard from "./EventsDashboard";
 import HideyHeader from "./HideyHeader";
+import ActsList from './ActsList';
+
+import moment from 'moment';
+import 'moment-timezone';
 
 /* Note - many items are commented out because we still have to refactor those components. */
 /* uncomment them as you refactor them. */
@@ -12,9 +16,6 @@ const DashboardApp = (props) => {
   const [ alerts, setAlerts ] = useState([]);
   const [ companyAlerts, setCompanyAlerts ] = useState([]);
   const [ company, setCompany ] = useState("all");
-  const [ confirmModal, setConfirmModal ] = useState(false);
-  const [ confirmTitle, setConfirmTitle ] = useState("Confirm");
-  const [ confirmMsg, setConfirmMsg ] = useState("Are you sure?");
   const [ companyMemberships, setCompanyMemberships ] = useState(null);
   const [ userRecord, setUserRecord ] = useState(null);
   
@@ -38,7 +39,7 @@ const DashboardApp = (props) => {
 
     for (var i=0; i< companyMemberships.length; i++) {
       /* we will only show messaging to company owners or producers. */
-      if ( (companyMemberships[i].user_id.$oid == companyMemberships[i].company.user_id.$oid) ||
+      if ( (companyMemberships[i].user_id == companyMemberships[i].company.user_id) ||
            (companyMemberships[i].access_level == ACCESS_PRODUCER) ) {
         now = moment().utc();
         paid_through = null;
@@ -55,7 +56,7 @@ const DashboardApp = (props) => {
           trial_expires_at = moment().utc().subtract('1','day');
         }        
 
-        var buynowtext = "\"" + user[i].company.name + "\". <a href=\"/companies/" + companyMemberships[i].company._id.$oid + "/billing\">Select a plan</a> to continue using this company.</span>";
+        var buynowtext = "\"" + user[i].company.name + "\". <a href=\"/companies/" + companyMemberships[i].company._id + "/billing\">Select a plan</a> to continue using this company.</span>";
 
         if (companyMemberships[i].company.payment_failed == true) {
           companyAlerts.push({html: "We're having a problem charging your credit card for \"" + companyMemberships[i].company.name + "\". <a href=\"/settings/edit_card\">Update your credit card</a> to continue using this company.</span>", hideable:false } );
@@ -82,7 +83,7 @@ const DashboardApp = (props) => {
         /* is the trial about to end? */ 
         if ((companyMemberships[i].company.paid_through == null) && (trial_expires_at.isAfter(now))) {
           if (moment.duration(trial_expires_at.diff(now)).asDays() <= 5)  {
-            companyAlerts.push({html: "Your trial for \"" + companyMemberships[i].company.name + "\" expires " + moment.duration(trial_expires_at.diff(now)).humanize("days") + ". <a href=\"/companies/" + companyMemberships[i].company._id.$oid + "/billing\">Select a plan now</a> to ensure continued access.</a>.</span>",
+            companyAlerts.push({html: "Your trial for \"" + companyMemberships[i].company.name + "\" expires " + moment.duration(trial_expires_at.diff(now)).humanize("days") + ". <a href=\"/companies/" + companyMemberships[i].company._id + "/billing\">Select a plan now</a> to ensure continued access.</a>.</span>",
                                 hideable: false
                                });
 
@@ -211,7 +212,8 @@ const DashboardApp = (props) => {
       {alertHeaders}
       {companyAlertHeaders}
       <div id="dashboardapp-instance">
-        <div className="col-sm-4">
+        <div className="row">
+        <div className="col col-sm-4 col-xs-12">
           <div className="panel panel-default">
             <div className="panel-body" onMouseEnter={showEdit} onMouseLeave={hideEdit}>
               <div className="media media-sm">
@@ -224,7 +226,7 @@ const DashboardApp = (props) => {
                 </div>
                 <div className="media-bottom">
                   <div style={{ minHeight: '22px' }}>
-                    <a href="/settings/edit/"><button type="button" className="btn btn-default btn-xs pull-right" style={{ display: "none" }} id="profEditButton">Edit profile</button></a>
+                    <a href="/settings/edit/"><button type="button" className="btn btn-default btn-xs float-end" style={{ display: "none" }} id="profEditButton">Edit profile</button></a>
                   </div>
                 </div>
               </div>
@@ -232,7 +234,7 @@ const DashboardApp = (props) => {
           </div>
             {hasCompaniesBlock}
           </div>
-          <div className="col-sm-8">
+          <div className="col col-sm-8 col-xs-12">
             { 
               <EventsDashboard 
                   company={company} 
@@ -242,16 +244,25 @@ const DashboardApp = (props) => {
             }
             <div className="panel panel-inverse">
               <div className="panel-heading">
-                  <div className="btn-group pull-right">
-                  <a href="/passets"><button type="button" className="btn btn-info btn-xs"><i className="fa fa-file"></i> Your Files</button>&nbsp;&nbsp;
-                  </a> <a href="/acts/new"><button type="button" className="btn btn-info btn-xs"><i className="glyphicon glyphicon-plus"></i> Create Act</button></a>
-                </div>
                 <h3 className="panel-title">Acts</h3>
+                  <div className="btn-group float-end">
+                  <a href="/passets">
+                    <button type="button" className="btn btn-info btn-xs float-end me-1">
+                      <i className="fa fa-file"></i> Your Files
+                    </button>
+                  </a>
+                  <a href="/acts/new">
+                    <button type="button" className="btn btn-info btn-xs float-end">
+                      <i className="glyphicon glyphicon-plus"></i> Create Act
+                    </button>
+                  </a>
+                </div>
               </div>
               <div className="panel-body">
-              { /* <ActsList company={company} /> */ }
+                {<ActsList company={company} />}
               </div>
             </div>
+        </div>
         </div>
     </div>
     { 

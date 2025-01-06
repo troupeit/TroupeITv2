@@ -29,16 +29,15 @@ const EventList = (props) => {
     let sdate = moment(event.startdate);
     let edate = moment(event.enddate);
     let now = moment();
-    console.log(event);
     
-    if ( (company == event.company._id.$oid) || (company == 'all') ) { 
+    if ( (company == event.company._id) || (company == 'all') ) { 
       if ((( (event.shows.length == 0) || now.isBefore(edate)) && (type == 'upcoming' )) ||
           (now.isAfter(edate) && (type == 'past'))) {
         valid = valid + 1;
         return (
             <Event 
-              key={event._id.$oid} 
-              id={event._id.$oid} 
+              key={event._id} 
+              id={event._id} 
               title={event.title} 
               startdate={sdate} 
               enddate={edate} 
