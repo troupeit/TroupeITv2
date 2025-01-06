@@ -116,6 +116,10 @@ label {
 }
 </style>
 
-react_component 'DashboardApp', {:name => current_user.name.titleize, :email => current_user.email, :facebookId => current_user.uid, :avatar_uuid => current_user.avatar_uuid}
-
+<%= react_component 'DashboardApp', {
+      :name => current_user.name.titleize,
+      :email => current_user.email, 
+      :facebookId => current_user.uid, 
+      :avatar_uuid => current_user.avatar_uuid}
+%>
 

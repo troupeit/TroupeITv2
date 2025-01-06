@@ -6,10 +6,18 @@ const { generateWebpackConfig, merge } = require('shakapacker');
 
 const baseClientWebpackConfig = generateWebpackConfig();
 
+const webpack = require('webpack');
+
 const commonOptions = {
   resolve: {
     extensions: ['.css', '.ts', '.tsx'],
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery"
+    })
+]
 };
 
 // Copy the object using merge b/c the baseClientWebpackConfig and commonOptions are mutable globals

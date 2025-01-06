@@ -25,28 +25,28 @@
               <a class="dropdown-item" href="/users">Users</a>
             </ul>
           </li>
-        <% if current_user.try(:admin?) or current_user.has_role?(:bhof_judge) or current_user.has_role?(:bhof_scorer) -%>
+          <% if current_user.try(:admin?) or current_user.has_role?(:bhof_judge) or current_user.has_role?(:bhof_scorer) -%>
           <!-- admin menu -->
-            <li class="navbar-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="bhofMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                BHOF <%=::BHOF_YEAR%>
-              </a>
-              <div class="dropdown-menu" aria-labelledby="bhofMenu">
-                <a class="dropdown-item" href="/bhof/">Introduction and Rules</a>
-                <% if current_user.has_role?(:bhof_judge) or current_user.has_role?(:bhof_scorer) -%>
-                  <a class="dropdown-item" href="/apps/scoreindex">Reviewer: Review BHOF Applications</a>
-                <% end -%>
-                <% if current_user.has_role?(:bhof_judge) -%>
-                  <a class="dropdown-item" href="/apps/adminindex">Judge: Judge All Applications</a>
-                  <a class="dropdown-item" href="/apps/adminindex?final=1">Judge: Final Selection</a>
-                  <a class="dropdown-item" href="/apps/finalreport">Judge: Final Report</a>
-                  <a class="dropdown-item" href="/apps/finalvideos">Judge: Final Report (videos)</a>
-                  <a class="dropdown-item" href="/bhof_members">BHOF Member Database Search</a>
-                <% end -%>
-            </li>
+          <li class="navbar-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="bhofMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              BHOF <%=::BHOF_YEAR%>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="bhofMenu">
+              <a class="dropdown-item" href="/bhof/">Introduction and Rules</a>
+              <% if current_user.has_role?(:bhof_judge) or current_user.has_role?(:bhof_scorer) -%>
+                <a class="dropdown-item" href="/apps/scoreindex">Reviewer: Review BHOF Applications</a>
+              <% end -%>
+              <% if current_user.has_role?(:bhof_judge) -%>
+                <a class="dropdown-item" href="/apps/adminindex">Judge: Judge All Applications</a>
+                <a class="dropdown-item" href="/apps/adminindex?final=1">Judge: Final Selection</a>
+                <a class="dropdown-item" href="/apps/finalreport">Judge: Final Report</a>
+                <a class="dropdown-item" href="/apps/finalvideos">Judge: Final Report (videos)</a>
+                <a class="dropdown-item" href="/bhof_members">BHOF Member Database Search</a>
+              <% end -%>
+          </li>
         <% end -%>
       <% end -%>
-       <li class="nav-item dropdown" id="mobileHelpMenu">
+        <li class="nav-item dropdown" id="mobileHelpMenu">
             <a class="nav-link dropdown-toggle" href="#" id="mobileHelpMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Help
             </a>
@@ -55,39 +55,34 @@
               <li><%= link_to "Privacy Policy", "/about/privacy", class: "dropdown-item" %></li>
               <li><%= link_to "Terms of Service", "/about/tos", class: "dropdown-item" %></li>
             </ul>
-          </li>
+        </li>
       </ul>
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">         
-          <li class="nav-item dropdown">
-            <a href`="javascript:;" class="nav-link dropdown-toggle" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding-top:15px;">
-              <%= react_component 'Avatar', 
-              { :name => current_user.name.titleize, 
-                :facebookId => current_user.uid, 
-                :src => current_user.avatar_uuid, 
-                :round => true, 
-                :size => 30, 
-                :navstyle => true }
-              %>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
-              <li><a class="dropdown-item" href="/settings/edit/">Edit Profile</a></li>
-              <% if current_user.stripe_customer_id.present? -%>
-                <li><a class="dropdown-item" href="/invoices">Billing History</a></li>
-              <% end -%>
-              <li><hr class="dropdown-divider"></li>
+      <!-- right side -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+         <% if current_user.companies.count > 0 -%>
+        <li class="nav-item">
+          <a href="/?sc=1" class="nav-link"><button class="btn btn-info btn-xs"><i class="fa-solid fa-plus"></i> Create Event</button></a>
+        </li>
+        <% end -%>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="mobileHelpMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Avatar
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li><a class="dropdown-item" href="/settings/edit/">Edit Profile</a></li>
+            <% if current_user.stripe_customer_id.present? -%>
+              <li><a class="dropdown-item" href="/invoices">Billing History</a></li>
+            <% end -%>
+            <li><hr class="dropdown-divider"></li>
               <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: "dropdown-item" %></li>
-            </ul>
-          </li>
-          <% if current_user.companies.count > 0 -%>
-            <li class="nav-item">
-              <a href="/?sc=1" class="nav-link"><button class="btn btn-info btn-sm"><i class="f fa-plus"></i> Create Event</button></a>
-            </li>
-          <% end -%>
-        <% else %>
-          <li class="nav-item"><%= link_to 'Sign Up', new_user_registration_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to 'Login', new_user_session_path, class: "nav-link" %></li>
-        <% end %>
-      </ul>
+              </ul>
+        </li>
+        </ul>
+      <% else -%>
+        <li class="nav-item"><%= link_to 'Sign Up', new_user_registration_path, class: "nav-link" %></li>
+        <li class="nav-item"><%= link_to 'Login', new_user_session_path, class: "nav-link" %></li>
+      <% end -%>      
     </div>
   </div>
 </nav>
