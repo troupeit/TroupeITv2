@@ -1,30 +1,35 @@
 import React from "react";
-import PropTypes from "prop-types";
 import moment from "moment";
 import Avatar from "./Avatar";
 
+import { titleize } from "./util";
+import { ACCESS_S } from "./constants";
+
 const ActivityItem = (props) => {
-  if (props.detailed == true) {
-    var when = moment(props.activity.activity.created_at).format("LLL");
+  const { activityRecord, detailed } = props;
+
+  if (detailed == true) {
+    var when = moment(activityRecord.activity.created_at).format("LLL");
   } else {
     var when = "";
   }
 
-  var ago = moment(props.activity.activity.created_at).fromNow();
+  var ago = moment(activityRecord.activity.created_at).fromNow();
 
-  if (props.activity.owner != undefined) {
-    var username = titleize(props.activity.owner.name);
+  if (activityRecord.owner != undefined) {
+    var username = titleize(activityRecord.owner.name);
     var userlink =
-      "/profiles/" + props.activity.owner.username.replace(/[\/\& ]/g, "_");
+      "/profiles/" + activityRecord.owner.username.replace(/[\/\& ]/g, "_");
     var person_s = <a href={userlink}>{username}</a>;
     var avatar = (
       <div>
         <Avatar
-          name={props.activity.owner.name}
-          facebookId={props.activity.owner.uid}
-          src={props.activity.owner.avatar_uuid}
+          name={activityRecord.owner.name}
+          facebookId={activityRecord.owner.uid}
+          src={activityRecord.owner.avatar_uuid}
           size={45}
           round={true}
+          inline={false}
         />
       </div>
     );
@@ -34,11 +39,11 @@ const ActivityItem = (props) => {
 
   var verbed = "";
 
-  var action = props.activity.activity.key.split(".");
+  var action = activityRecord.activity.key.split(".");
 
   switch (action[1]) {
     case "create":
-      switch (props.activity.activity.trackable_type.toLowerCase()) {
+      switch (activityRecord.activity.trackable_type.toLowerCase()) {
         case "passet":
           verbed = "uploaded";
           break;
@@ -70,42 +75,42 @@ const ActivityItem = (props) => {
       break;
   }
 
-  switch (props.activity.activity.trackable_type.toLowerCase()) {
+  switch (activityRecord.activity.trackable_type.toLowerCase()) {
     case "passet":
       var object_s = " the file ";
       break;
     case "task":
       var object_s =
         ' a task, "' +
-        props.activity.activity.parameters.txt +
+        activityRecord.activity.parameters.txt +
         '", in the event ';
-      var eventlink = "/events/" + props.activity.event._id + "/showpage";
+      var eventlink = "/events/" + activityRecord.event._id + "/showpage";
       var title_s = (
         <span>
           {" "}
-          <a href={eventlink}>{props.activity.event.title}</a>{" "}
+          <a href={eventlink}>{activityRecord.event.title}</a>{" "}
         </span>
       );
       break;
     case "eventsubmission":
       var object_s = " an act ";
-      if (props.activity.activity.parameters.event_id != undefined) {
+      if (activityRecord.activity.parameters.event_id != undefined) {
         var object_s = " the act ";
         var eventlink =
           "/events/" +
-          props.activity.activity.parameters.event_id +
+          activityRecord.activity.parameters.event_id +
           "/showpage";
         var actlink =
-          "/acts/" + props.activity.activity.parameters.act_id + "/edit";
+          "/acts/" + activityRecord.activity.parameters.act_id + "/edit";
         var title_s = (
           <span>
             {" "}
             <a href={actlink}>
-              {props.activity.activity.parameters.act_stage_name}
+              {activityRecord.activity.parameters.act_stage_name}
             </a>{" "}
             to{" "}
             <a href={eventlink}>
-              {props.activity.activity.parameters.event_title}
+              {activityRecord.activity.parameters.event_title}
             </a>{" "}
           </span>
         );
@@ -116,24 +121,24 @@ const ActivityItem = (props) => {
       break;
     case "showitem":
       var object_s = " a cue in show ";
-      if (props.activity.event != undefined) {
+      if (activityRecord.event != undefined) {
         var eventlink =
-          "/events/" + props.activity.event._id + "/showpage";
+          "/events/" + activityRecord.event._id + "/showpage";
         var showlink =
           "/events/" +
-          props.activity.event._id +
+          activityRecord.event._id +
           "/showpage?active_show=" +
-          props.activity.show._id;
+          activityRecord.show._id;
         var title_s = (
           <span>
-            <a href={eventlink}>{props.activity.event.title}</a>:{" "}
-            <a href={showlink}>{props.activity.show.title}</a>
+            <a href={eventlink}>{activityRecord.event.title}</a>:{" "}
+            <a href={showlink}>{activityRecord.show.title}</a>
           </span>
         );
       } else {
         console.log(
           "No event for activity " +
-            props.activity.activity._id +
+          activityRecord.activity._id +
             " - skipping"
         );
         return <div></div>;
@@ -142,47 +147,47 @@ const ActivityItem = (props) => {
 
     default:
       var object_s =
-        " the " + props.activity.activity.trackable_type.toLowerCase();
+        " the " + activityRecord.activity.trackable_type.toLowerCase();
   }
 
-  if (props.activity.activity.parameters.title != undefined) {
-    var title_s = props.activity.activity.parameters.title;
+  if (activityRecord.activity.parameters.title != undefined) {
+    var title_s = activityRecord.activity.parameters.title;
 
     /* if this is not a delete, we'll link to it. */
     if (action[1] != "destroy") {
-      switch (props.activity.activity.trackable_type.toLowerCase()) {
+      switch (activityRecord.activity.trackable_type.toLowerCase()) {
         case "act":
           var actlink =
-            "/acts/" + props.activity.activity.trackable_id + "/edit";
+            "/acts/" + activityRecord.activity.trackable_id + "/edit";
           var title_s = (
-            <a href={actlink}>{props.activity.activity.parameters.title}</a>
+            <a href={actlink}>{activityRecord.activity.parameters.title}</a>
           );
           break;
         case "show":
-          if (props.activity.activity.event != undefined) {
+          if (activityRecord.activity.event != undefined) {
             var showlink =
               "/events/" +
-              props.activity.event._id +
+              activityRecord.event._id +
               "/showpage?active_show=" +
-              props.activity.show._id;
+              activityRecord.show._id;
           }
           var title_s = (
-            <a href={showlink}>{props.activity.activity.parameters.title}</a>
+            <a href={showlink}>{activityRecord.activity.parameters.title}</a>
           );
           break;
         case "event":
           var eventlink =
             "/events/" +
-            props.activity.activity.trackable_id +
+            activity.activity.trackable_id +
             "/showpage";
           var title_s = (
-            <a href={eventlink}>{props.activity.activity.parameters.title}</a>
+            <a href={eventlink}>{activityRecord.activity.parameters.title}</a>
           );
           break;
         case "companymembership":
           var title_s = (
             <a href={eventlink}>
-              {props.activity.activity.parameters.company_name}
+              {activityRecord.activity.parameters.company_name}
             </a>
           );
           break;
@@ -190,17 +195,17 @@ const ActivityItem = (props) => {
     }
   }
 
-  if (props.activity.activity.parameters.company_name != undefined) {
+  if (activityRecord.activity.parameters.company_name != undefined) {
     if (action[1] != "destroy") {
-      switch (props.activity.activity.trackable_type.toLowerCase()) {
+      switch (activityRecord.activity.trackable_type.toLowerCase()) {
         case "companymembership":
-          if (props.activity.company_membership) {
+          if (activityRecord.company_membership) {
             var title_s = (
               <span>
                 <a href={eventlink}>
-                  {props.activity.activity.parameters.company_name}
+                  {activityRecord.activity.parameters.company_name}
                 </a>{" "}
-                as a {ACCESS_S[props.activity.company_membership.access_level]}
+                as a {ACCESS_S[activityRecord.company_membership.access_level]}
               </span>
             );
           } else {
@@ -208,7 +213,7 @@ const ActivityItem = (props) => {
             var title_s = (
               <span>
                 <a href={eventlink}>
-                  {props.activity.activity.parameters.company_name}
+                  {activityRecord.activity.parameters.company_name}
                 </a>
               </span>
             );
@@ -227,9 +232,11 @@ const ActivityItem = (props) => {
   }
 
   return (
-    <li className="media media-item-act">
-      <div className="media-left media-middle">{avatar}</div>
-      <div className="media-body">
+    <div className="d-flex">
+      <div className="flex-shrink-0">
+        {avatar}
+      </div>
+      <div className="flex-grow-1 ms-3">
         {whenhtml}
         <strong>{person_s}</strong> {verbed} {object_s} {title_s}
         <p>
@@ -237,8 +244,9 @@ const ActivityItem = (props) => {
           <br />
         </p>
       </div>
-    </li>
+    </div>
   );
+
 };
 
 export default ActivityItem;

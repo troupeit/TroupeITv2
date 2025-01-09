@@ -45,7 +45,7 @@ function selectAll( obj_arr ){
 
 <div class="panel panel-body">
   <div class="col-md-2">
-    <%= react_component 'Avatar', {:name => @user.name.titleize, :facebookId => @user.uid, :round => true } %>
+    <%= react_component 'Avatar', props: {:name => @user.name.titleize, :facebookId => @user.uid, :round => true } %>
   </div>
 <h1><%= @user.name%> (<%= @user.username %>)</h1>
 

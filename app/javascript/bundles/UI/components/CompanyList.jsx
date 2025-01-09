@@ -49,7 +49,7 @@ const CompanyList = (props) => {
             </a>
             <a href="/companies/">
               <button className="btn btn-xs btn-info">
-                <i className="fa fa-edit"></i><span>Manage</span>
+                <i className="fa fa-edit"></i>&nbsp;<span>Manage</span>
               </button>
             </a>
           </div>

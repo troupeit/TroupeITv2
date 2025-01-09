@@ -1,24 +1,26 @@
-import React, {useState, useEffect} from 'react';
-import Avatar from './Avatar';
-import ConfirmModal from './ConfirmModal';
-import CompanyList from './CompanyList';
+import React, { useState, useEffect } from "react";
+import Avatar from "./Avatar";
+import ConfirmModal from "./ConfirmModal";
+import CompanyList from "./CompanyList";
 import EventsDashboard from "./EventsDashboard";
 import HideyHeader from "./HideyHeader";
-import ActsList from './ActsList';
+import ActsList from "./ActsList";
+import ActivityFeed from "./ActivityFeed";
 
-import moment from 'moment';
-import 'moment-timezone';
+import { ACCESS_PRODUCER } from "./constants";
 
-/* Note - many items are commented out because we still have to refactor those components. */
-/* uncomment them as you refactor them. */
+import moment from "moment";
+import "moment-timezone";
 
 const DashboardApp = (props) => {
-  const [ alerts, setAlerts ] = useState([]);
-  const [ companyAlerts, setCompanyAlerts ] = useState([]);
-  const [ company, setCompany ] = useState("all");
-  const [ companyMemberships, setCompanyMemberships ] = useState(null);
-  const [ userRecord, setUserRecord ] = useState(null);
-  
+  const [alerts, setAlerts] = useState([]);
+  const [companyAlerts, setCompanyAlerts] = useState([]);
+  const [company, setCompany] = useState("all");
+  const [companyMemberships, setCompanyMemberships] = useState(null);
+  const [userRecord, setUserRecord] = useState(null);
+
+  console.log("DashboardApp props: ", props);
+
   useEffect(() => {
     reloadCompanyMemberships();
     reloadUserRecord();
@@ -29,64 +31,98 @@ const DashboardApp = (props) => {
      * unpaid or expired account. We will only show one line, for the
      * last company that expired. If more than one company expires,
      * we'll get to it after they pay for the first one.  */
+    var companyAlerts = [];
 
-    // TODO: "user" is actually "company memberships". Refactor.
-    var companyAlerts=[];
-    
     if (!companyMemberships) {
       return;
     }
 
-    for (var i=0; i< companyMemberships.length; i++) {
+    for (var i = 0; i < companyMemberships.length; i++) {
       /* we will only show messaging to company owners or producers. */
-      if ( (companyMemberships[i].user_id == companyMemberships[i].company.user_id) ||
-           (companyMemberships[i].access_level == ACCESS_PRODUCER) ) {
-        now = moment().utc();
-        paid_through = null;
+      if (
+        companyMemberships[i].user_id ==
+          companyMemberships[i].company.user_id ||
+        companyMemberships[i].access_level == ACCESS_PRODUCER
+      ) {
+        var now = moment().utc();
+        var paid_through = null;
 
         /* if you have paid us once, use that date */
         if (companyMemberships[i].company.paid_through != null) {
-          paid_through = moment(companyMemberships[i].company.paid_through).utc();
+          paid_through = moment(
+            companyMemberships[i].company.paid_through
+          ).utc();
         }
 
         /* trial should never be null, but... */
         if (companyMemberships[i].company.user.trial_expires_at != null) {
-          trial_expires_at = moment(companyMemberships[i].company.user.trial_expires_at).utc();
+          var trial_expires_at = moment(
+            companyMemberships[i].company.user.trial_expires_at
+          ).utc();
         } else {
-          trial_expires_at = moment().utc().subtract('1','day');
-        }        
-
-        var buynowtext = "\"" + user[i].company.name + "\". <a href=\"/companies/" + companyMemberships[i].company._id + "/billing\">Select a plan</a> to continue using this company.</span>";
-
-        if (companyMemberships[i].company.payment_failed == true) {
-          companyAlerts.push({html: "We're having a problem charging your credit card for \"" + companyMemberships[i].company.name + "\". <a href=\"/settings/edit_card\">Update your credit card</a> to continue using this company.</span>", hideable:false } );
+          var trial_expires_at = moment().utc().subtract("1", "day");
         }
 
-        if ((paid_through == null) && (trial_expires_at.isBefore(now))) {
+        var buynowtext =
+          '"' +
+          companyMemberships[i].company.name +
+          '". <a href="/companies/' +
+          companyMemberships[i].company._id +
+          '/billing">Select a plan</a> to continue using this company.</span>';
+
+        if (companyMemberships[i].company.payment_failed == true) {
+          companyAlerts.push({
+            html:
+              "We're having a problem charging your credit card for \"" +
+              companyMemberships[i].company.name +
+              '". <a href="/settings/edit_card">Update your credit card</a> to continue using this company.</span>',
+            hideable: false,
+          });
+        }
+
+        if (paid_through == null && trial_expires_at.isBefore(now)) {
           /* expired trial, if user has paid before, say so. */
           if (companyMemberships[i].company.last_payment == null) {
-            companyAlerts.push({html: "The free trial has ended for " + buynowtext,
-                                hideable: false} );
+            companyAlerts.push({
+              html: "The free trial has ended for " + buynowtext,
+              hideable: false,
+            });
           } else {
-            companyAlerts.push({html: "We were unable to process payment for " + buynowtext,
-                                hideable: false} );
-
+            companyAlerts.push({
+              html: "We were unable to process payment for " + buynowtext,
+              hideable: false,
+            });
           }
         } else {
           /* prior subscriber */
-          if ((typeof(paid_through) !== "undefined") && (now.isAfter(paid_through)) ) {
-            companyAlerts.push({html: "The paid subscription has ended for " + buynowtext,
-                                hideable: false} );
+          if (
+            typeof paid_through !== "undefined" &&
+            now.isAfter(paid_through)
+          ) {
+            companyAlerts.push({
+              html: "The paid subscription has ended for " + buynowtext,
+              hideable: false,
+            });
           }
-        } 
+        }
 
-        /* is the trial about to end? */ 
-        if ((companyMemberships[i].company.paid_through == null) && (trial_expires_at.isAfter(now))) {
-          if (moment.duration(trial_expires_at.diff(now)).asDays() <= 5)  {
-            companyAlerts.push({html: "Your trial for \"" + companyMemberships[i].company.name + "\" expires " + moment.duration(trial_expires_at.diff(now)).humanize("days") + ". <a href=\"/companies/" + companyMemberships[i].company._id + "/billing\">Select a plan now</a> to ensure continued access.</a>.</span>",
-                                hideable: false
-                               });
-
+        /* is the trial about to end? */
+        if (
+          companyMemberships[i].company.paid_through == null &&
+          trial_expires_at.isAfter(now)
+        ) {
+          if (moment.duration(trial_expires_at.diff(now)).asDays() <= 5) {
+            companyAlerts.push({
+              html:
+                'Your trial for "' +
+                companyMemberships[i].company.name +
+                '" expires ' +
+                moment.duration(trial_expires_at.diff(now)).humanize("days") +
+                '. <a href="/companies/' +
+                companyMemberships[i].company._id +
+                '/billing">Select a plan now</a> to ensure continued access.</a>.</span>',
+              hideable: false,
+            });
           }
         }
       }
@@ -99,7 +135,7 @@ const DashboardApp = (props) => {
     /* reload the user */
     $.ajax({
       url: "/company_memberships.json",
-      dataType: 'json',
+      dataType: "json",
       success: function (data) {
         setCompanyMemberships(data);
         console.log("successful cm load.");
@@ -107,7 +143,7 @@ const DashboardApp = (props) => {
       }.bind(this),
       error: function (xhr, status, err) {
         console.log("Company Memberships load error");
-      }.bind(this)
+      }.bind(this),
     });
   };
 
@@ -115,32 +151,44 @@ const DashboardApp = (props) => {
     /* reload the user */
     $.ajax({
       url: "/users/me.json",
-      dataType: 'json',
+      dataType: "json",
       success: function (data) {
         setUserRecord(data);
         console.log("successful ur load.");
 
         /* alert processing -- all alerts should be added here. */
-        var alerts=[];
-        
+        var alerts = [];
+
         if (data.user.email_valid == false) {
-          alerts.push({html: "Please <a href=\"/settings/edit\">update your email address</a> now. Your login provider, " + titleize(data.user.provider) + ", did not provide one.<br>An email address is requires for invites and account recovery.",
-                       type: "alert",
-                       id: "email-warning",
-                       hideable: false});
+          alerts.push({
+            html:
+              'Please <a href="/settings/edit">update your email address</a> now. Your login provider, ' +
+              titleize(data.user.provider) +
+              ", did not provide one.<br>An email address is requires for invites and account recovery.",
+            type: "alert",
+            id: "email-warning",
+            hideable: false,
+          });
         }
-        if (! (data.user.phone_number && data.user.sms_capable && data.user.sms_confirmed) ) { 
-          alerts.push({type: 'info',
-                       html: "<a href=\"/settings/edit\">Confirm your mobile number now</a> to receive event reminders.",
-                       id: "confirm_sms_nag"});
+        if (
+          !(
+            data.user.phone_number &&
+            data.user.sms_capable &&
+            data.user.sms_confirmed
+          )
+        ) {
+          alerts.push({
+            type: "info",
+            html: '<a href="/settings/edit">Confirm your mobile number now</a> to receive event reminders.',
+            id: "confirm_sms_nag",
+          });
         }
 
-        
         setAlerts(alerts);
       }.bind(this),
       error: function (xhr, status, err) {
         console.log("UR load error");
-      }.bind(this)
+      }.bind(this),
     });
   };
 
@@ -167,43 +215,59 @@ const DashboardApp = (props) => {
     
   },
   */
-  
+
   const companyChanged = (company) => {
     setCompany(company);
   };
   const showEdit = () => {
-    $( "#profEditButton" ).fadeIn("fast");
+    $("#profEditButton").fadeIn("fast");
   };
 
   const hideEdit = () => {
-    $( "#profEditButton" ).fadeOut("fast");
+    $("#profEditButton").fadeOut("fast");
   };
-  
-  // render 
+
+  // render
 
   // group all of the alerts in one place, organized. This prevent clobbering
   // when multiple alerts are active
-  var cnt=0;
-  var alertHeaders = alerts.map(function(a) {
+  var cnt = 0;
+  var alertHeaders = alerts.map(function (a) {
     cnt++;
-    return (<HideyHeader type={a.type} html={a.html} id={a.id} hideable={a.hideable} key={cnt} />)
+    return (
+      <HideyHeader
+        type={a.type}
+        html={a.html}
+        id={a.id}
+        hideable={a.hideable}
+        key={cnt}
+      />
+    );
   });
-  
-  var companyAlertHeaders = companyAlerts.map(function(a) {
+
+  var companyAlertHeaders = companyAlerts.map(function (a) {
     cnt++;
-    return (<HideyHeader type={a.type} html={a.html} id={a.id} hideable={a.hideable} key={cnt} />)
+    return (
+      <HideyHeader
+        type={a.type}
+        html={a.html}
+        id={a.id}
+        hideable={a.hideable}
+        key={cnt}
+      />
+    );
   });
-    
-  if (companyMemberships) { 
-    if (companyMemberships?.length > 0) { 
+
+  if (companyMemberships) {
+    if (companyMemberships?.length > 0) {
       var hasCompaniesBlock = (
         <div>
-            <CompanyList changeCallback={companyChanged} user={userRecord} />
-            {/* <ActivityFeed user={user} /> */}
+          <CompanyList changeCallback={companyChanged} user={userRecord} />
+          {<ActivityFeed />}
         </div>
-      );  
+      );
     } else {
-        var hasCompaniesBlock = (<div></div>);
+      var hasCompaniesBlock = <div></div>;
     }
   }
 
@@ -213,65 +277,88 @@ const DashboardApp = (props) => {
       {companyAlertHeaders}
       <div id="dashboardapp-instance">
         <div className="row">
-        <div className="col col-sm-4 col-xs-12">
-          <div className="panel panel-default">
-            <div className="panel-body" onMouseEnter={showEdit} onMouseLeave={hideEdit}>
-              <div className="media media-sm">
-                <a className="media-left" href="javascript:;">
-                <Avatar name={props.name} facebookId={props.facebookId} src={props.avatar_uuid} size={64} round={true} imgClass="media-object" />
-                </a>
-                <div className="media-body">
-                  <h4 className="media-heading">{props.name}</h4>
-                  <p>{props.email}</p>
-                </div>
-                <div className="media-bottom">
-                  <div style={{ minHeight: '22px' }}>
-                    <a href="/settings/edit/"><button type="button" className="btn btn-default btn-xs float-end" style={{ display: "none" }} id="profEditButton">Edit profile</button></a>
+          <div className="col-sm-4 col-12">
+            <div className="card mb-4">
+              <div
+                className="card-body"
+                onMouseEnter={showEdit}
+                onMouseLeave={hideEdit}
+              >
+                <div className="d-flex align-items-center">
+                  <a className="me-3" href="#">
+                    <Avatar
+                      name={props.name}
+                      facebookId={props.facebookId}
+                      src={props.avatar_uuid}
+                      size={64}
+                      round={true}
+                    />
+                  </a>
+                  <div className="flex-grow-1">
+                    <h4 className="card-title mb-1">{props.name}</h4>
+                    <p className="card-text">{props.email}</p>
+                  </div>
+                  <div className="ms-auto">
+                    <a href="/settings/edit/">
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary btn-sm"
+                        style={{ display: "none" }}
+                        id="profEditButton"
+                      >
+                        Edit profile
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
             {hasCompaniesBlock}
           </div>
           <div className="col col-sm-8 col-xs-12">
-            { 
-              <EventsDashboard 
-                  company={company} 
-                  companies={companyMemberships} 
-                  user={userRecord} 
-                  reloadCallback={reloadCompanyMemberships}/>
+            {
+              <EventsDashboard
+                company={company}
+                companies={companyMemberships}
+                user={userRecord}
+                reloadCallback={reloadCompanyMemberships}
+              />
             }
             <div className="panel panel-inverse">
               <div className="panel-heading">
                 <h3 className="panel-title">Acts</h3>
-                  <div className="btn-group float-end">
+                <div className="btn-group float-end">
                   <a href="/passets">
-                    <button type="button" className="btn btn-info btn-xs float-end me-1">
+                    <button
+                      type="button"
+                      className="btn btn-info btn-xs float-end me-1"
+                    >
                       <i className="fa fa-file"></i> Your Files
                     </button>
                   </a>
                   <a href="/acts/new">
-                    <button type="button" className="btn btn-info btn-xs float-end">
+                    <button
+                      type="button"
+                      className="btn btn-info btn-xs float-end"
+                    >
                       <i className="glyphicon glyphicon-plus"></i> Create Act
                     </button>
                   </a>
                 </div>
               </div>
-              <div className="panel-body">
-                {<ActsList company={company} />}
-              </div>
+              <div className="panel-body">{<ActsList company={company} />}</div>
             </div>
+          </div>
         </div>
-        </div>
-    </div>
-    { 
-    <ConfirmModal ref="confirmModal" />
-    /*
+      </div>
+      {
+        <ConfirmModal ref="confirmModal" />
+        /*
     <SubmissionPicker ref="submissionPicker" />
     <TipModal ref="tipModal" {...props} />
     <InviteModal ref="inviteModal" {...props} />
-    */}
+    */
+      }
     </div>
   );
 };

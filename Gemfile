@@ -47,7 +47,6 @@ gem "omniauth"
 gem "omniauth-facebook"
 
 gem "jwt", "~> 2.9"
-gem "public_activity", "~> 3.0"
 gem "validates_email_format_of"
 
 # Image Processing
@@ -96,3 +95,5 @@ gem "react_on_rails", "= 14.0.4"
 gem "foreman", "~> 0.88.1"
 
 gem "statsd-instrument"
+
+gem "public_activity", "~> 3.0"

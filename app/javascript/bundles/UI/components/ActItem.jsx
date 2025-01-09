@@ -4,7 +4,7 @@ import 'moment-timezone';
 
 import { formatDuration } from './util';
 
-const Act = (props) => {
+const ActItem = (props) => {
   const showSubmitModal = () => {
     var mergedtitle = "";
     
@@ -52,24 +52,43 @@ const Act = (props) => {
   } else { 
     mergedtitle = props.act.stage_name;
   }
-      
+
+  // ps-3 is padding start 3
+  // mb-1 is margin bottom 1
+  // flex-1 is flex-grow 1
+  // bg-gray-500 is background gray 500
+  // ml-3 is margin left 3
+
+  // all of this is inside a d-flex from ActsList
+  // d-flex is display flex
   return (
     <>
-      <div className="media">
-        <div className="media-body">
-          <h4 className="mt-0 mb-1">
+    <div className="row">
+      <div className="col d-flex flex-column">
+        <div className="flex-fill">
+          <h5 className="mb-2">
             <a href={actlink}>{mergedtitle}</a>
-          </h4>
-          <p>{props.act.short_description}</p>
-          <i>{tinfo}</i>
-        </div>
-        <div className="ml-3" style={{textAlign:'right'}}>
-          {formatDuration(props.act.length)}<br/>
-          <button className="btn btn-info btn-xs" onClick={showSubmitModal}>Submit to Event</button>
+          </h5>
+          <p>
+            {props.act.short_description}
+          </p>
+          <p>
+            <i>{tinfo}</i>
+          </p>
         </div>
       </div>
-    </>
+
+      <div className="col-auto d-flex flex-column align-items-end">
+        <div className="d-flex align-items-center">
+          {formatDuration(props.act.length)}
+        </div>
+        <button className="btn btn-info btn-sm mt-auto" onClick={showSubmitModal}>Submit to Event</button>
+      </div>
+    </div>
+
+    <hr className="bg-gray-500" />
+  </>
   );
 };
 
-export default Act;
+export default ActItem;

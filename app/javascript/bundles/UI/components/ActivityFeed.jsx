@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
+import ActivityItem from "./ActivityItem";
 
 const ActivityFeed = (props) => {
+  
+  const { detailed, maxHistory } = props;
+
   const [activities, setActivities] = useState(null);
-  const [detailed, setDetailed] = useState(props.detailed || false);
 
   const reloadData = () => {
     var url = "/notifications.json";
 
-    if (props.maxhistory != undefined) {
-      url = url + "?maxhistory=" + props.maxhistory;
+    if (maxHistory) {
+      url = url + "?maxhistory=" + maxHistory;
     }
 
     $.ajax({
@@ -18,6 +20,9 @@ const ActivityFeed = (props) => {
       success: function (data) {
         setActivities(data);
         console.log("successful activities load");
+      },
+      error: function (xhr, status, err) {
+        console.error("error loading activity feed", status, err.toString());
       },
     });
   };
@@ -34,18 +39,18 @@ const ActivityFeed = (props) => {
       return (
         <ActivityItem
           key={a.activity._id}
-          activity={a}
+          activityRecord={a}
           detailed={detailed}
         />
       );
     });
   }
 
-  if (detailed == false) {
+  if (!detailed) {
     var moreDetailLinks = (
-      <div className="button">
+      <div className="button float-end">
         <a href="/notifications/history" className="btn">
-          <button type="button" className="btn btn-default btn-xs">
+          <button type="button" className="btn btn-default btn-sm">
             View Activity Detail
           </button>
         </a>
@@ -59,12 +64,12 @@ const ActivityFeed = (props) => {
         <h3 className="panel-title">Activity in your Companies</h3>
       </div>
       <div className="panel-body">
-        <ul className="media-list media-list-with-divider media-list-scroll">
+        <ul className="list-unstyled">
           {activityItems}
         </ul>
         {moreDetailLinks}
       </div>
-    </div>
+      </div>
   );
 };
 

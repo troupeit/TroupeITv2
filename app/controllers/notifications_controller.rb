@@ -18,9 +18,13 @@ class NotificationsController < ApplicationController
     end
 
     @membercomp = CompanyMembership.where(user_id: current_user.id)
+
     # Yourself and anyone else in your companies...
     @cohorts = CompanyMembership.in(company_id: @membercomp.map(&:company_id))
-    @activities = PublicActivity::Activity.in(owner_id: @cohorts.map(:user_id)).order(created_at: :desc).limit(@maxhistory)
+
+    @activities = PublicActivity::Activity.any_in(owner_id: @cohorts.collect(&:user_id))
+      .order(created_at: :desc)
+      .limit(@maxhistory)
 
     # this is actually pretty tricky. for each event we have to
     # determine type, what happened, and return the appropriate set of

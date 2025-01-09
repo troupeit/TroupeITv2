@@ -1,32 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">TroupeIT</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class= "collapse navbar-collapse" id="navbarNavDarkDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <% if user_signed_in? -%> 
         <% if current_user.try(:admin?) -%>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle me-md-3 me-lg-2" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Admin
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-              <a class="dropdown-item" href="/acts">Acts</a>
-              <a class="dropdown-item" href="/companies/adminindex">Companies</a>
+              <li><a class="dropdown-item" href="/acts">Acts</a></li>
+              <li><a class="dropdown-item" href="/companies/adminindex">Companies</a></li>
               <% if current_user.has_role?(:decider_access) -%>
-                <a class="dropdown-item" href="/deciders">Deciders</a>
+                <li><a class="dropdown-item" href="/deciders">Deciders</a></li>
               <% end -%>
-              <a class="dropdown-item" href="/passets/adminindex">Files</a>
-              <a class="dropdown-item" href="/signup_invites">Invite Codes</a>
-              <a class="dropdown-item" href="/roles">Roles</a>
-              <a class="dropdown-item" href="/shows">Shows</a>
-              <a class="dropdown-item" href="/users">Users</a>
+              <li><a class="dropdown-item" href="/passets/adminindex">Files</a></li>
+              <li><a class="dropdown-item" href="/signup_invites">Invite Codes</a></li>
+              <li><a class="dropdown-item" href="/roles">Roles</a></li>
+              <li><a class="dropdown-item" href="/shows">Shows</a></li>
+              <li><a class="dropdown-item" href="/users">Users</a></li>
             </ul>
           </li>
-          <% if current_user.try(:admin?) or current_user.has_role?(:bhof_judge) or current_user.has_role?(:bhof_scorer) -%>
-          <!-- admin menu -->
+        <% end -%>
+        <% if current_user.try(:admin?) or current_user.has_role?(:bhof_judge) or current_user.has_role?(:bhof_scorer) -%>
+          <!-- BHOF Admin Menu -->
           <li class="navbar-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="bhofMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               BHOF <%=::BHOF_YEAR%>
@@ -43,9 +44,10 @@
                 <a class="dropdown-item" href="/apps/finalvideos">Judge: Final Report (videos)</a>
                 <a class="dropdown-item" href="/bhof_members">BHOF Member Database Search</a>
               <% end -%>
+            </div>
           </li>
         <% end -%>
-      <% end -%>
+        <!-- Avatar/Profile -->
         <li class="nav-item dropdown" id="mobileHelpMenu">
             <a class="nav-link dropdown-toggle" href="#" id="mobileHelpMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Help
@@ -58,28 +60,41 @@
         </li>
       </ul>
       <!-- right side -->
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-         <% if current_user.companies.count > 0 -%>
-        <li class="nav-item">
-          <a href="/?sc=1" class="nav-link"><button class="btn btn-info btn-xs"><i class="fa-solid fa-plus"></i> Create Event</button></a>
-        </li>
-        <% end -%>
-
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">        
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="mobileHelpMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Avatar
+          <a class="nav-link dropdown-toggle" href="#" id="avatarMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <%= react_component 'Avatar', 
+                props:
+                  {
+                    :name => current_user.name.titleize, 
+                    :facebookId => current_user.uid, 
+                    :src => current_user.avatar_uuid, 
+                    :round => true, 
+                    :size => 30, 
+                    :navstyle => true
+                  } %>
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+          <!-- profile dropdown menu -->
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="avatarMenu">
             <li><a class="dropdown-item" href="/settings/edit/">Edit Profile</a></li>
             <% if current_user.stripe_customer_id.present? -%>
               <li><a class="dropdown-item" href="/invoices">Billing History</a></li>
             <% end -%>
             <li><hr class="dropdown-divider"></li>
-              <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: "dropdown-item" %></li>
-              </ul>
+              <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete, data: { no_turbolink: true }, class: "dropdown-item" %></li>
+          </ul>
         </li>
-        </ul>
+
+        <% if current_user.companies.count > 0 -%>
+          <li class="nav-item d-flex align-items-center">
+            <a href="/?sc=1" class="nav-link p-0">
+              <button class="btn btn-info btn-sm"><i class="fa-solid fa-plus"></i> Create Event</button>
+            </a>
+          </li>
+        <% end -%>  
+      </ul>
       <% else -%>
+        <!-- Not logged in menu -->
         <li class="nav-item"><%= link_to 'Sign Up', new_user_registration_path, class: "nav-link" %></li>
         <li class="nav-item"><%= link_to 'Login', new_user_session_path, class: "nav-link" %></li>
       <% end -%>      

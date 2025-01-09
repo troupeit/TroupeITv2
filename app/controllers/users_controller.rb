@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     begin
       u = User.find(params[:id])
     rescue Mongoid::Errors::DocumentNotFound
-      redirect_to root_url, notice: "The requested user does not exist."
+      redirect_to root_url, notice: "The requested user does not exist.1"
       return
     end
 
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     begin
       u = User.find(params[:id])
     rescue Mongoid::Errors::DocumentNotFound
-      redirect_to root_url, notice: "The requested user does not exist."
+      redirect_to root_url, notice: "The requested user does not exist.2"
       return
     end
 
@@ -107,7 +107,7 @@ class UsersController < ApplicationController
     begin
       @user = User.find(params[:id])
     rescue Mongoid::Errors::DocumentNotFound
-      redirect_to root_url, notice: "The requested user does not exist."
+      redirect_to root_url, notice: "The requested user does not exist.3"
       return
     end
 
@@ -164,7 +164,7 @@ class UsersController < ApplicationController
       @user.update_attributes(user_params)
 
     rescue Mongoid::Errors::DocumentNotFound
-      redirect_to root_url, notice: "The requested user does not exist."
+      redirect_to root_url, notice: "The requested user does not exist.4"
       return
     end
 

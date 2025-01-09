@@ -19,11 +19,11 @@
                     <table width=100%>
                       <tr>
                         <td>
-                          <%= react_component 'Avatar', {:name => @act.user.name.titleize, :facebookId => @act.user.uid, :round => true, :size => 30, :inline => true } %>
+                          <%= react_component 'Avatar', props: {:name => @act.user.name.titleize, :facebookId => @act.user.uid, :round => true, :size => 30, :inline => true } %>
                         </td>
                         <td>
                           <% if @act.user == current_user -%>
-                          <%= react_component 'AssignBtn', {:act => @act.id.to_s }%>
+                          <%= react_component 'AssignBtn', props: {:act => @act.id.to_s }%>
                           <% end -%>
                         </td>
                       </tr>

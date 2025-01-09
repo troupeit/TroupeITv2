@@ -3,6 +3,9 @@ class User
   include Mongoid::Timestamps
   include ActsAsTaggable::Tagger
 
+  include PublicActivity::Model
+  activist
+
   after_create :reset_trial_expiration
 
   # Include default devise modules. Others available are:

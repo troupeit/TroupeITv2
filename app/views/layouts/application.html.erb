@@ -11,16 +11,20 @@
   <%= stylesheet_pack_tag 'application' %>
 
   <%= javascript_import_module_tag "@fortawesome/fontawesome-free" %>
-  
+  <style>
+  .content {
+    padding-top: 80px; /* Adjust this value based on the height of your navbar */
+  }
+  </style>
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 </head>
-<body class="pace-done pace-top" data-bs-spy='scroll' data-bs-target='#header' data-bs-offset='51'>
+<body class="pace-done pace-top" data-bs-spy='scroll' data-bs-target='#header' data-bs-offset='100'>
   <%=render 'layouts/noscript' %>
   <div id="wrap">
     <div class="noprint">
       <%= render 'layouts/navigation' %>
     </div>
-    <div class="container">
+    <div class="container content">
       <%= render 'layouts/messages' %>
       <%= yield %>
     </div>

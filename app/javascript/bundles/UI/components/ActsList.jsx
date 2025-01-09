@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Act from './Act';
+import ActItem from './ActItem';
 import { readCookie, eraseCookie } from './util';
 
 const ActsList = (props) => {
   const [ data, setData ] = useState([]);
-  const [ type, setType ] = useState(3);
 
   const reloadActs = company => {
     /* setstate is an asynchronous update but we need this data now. stash it. */
@@ -20,11 +19,6 @@ const ActsList = (props) => {
         console.error(tempurl, status, err.toString());
       }.bind(this)
     });
-  };
-
-  const fullReload = () => {
-    console.log("full reload requested");
-    reloadActs();
   };
 
   useEffect(() => {
@@ -81,15 +75,15 @@ const ActsList = (props) => {
   } else {
     actNodes = data.acts.map(function (act) {
       return (
-          <Act key={act.id} act={act} reloadCallback={fullReload} />
+          <ActItem key={act.id} act={act} reloadCallback={reloadActs} />
       );
     });
   }
 
   return (
-    <ul className="media-list media-list-with-divider">
+    <div className="d-flex flex-column" >
       {actNodes}
-    </ul>
+    </div>
   );
 }
 
