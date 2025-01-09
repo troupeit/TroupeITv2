@@ -2,62 +2,63 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const HideyHeader = (props) => {
-  const { type, content, hideable, id } = props;
+  const { id, type, hideable, html } = props;
 
-  let iconcolor, iconname;
+  let iconcolor, iconname, alertType;
+
   switch (type) {
     case 'alert':
+    case 'danger':
       iconcolor = 'red';
-      iconname = 'fa fa-exclamation-circle';
+      alertType = 'danger';
+      iconname = 'fa-solid fa-exclamation-circle fa-2x';
       break;
     case 'warning':
       iconcolor = 'orange';
-      iconname = 'fa fa-exclamation-triangle';
+      alertType = 'warning';
+      iconname = 'fa-solid fa-exclamation-triangle fa-2x';
       break;
     case 'info':
       iconcolor = 'blue';
-      iconname = 'fa fa-info-circle';
+      alertType = 'info';
+      iconname = 'fa-solid fa-info-circle fa-2x';
       break;
     case 'request':
+    case 'success':
       iconcolor = 'green';
-      iconname = 'fa fa-question-circle';
+      alertType = 'success';
+      iconname = 'fa-solid fa-check-circle fa-2x';
       break;
     default:
       iconcolor = 'blue';
-      iconname = 'fa fa-info-circle';
+      alertType = 'info';
+      iconname = 'fa-solid fa-info-circle fa-2x';
   }
 
-  const icon = `<font color="${iconcolor}"><i class="${iconname}"></i>&nbsp;</font>`;
-  const htmlContent = { __html: icon + content };
-
-  const handleHide = (e) => {
-    e.preventDefault();
-    // Implement hide functionality here
+  const icon = `<span class="d-flex align-items-center me-2"><font color="${iconcolor}"><i class="${iconname}"></i>&nbsp;</font></span>`;
+  const htmlContent = { 
+    __html:  icon + html 
   };
 
   return (
-    <header id={id} className="account-alert">
-      <span dangerouslySetInnerHTML={htmlContent}></span>
-      {hideable && (
-        <span className="dismiss">
-          &nbsp;&nbsp;[<a href="#" onClick={handleHide}><i className="fa fa-times"></i></a>]
-        </span>
-      )}
-    </header>
+    <div className={`alert alert-${alertType} alert-dismissible fade show d-flex align-items-center ${hideable ? 'alert-dismissible' : ''}`} role="alert" id={id}>
+      <span className="d-flex align-items-center flex-fill" dangerouslySetInnerHTML={htmlContent}></span>
+      { hideable && (<button type="button" class="btn-close" data-bs-dismiss="alert"></button>)}
+    </div>
   );
 };
 
 HideyHeader.propTypes = {
-  type: PropTypes.oneOf(['alert', 'warning', 'info', 'request']),
-  content: PropTypes.string,
+  type: PropTypes.oneOf(['alert', 'warning', 'info', 'request', 'success', 'danger']),
+  html: PropTypes.string,
   hideable: PropTypes.bool,
   id: PropTypes.string.isRequired,
 };
 
 HideyHeader.defaultProps = {
   type: 'info',
-  content: 'This is an informative message',
-  hideable: false,
+  html: 'This is an informative message',
+  hideable: true,
 };
 
 export default HideyHeader;

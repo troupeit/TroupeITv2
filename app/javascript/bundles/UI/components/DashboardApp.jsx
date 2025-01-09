@@ -31,7 +31,7 @@ const DashboardApp = (props) => {
      * unpaid or expired account. We will only show one line, for the
      * last company that expired. If more than one company expires,
      * we'll get to it after they pay for the first one.  */
-    var companyAlerts = [];
+    var statusAlerts = [];
 
     if (!companyMemberships) {
       return;
@@ -71,11 +71,11 @@ const DashboardApp = (props) => {
           '/billing">Select a plan</a> to continue using this company.</span>';
 
         if (companyMemberships[i].company.payment_failed == true) {
-          companyAlerts.push({
+          statusAlerts.push({
             html:
               "We're having a problem charging your credit card for \"" +
               companyMemberships[i].company.name +
-              '". <a href="/settings/edit_card">Update your credit card</a> to continue using this company.</span>',
+              '". <a href="/settings/edit_card" class="alert-link">Update your credit card</a> to continue using this company.</span>',
             hideable: false,
           });
         }
@@ -83,12 +83,12 @@ const DashboardApp = (props) => {
         if (paid_through == null && trial_expires_at.isBefore(now)) {
           /* expired trial, if user has paid before, say so. */
           if (companyMemberships[i].company.last_payment == null) {
-            companyAlerts.push({
+            statusAlerts.push({
               html: "The free trial has ended for " + buynowtext,
               hideable: false,
             });
           } else {
-            companyAlerts.push({
+            statusAlerts.push({
               html: "We were unable to process payment for " + buynowtext,
               hideable: false,
             });
@@ -99,7 +99,7 @@ const DashboardApp = (props) => {
             typeof paid_through !== "undefined" &&
             now.isAfter(paid_through)
           ) {
-            companyAlerts.push({
+            statusAlerts.push({
               html: "The paid subscription has ended for " + buynowtext,
               hideable: false,
             });
@@ -112,7 +112,7 @@ const DashboardApp = (props) => {
           trial_expires_at.isAfter(now)
         ) {
           if (moment.duration(trial_expires_at.diff(now)).asDays() <= 5) {
-            companyAlerts.push({
+            statusAlerts.push({
               html:
                 'Your trial for "' +
                 companyMemberships[i].company.name +
@@ -120,7 +120,7 @@ const DashboardApp = (props) => {
                 moment.duration(trial_expires_at.diff(now)).humanize("days") +
                 '. <a href="/companies/' +
                 companyMemberships[i].company._id +
-                '/billing">Select a plan now</a> to ensure continued access.</a>.</span>',
+                '/billing" class="alert-link">Select a plan now</a> to ensure continued access.</a>.</span>',
               hideable: false,
             });
           }
@@ -128,7 +128,7 @@ const DashboardApp = (props) => {
       }
     }
 
-    setCompanyAlerts(companyAlerts);
+    setCompanyAlerts(statusAlerts);
   };
 
   const reloadCompanyMemberships = () => {
@@ -157,12 +157,12 @@ const DashboardApp = (props) => {
         console.log("successful ur load.");
 
         /* alert processing -- all alerts should be added here. */
-        var alerts = [];
+        let newAlerts = [];
 
         if (data.user.email_valid == false) {
-          alerts.push({
+          newAlerts.push({
             html:
-              'Please <a href="/settings/edit">update your email address</a> now. Your login provider, ' +
+              'Please <a href="/settings/edit" class="alert-link"">update your email address</a> now. Your login provider, ' +
               titleize(data.user.provider) +
               ", did not provide one.<br>An email address is requires for invites and account recovery.",
             type: "alert",
@@ -177,14 +177,17 @@ const DashboardApp = (props) => {
             data.user.sms_confirmed
           )
         ) {
-          alerts.push({
-            type: "info",
-            html: '<a href="/settings/edit">Confirm your mobile number now</a> to receive event reminders.',
-            id: "confirm_sms_nag",
+          // test
+          newAlerts.push({
+            type: "warning",
+            html: '<a href="/settings/edit" class="alert-link">Confirm your mobile number now</a>&nbsp;to receive event reminders.',
+            id: "confirm_sms_nag2",
+            hideable: true
           });
         }
+        console.log("newAlerts: ", newAlerts);
 
-        setAlerts(alerts);
+        setAlerts(newAlerts);
       }.bind(this),
       error: function (xhr, status, err) {
         console.log("UR load error");
