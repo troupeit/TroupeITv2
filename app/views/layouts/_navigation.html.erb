@@ -1,36 +1,41 @@
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">TroupeIT</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class= "collapse navbar-collapse" id="navbarNavDarkDropdown">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<div id="header" class="navbar fixed-top navbar-dark bg-dark navbar-expand-lg">
+  <div class="container-fluid"> <!-- fluid here expands to entire window, container itself has margins -->
+    <!-- begin navbar-brand -->
+    <a class="navbar-brand ms-3 me-3" href="/">TroupeIT</a>
+    <!-- end navbar-brand -->
+			<!-- begin navbar-toggle -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#header-navbar" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+			<!-- end navbar-toggle -->
+			<!-- begin navbar-collapse -->
+			<div class="collapse navbar-collapse" id="header-navbar">
+				<ul class="nav navbar-nav navbar-right">
       <% if user_signed_in? -%> 
         <% if current_user.try(:admin?) -%>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Admin
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-              <li><a class="dropdown-item" href="/acts">Acts</a></li>
-              <li><a class="dropdown-item" href="/companies/adminindex">Companies</a></li>
-              <% if current_user.has_role?(:decider_access) -%>
-                <li><a class="dropdown-item" href="/deciders">Deciders</a></li>
-              <% end -%>
-              <li><a class="dropdown-item" href="/passets/adminindex">Files</a></li>
-              <li><a class="dropdown-item" href="/signup_invites">Invite Codes</a></li>
-              <li><a class="dropdown-item" href="/roles">Roles</a></li>
-              <li><a class="dropdown-item" href="/shows">Shows</a></li>
-              <li><a class="dropdown-item" href="/users">Users</a></li>
-            </ul>
-          </li>
+        <li class="dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+            Admin<b class="caret"></b>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/acts">Acts</a>
+            <a class="dropdown-item" href="/companies/adminindex">Companies</a>
+            <% if current_user.has_role?(:decider_access) -%>
+              <a class="dropdown-item" href="/deciders">Deciders</a>
+            <% end -%>
+            <a class="dropdown-item" href="/passets/nindex">Files</a>
+            <a class="dropdown-item" href="/signup_invites">Invite Codes</a>
+            <a class="dropdown-item" href="/roles">Roles</a>
+            <a class="dropdown-item" href="/shows">Shows</a>
+            <a class="dropdown-item" href="/users">Users</a>
+          </div>
+        </li>
         <% end -%>
         <% if current_user.try(:admin?) or current_user.has_role?(:bhof_judge) or current_user.has_role?(:bhof_scorer) -%>
           <!-- BHOF Admin Menu -->
-          <li class="navbar-item dropdown">
+          <li class="dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="bhofMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              BHOF <%=::BHOF_YEAR%>
+              BHOF <%=::BHOF_YEAR%><b class="caret"></b>
             </a>
             <div class="dropdown-menu" aria-labelledby="bhofMenu">
               <a class="dropdown-item" href="/bhof/">Introduction and Rules</a>
@@ -50,7 +55,7 @@
         <!-- Avatar/Profile -->
         <li class="nav-item dropdown" id="mobileHelpMenu">
             <a class="nav-link dropdown-toggle" href="#" id="mobileHelpMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Help
+              Help<b class="caret"></b>
             </a>
             <ul class="dropdown-menu" aria-labelledby="mobileHelpMenu">
               <li><%= link_to "Support", "/about/support", class: "dropdown-item" %></li>
@@ -86,7 +91,7 @@
         </li>
 
         <% if current_user.companies.count > 0 -%>
-          <li class="nav-item d-flex align-items-center">
+          <li class="nav-item d-flex align-items-center ms-3 me-3">
             <a href="/?sc=1" class="nav-link p-0">
               <button class="btn btn-info btn-sm"><i class="fa-solid fa-plus"></i> Create Event</button>
             </a>
@@ -98,6 +103,8 @@
         <li class="nav-item"><%= link_to 'Sign Up', new_user_registration_path, class: "nav-link" %></li>
         <li class="nav-item"><%= link_to 'Login', new_user_session_path, class: "nav-link" %></li>
       <% end -%>      
+      <!-- end navbar-collapse -->
     </div>
-  </div>
-</nav>
+		<!-- end container -->
+	</div>
+	<!-- end #header -->

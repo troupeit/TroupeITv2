@@ -46,7 +46,7 @@ const EventBox = (props) => {
     reloadCallback();
   };
   
-  var content = ( <i className="fa fa-spinner fa-spin"></i> );
+  var content = ( <i className="fas fa-spinner fa-spin"></i> );
 
   if (data == null) {
     return content;

@@ -43,7 +43,7 @@ const HideyHeader = (props) => {
   return (
     <div className={`alert alert-${alertType} alert-dismissible fade show d-flex align-items-center ${hideable ? 'alert-dismissible' : ''}`} role="alert" id={id}>
       <span className="d-flex align-items-center flex-fill" dangerouslySetInnerHTML={htmlContent}></span>
-      { hideable && (<button type="button" class="btn-close" data-bs-dismiss="alert"></button>)}
+      { hideable && (<button type="button" className="btn-close" data-bs-dismiss="alert"></button>)}
     </div>
   );
 };

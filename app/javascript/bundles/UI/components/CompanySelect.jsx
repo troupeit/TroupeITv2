@@ -16,15 +16,15 @@ const CompanySelect = (props) => {
   }
 
   return (
-    <div className="form-group">
-        <form role="form">
-          <select className="form-control" name="companysel" id="companysel" onChange={props.callback} value={props.company}>
-            {showall}
-            {showallsep}
-            {companyNodes}
-          </select>
-        </form>
-      </div>
+    <div className="mb-3">
+      <form role="form">
+        <select className="form-select" name="companysel" id="companysel" onChange={props.callback} value={props.company}>
+          {showall}
+          {showallsep}
+          {companyNodes}
+        </select>
+      </form>
+    </div>
   );
 };
 
