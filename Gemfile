@@ -36,7 +36,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # Add mongoid
-gem "mongoid", "~> 8.1.7"
+gem "mongoid", "~> 9.0.4"
 
 # add auth, jwt, and public_activity gems
 gem "devise"
