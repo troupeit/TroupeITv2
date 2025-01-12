@@ -89,7 +89,7 @@ const CompanyListItem = (props) => {
                       {invitelink}&nbsp;
                       <a href={fileslink}><button className="btn btn-info btn-xs">Files</button></a>&nbsp;
                       <a href={actslink}><button className="btn btn-info btn-xs">Acts</button></a>&nbsp;
-                      <a href={settingslink}><button className="btn btn-info btn-xs" style={{height: "22px"}}><i className="fa fa-cog"></i></button></a>
+                      <a href={settingslink}><button className="btn btn-info btn-xs" style={{height: "22px"}}><i className="fas fa-gear"></i></button></a>
                       </div> );
   }
   

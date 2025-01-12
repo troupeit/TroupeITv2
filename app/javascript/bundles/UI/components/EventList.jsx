@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import Event from './Event';
+import EventItem from './EventItem';
 
 import { revArr } from './util';
 
@@ -35,7 +35,7 @@ const EventList = (props) => {
           (now.isAfter(edate) && (type == 'past'))) {
         valid = valid + 1;
         return (
-            <Event 
+            <EventItem 
               key={event._id} 
               id={event._id} 
               title={event.title} 
@@ -47,7 +47,8 @@ const EventList = (props) => {
               submission_deadline={event.submission_deadline} 
               accepting_from={event.accepting_from} 
               time_zone={event.time_zone} 
-              user={user} />
+              user={user} 
+              separator={mydata.length -1 !== index}/>
         );
       }
     }
@@ -61,9 +62,9 @@ const EventList = (props) => {
   }
 
   return (
-    <ul className="media-list media-list-with-divider">
-      {eventNodes}
-    </ul>
+    <div className="d-flex flex-column" >
+    {eventNodes}
+    </div>
   );
 };
 

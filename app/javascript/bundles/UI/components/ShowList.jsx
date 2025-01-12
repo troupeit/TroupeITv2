@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 
 import { 
   ACCESS_PRODUCER, 
@@ -76,8 +77,8 @@ const ShowList = (props) => {
     postChange();
   };
 
-  var showNodes = "";
-  var arrowClass = "glyphicon glyphicon-chevron-right";
+  let showNodes = "";
+  var arrowClass = "fas fa-chevron-right";
         
   if (expanded) {
     if (data.aaData.length == 0) {
@@ -102,11 +103,11 @@ const ShowList = (props) => {
       });
     }
 
-    var arrowClass = "glyphicon glyphicon-chevron-down";
+    var arrowClass = "fas fa-chevron-down";
   };
 
   if (showFormExpanded) {
-    var showNodes = (
+    showNodes = (
       <ShowForm 
         event_id={event_id}
         onCreate={postCreate}
@@ -119,7 +120,7 @@ const ShowList = (props) => {
     
   if (checkCompanyAccess(user, company._id, ACCESS_PRODUCER)) { 
     var showaddbtn = ( <button className="btn btn-sm btn-success" onClick={toggleShowForm}>
-                        <i className="glyphicon glyphicon-plus"></i>
+                        <i className="fas fa-plus"></i>
                         <span>&nbsp;Add Show</span>
                         </button> );
 
@@ -127,7 +128,7 @@ const ShowList = (props) => {
 
     var eventeditbtn = (
         <a href={editurl} className="btn btn-sm btn-success" role="button">
-        <i className="glyphicon glyphicon-pencil"></i>
+        <i className="fas fa-pencil"></i>
         <span>&nbsp;Edit Event</span>
         </a>
     );
@@ -137,7 +138,7 @@ const ShowList = (props) => {
         livelink = "/events/" + event_id + "/live";
         var liveviewbtn = ( <a href={livelink}>
                              <button className="btn btn-inverse btn-sm">
-                             <span className="glyphicon glyphicon-th-list"></span>
+                             <span className="fas fa-th-list"></span>
                              &nbsp;
                              Live view
                              </button>

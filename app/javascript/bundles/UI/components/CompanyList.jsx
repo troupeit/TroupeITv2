@@ -22,7 +22,7 @@ const CompanyList = (props) => {
   var companyNodes = "";
 
   if (loaded == false || !companies) {
-    companyNodes = ( <li className="list-group-item"><i className="fa fa-spinner fa-spin"></i></li> );
+    companyNodes = ( <li className="list-group-item"><i className="far fa-spinner fa-spin"></i></li> );
   } else {
     if (companies.length == 0) { 
       companyNodes = (<li className="list-group-item"><strong>No memberships.</strong></li> );
@@ -44,12 +44,12 @@ const CompanyList = (props) => {
           <div className="btn-group float-end">
             <a href="/companies/new">
               <button type="button" className="btn btn-xs btn-info me-1">
-              <i className="fa fa-plus"></i>&nbsp;<span>New</span>
+              <i className="fas fa-plus"></i>&nbsp;<span>New</span>
               </button>
             </a>
             <a href="/companies/">
               <button className="btn btn-xs btn-info">
-                <i className="fa fa-edit"></i>&nbsp;<span>Manage</span>
+                <i className="fas fa-edit"></i>&nbsp;<span>Manage</span>
               </button>
             </a>
           </div>

@@ -7,7 +7,7 @@ import { ACCESS_PRODUCER } from './constants';
 
 import ShowList from './ShowList';
 
-const Event = (props) => {
+const EventItem  = (props) => {
   const {
     id, 
     title, 
@@ -19,17 +19,11 @@ const Event = (props) => {
     submission_deadline, 
     accepting_from, 
     time_zone, 
-    user} = props;
+    user,
+    separator
+  } = props;
 
   const [ editing, setEditing ] = useState(false);
-  /*
-  componentDidMount: function () {
-      $("[data-toggle='tooltip']").tooltip({html: true});
-  },
-  componentDidUpdate: function () {
-      $("[data-toggle='tooltip']").tooltip({html: true});
-  },
-  */
 
   const handleEdit = (event) => {
     setEditing(true);
@@ -87,21 +81,25 @@ const Event = (props) => {
     
   if (!editing) {
     var editurl = "/events/" + id + "/showpage";
-    var eventeditbtns="";
+    var eventEditBtns="";
       
-    if (checkCompanyAccess(user, company._id, ACCESS_PRODUCER ) == true) { 
-      var eventeditbtns = (<div className="eventControls">
-                            <button onClick={handleEdit}
-                                    className="btn btn-sm btn-success glyphicon glyphicon-pencil"
+    if (checkCompanyAccess(companies, company._id, ACCESS_PRODUCER ) == true) { 
+      eventEditBtns = (<div className="eventControls">
+                            <button type="button"
+                                    onClick={handleEdit}
+                                    className="btn btn-sm btn-success fas fa-pencil"
                                     data-toggle="tooltip"
                                     data-placement="left"
                                     title="Edit Event Details">
-                            </button> <button onClick={confirmDelete}
-                                              className="btn btn-sm btn-danger glyphicon glyphicon-trash"
-                                              data-toggle="tooltip"
-                                              data-placement="left"
-                                              title="Delete this Event">
-                            </button> </div> );
+                            </button> 
+                            <button type="button"
+                                    onClick={confirmDelete}
+                                    className="btn btn-sm btn-danger fas fa-trash"
+                                    data-toggle="tooltip"
+                                    data-placement="left"
+                                    title="Delete this Event">
+                            </button> 
+                          </div> );
     }
     
     if (accepting_from == 0) {
@@ -119,28 +117,41 @@ const Event = (props) => {
     }
     
     var accepting_s = [ 'No one', 'Company', 'Public' ];
-      
-    var content = (		
-      <li className="media">
-        <div className="eventTitle">
-          {eventeditbtns}
-          <h4 className="media-heading">
-            <small>{company.name}</small><br/>
-            <a href={editurl}>{title}</a>
-          </h4>
+  
+    var content = (
+      <>
+      <div className="row flex-fill">
+        <div className="col flex-column">
+          <div className="flex-fill">
+          <h5>
+              {company.name}
+            </h5>
+            <h3 className="mb-2">
+              <a href={editurl}>{title}</a>
+            </h3>
+            {dateRange} {startdate.tz(time_zone).format('z')}
+            {submission_html}
+
+            <ShowList event_id={id} time_zone={time_zone} {...props} />
+          </div>
         </div>
-        {dateRange} {startdate.tz(time_zone).format('z')}
-        {submission_html}
-        <p></p>
-          <ShowList event_id={id} time_zone={time_zone} {...props} />
-      </li>
+  
+        <div className="col-auto d-flex flex-column align-items-end">
+          <div className="d-flex align-items-center">
+          {eventEditBtns}
+          </div>
+        </div>
+      </div>
+  
+      {separator && (<hr className="bg-gray-500" />)}
+    </>
     );
   } else {
     var content = (
       <div className="eventEdit">
         <h4>Edit "{title}"
             <div className="float-end">
-              <a href="#" onClick={endEditing} className="btn btn-danger btn-sm"><i className="fa fa-times"></i>&nbsp;Cancel</a>
+              <a href="#" onClick={endEditing} className="btn btn-danger btn-sm"><i className="far fa-times"></i>&nbsp;Cancel</a>
             </div>
         </h4>
         <EventForm 
@@ -160,4 +171,4 @@ const Event = (props) => {
   return content;
 }
 
-export default Event;
+export default EventItem;

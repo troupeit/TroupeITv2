@@ -115,6 +115,8 @@ function checkCompanyAccess(cmdata, company_id, minaccess) {
    * and if the company is paid up -- the beauty of this is that
    * when your account expires you can't demote user access 
    * or move it, because the account is locked... 
+   * 
+   * cmdata is company membership data, company_id is the company
    */
   
   if (cmdata == null) { return false }
@@ -122,6 +124,7 @@ function checkCompanyAccess(cmdata, company_id, minaccess) {
 
   var access=false;
   $.each(cmdata, function (index, value) {
+    console.log('checkAcccess', cmdata, company_id, minaccess);
     if ((value.company_id == company_id) || (company_id == 'any')) {
       let now = moment().utc();
       /* if trial expired, maximum access can only be tech crew */

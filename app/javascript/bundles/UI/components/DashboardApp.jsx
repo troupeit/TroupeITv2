@@ -336,7 +336,7 @@ const DashboardApp = (props) => {
                       type="button"
                       className="btn btn-info btn-xs float-end me-1"
                     >
-                      <i className="fa fa-file"></i> Your Files
+                      <i className="far fa-file"></i> Your Files
                     </button>
                   </a>
                   <a href="/acts/new">
@@ -344,7 +344,7 @@ const DashboardApp = (props) => {
                       type="button"
                       className="btn btn-info btn-xs float-end"
                     >
-                      <i className="glyphicon glyphicon-plus"></i> Create Act
+                      <i className="fas fa-plus"></i> Create Act
                     </button>
                   </a>
                 </div>

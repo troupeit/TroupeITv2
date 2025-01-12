@@ -7,6 +7,7 @@ import Avatar from '../bundles/UI/components/Avatar';
 import ConfirmModal from '../bundles/UI/components/ConfirmModal';
 import DashboardApp from '../bundles/UI/components/DashboardApp';
 import ActivityFeed from '../bundles/UI/components/ActivityFeed';
+import EventsApp from "../bundles/UI/components/EventsApp";
 
 // This is how react_on_rails can see the HelloWorld in the browser.
 console.log('registering avatar');
@@ -15,5 +16,6 @@ ReactOnRails.register({
   ActivityFeed,
   Avatar,
   ConfirmModal,
-  DashboardApp
+  DashboardApp,
+  EventsApp
 });

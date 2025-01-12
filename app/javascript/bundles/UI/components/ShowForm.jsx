@@ -154,7 +154,7 @@ const ShowForm = (props) => {
     var delbutton = ( <button className="btn btn-danger" onClick={onCancel}>Delete Show</button> );
   }
 
-  const locationIcon = ( <i className="fa fa-map-marker"></i> );
+  const locationIcon = ( <i className="far fa-map-marker"></i> );
 
   return ( <div className="ShowForm well"> 
     <div className="panel-body">

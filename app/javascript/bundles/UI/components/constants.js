@@ -11,7 +11,9 @@ const ACCESS_S = {
   8 : "Producer"
 };
 
+// TBD - how can we change these based on the environment?
 const ASSET_SERVER = "https://d2x9yi7v90o6mz.cloudfront.net";
+const SOCKIO_SERVER = "https://localhost:8000";
 
 module.exports = {
   ACCESS_PERFORMER,
