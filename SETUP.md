@@ -54,6 +54,7 @@ mongorestore --nsInclude hsm_production.\* --nsFrom "hsm_production.*" --nsTo "h
 8. add a user from the mongo-seed container
   
 ```
+use hsm_develop;
 db.createUser({ user: "hsm_develop", pwd: "hsm_develop", roles: [ { role: "readWrite", db: "hsm_develop" } ]})
 ```
 

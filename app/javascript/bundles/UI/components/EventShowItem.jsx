@@ -36,7 +36,6 @@ const EventShowItem = ({
   total_items
 }) => {
   useEffect(() => {
-    $.fn.editable.defaults.mode = 'popup';
 
     if (checkCompanyAccess(user, event.company._id.$oid, ACCESS_STAGEMGR)) {
       $(ReactDOM.findDOMNode(this)).find('a:first').editable({
@@ -82,7 +81,7 @@ const EventShowItem = ({
         url: function (params) {
           const d = new $.Deferred();
 
-          if (!duration_re.test(params.value)) {
+          if (!durationRegexp.test(params.value)) {
             return d.reject('Duration must be in the form HH:MM:SS or MM:SS.');
           } else {
             const postdata = {
@@ -114,11 +113,11 @@ const EventShowItem = ({
       });
     }
 
-    $("[data-bs-toggle='tooltip']").tooltip({ html: true });
+    //$("[data-bs-toggle='tooltip']").tooltip({ html: true });
   }, [user, event, show_item, reloadCallback, total_items]);
 
   useEffect(() => {
-    $("[data-bs-toggle='tooltip']").tooltip({ html: true });
+   // $("[data-bs-toggle='tooltip']").tooltip({ html: true });
   });
 
   const startNoteEdit = (event) => {

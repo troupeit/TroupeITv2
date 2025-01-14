@@ -15,7 +15,7 @@ const EventActPicker = ({ data, reloadCallback }) => {
 
   useEffect(() => {
     $("#searchinprogress").hide();
-    $("[data-bs-toggle='tooltip']").tooltip({ html: true });
+    //$("[data-bs-toggle='tooltip']").tooltip({ html: true });
   });
 
   const reloadResults = () => {

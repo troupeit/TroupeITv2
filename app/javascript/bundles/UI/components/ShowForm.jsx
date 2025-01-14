@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import 'moment-timezone';
 
+
+import { FormGroup, FormLabel, FormControl, InputGroup } from  'react-bootstrap';
+
+import { checkCompanyAccess } from './util';
+import { ACCESS_PRODUCER } from './constants';
+
 const ShowForm = (props) => { 
-  const [ id, setId ] = useState(props.id);
+  const { id, event_id, user, company, onCancel, onCreate } = props; 
+
   const [ title, setTitle ] = useState(props.title);
   const [ venue, setVenue ] = useState(props.venue);
   const [ room, setRoom ] = useState(props.room);
   const [ goog_place_id, setGoogPlaceId ] = useState(props.goog_place_id);
   const [ door_time, setDoorTime ] = useState(moment(props.door_time));
   const [ show_time, setShowTime ] = useState(moment(props.show_time));
-  const [ event_id, setEventId ] = useState(props.event_id);
-  const [ onCreate, setOnCreate ] = useState(props.onCreate);
+ 
   const [ inError, setInError ] = useState(false);
   const [ errorMsg, setErrorMsg ] = useState("");
 
@@ -96,7 +102,7 @@ const ShowForm = (props) => {
       contentType: 'application/json',
       data: JSON.stringify(data),
       success: function(response) { 
-        $onCreate();
+        onCreate();
       },
       error: function(xhr, status, err) {
         console.error(ajaxURL, status, err.toString());
@@ -139,8 +145,8 @@ const ShowForm = (props) => {
     erroralert=(<div className="alert alert-danger">{errorMsg}</div>);
   }
 
-  show_time_s = ""
-  door_time_s = ""
+  let show_time_s = ""
+  let door_time_s = ""
 
   if (show_time != undefined) {
     show_time_s = show_time.format('YYYY-MM-DDTHH:mm')
@@ -154,34 +160,32 @@ const ShowForm = (props) => {
     var delbutton = ( <button className="btn btn-danger" onClick={onCancel}>Delete Show</button> );
   }
 
-  const locationIcon = ( <i className="far fa-map-marker"></i> );
+  const locationIcon = ( <i className="fas fa-location-dot"></i> );
 
   return ( <div className="ShowForm well"> 
     <div className="panel-body">
       {erroralert}
       <div className="row">
         <h2>{formtitle}</h2>
-          <ReactBootstrap.FormGroup controlId="titleInput" validationState={validateTitle()}>
-            <ReactBootstrap.ControlLabel>Show Title</ReactBootstrap.ControlLabel>
-            <ReactBootstrap.FormControl
+          <FormGroup controlId="titleInput">
+            <FormLabel>Show Title</FormLabel>
+            <FormControl
                 type="text"
                 value={title}
                 onChange={handleTitleChange}
-                wrapperClass="titleinput"
                 placeholder="Title"
                 className="input-lg titleinput"
-                bsStyle={titleError}
-                ref="input" />
-            <ReactBootstrap.FormControl.Feedback />
-            <ReactBootstrap.HelpBlock>Don't include your company name. We'll add it for you.</ReactBootstrap.HelpBlock>
-          </ReactBootstrap.FormGroup>
+              />
+            <FormControl.Feedback />
+            <p>Don't include your company name. We'll add it for you.</p>
+          </FormGroup>
       </div>
       
       <div className="row">
 
         <div className="col-md-6">
           <div className="form-group">
-            <label forHtml="door-time">
+            <label>
               Door Time
             </label>
             <input className="form-control ws-validate"
@@ -190,13 +194,13 @@ const ShowForm = (props) => {
                   id="door_time"
                   defaultValue={door_time_s}
                   type="datetime-local"
-                  ref="doorinput"  required="true"/>
+                  required={true}/>
           </div>
         </div>
         
         <div className="col-md-6">
           <div className="form-group">
-            <label forHtml="show_time">
+            <label>
               Show Time
             </label>
             <input className="form-control ws-validate"
@@ -205,41 +209,38 @@ const ShowForm = (props) => {
                   id="show_time"
                   defaultValue={show_time_s}
                   type="datetime-local"
-                  ref="showinput" required="true" />
+                  required={true} />
           </div>
         </div>
       </div>
 
       <div className="row">
-        <ReactBootstrap.FormGroup controlId="venueInput" validationState={validateVenue()}>
-          <ReactBootstrap.ControlLabel>Venue name / Location</ReactBootstrap.ControlLabel>
-          <ReactBootstrap.InputGroup>
-            <ReactBootstrap.InputGroup.Addon>{locationIcon}</ReactBootstrap.InputGroup.Addon>
-            <ReactBootstrap.FormControl
+        <FormGroup controlId="venueInput">
+          <FormLabel>Venue name / Location</FormLabel>
+          <InputGroup>
+            <InputGroup.Text id="basic-addon1">{locationIcon}</InputGroup.Text>
+            <FormControl
             type="text"
             value={venue}
             onChange={handleVenueChange}
-            wrapperClass="titleinput"
             placeholder="Venue"
             className="input-lg titleinput"
-            bsStyle={validateVenue()}
-            ref="venueinput" />
-          </ReactBootstrap.InputGroup>
-          <ReactBootstrap.FormControl.Feedback />
-        </ReactBootstrap.FormGroup>
+            />
+          </InputGroup>
+          <FormControl.Feedback />
+        </FormGroup>
       </div>
       <div className="row">
-        <ReactBootstrap.FormGroup controlId="roomInput">
-          <ReactBootstrap.ControlLabel>Room (optional)</ReactBootstrap.ControlLabel>
-          <ReactBootstrap.FormControl
+        <FormGroup controlId="roomInput">
+          <FormLabel>Room (optional)</FormLabel>
+          <FormControl
             type="text"
             value={room}
             onChange={handleRoomChange}
-            wrapperClass="titleinput"
             placeholder="Room"
             className="input-lg titleinput"
-            ref="roominput" />
-        </ReactBootstrap.FormGroup>
+          />
+        </FormGroup>
       </div>
       
       <div className="row">

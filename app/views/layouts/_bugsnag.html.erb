@@ -1,11 +1,11 @@
-      <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js"
-              data-apikey="05b2550f97913d20a81c180dfd1318d2"></script>
-      <% if current_user -%>
-       <script>
-        Bugsnag.user = {
-          id: "<%=current_user.id.to_s %>",
-          name: "<%=current_user.name %>",
-          email: "<%=current_user.email %>"
-        }
-       </script>
-     <% end -%>
+<script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js"
+        data-apikey="05b2550f97913d20a81c180dfd1318d2"></script>
+<% if current_user -%>
+  <script>
+  Bugsnag.user = {
+    id: "<%=current_user.id.to_s %>",
+    name: "<%=current_user.name %>",
+    email: "<%=current_user.email %>"
+  }
+  </script>
+<% end -%>

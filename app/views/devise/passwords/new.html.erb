@@ -20,7 +20,8 @@
     <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => "form-horizontal" }) do |f| %>
     <div class="form-group m-b-20">
       <p><h2 style="color: #ffffff">Forgot your Password?</h1></p>
-      <%= devise_error_messages! %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
       <p>Enter your email address below and we'll mail you a password recovery link if you have a troupeIT account.</p>
       <%= f.email_field :email, :class=>"form-control input-lg",:placeholder=>"Email" %>
     </div>

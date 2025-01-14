@@ -1,49 +1,9 @@
-<style>
-}
 
-.editableText:hover {
-	background: #EEE;
-  border-radius: 5px;
-  border: 1px solid #888;
-}
-.editFields {
-	background: transparent !important;
-	border: 0px;
-}
-
-.table > thead > tr > td.interstitial,
-.table > tbody > tr > td.interstitial,
-.table > tfoot > tr > td.interstitial,
-.table > thead > tr > th.interstitial,
-.table > tbody > tr > th.interstitial,
-.table > tfoot > tr > th.interstitial,
-.table > thead > tr.interstitial > td,
-.table > tbody > tr.interstitial > td,
-.table > tfoot > tr.interstitial > td,
-.table > thead > tr.interstitial > th,
-.table > tbody > tr.interstitial > th,
-.table > tfoot > tr.interstitial > th {
-    background-color: #d9edf7;
-}
-
-.table-hover > tbody > tr > td.interstitial:hover,
-.table-hover > tbody > tr > th.interstitial:hover,
-.table-hover > tbody > tr.interstitial:hover > td,
-.table-hover > tbody > tr:hover > .interstitial,
-.table-hover > tbody > tr.interstitial:hover > th {
-    background-color: #c4e3f3;
-
-}
-
-#datepicker {
- padding: 2px !important;
-
-}
-
-/* white on cue list page, black on show page */
-a.editable-click, a.editable-click:hover {
-  color: #000;
-}
-</style>
-
-<%=react_component 'EventsApp', {:name => current_user.name.titleize, :email => current_user.email, :facebookId => current_user.uid, :event_id => params["id"] } %>
+<%=react_component 'EventsApp', 
+  props: {
+    :name => current_user.name.titleize, 
+    :email => current_user.email, 
+    :facebookId => current_user.uid, 
+    :event_id => params["id"] 
+  } 
+%>

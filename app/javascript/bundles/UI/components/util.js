@@ -69,7 +69,7 @@ function eraseCookie(name) {
 
 /* --- Duration Handling ---------------------------------------- */
 /* permit mm:ss or hh:mm, also permit large minutes (90:00, etc.) */
-var duration_re=/^([0-2][0-3](:[0-9][0-9]){2})|([0-9]{1,2}:[0-5][0-9])$/;
+var durationRegexp=/^([0-2][0-3](:[0-9][0-9]){2})|([0-9]{1,2}:[0-5][0-9])$/;
 
 /* support functions for dates, move this to a utility someplace. */
 function pad(n) {
@@ -93,7 +93,7 @@ function formatDuration(n, addPlus) {
 function durationToSec(value) {
 
   /* convert HH:MM:SS or MM:SS into seconds. This assumes you've
-   * already validated value with the duration_re above.
+   * already validated value with the durationRegexp above.
    * Don't call this prior to validating. 
    */
   
@@ -124,7 +124,7 @@ function checkCompanyAccess(cmdata, company_id, minaccess) {
 
   var access=false;
   $.each(cmdata, function (index, value) {
-    console.log('checkAcccess', cmdata, company_id, minaccess);
+    // console.log('checkAcccess', cmdata, company_id, minaccess);
     if ((value.company_id == company_id) || (company_id == 'any')) {
       let now = moment().utc();
       /* if trial expired, maximum access can only be tech crew */
@@ -396,6 +396,7 @@ export {
   check_pwstrength,
   createCookie,
   durationToSec,
+  durationRegexp,
   eraseCookie,
   formatDuration,
   pad,

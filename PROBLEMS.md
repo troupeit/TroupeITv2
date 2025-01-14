@@ -1,8 +1,14 @@
 PROBLEMS.md
 ----------
+- Tooltips gone, need to figure that out
+- Automatic tab switching / resetting in EventsApp (cannot control Tabs?)
+
 - Pagination gone (have to migrate to pagy but was only using it for bhofmember)
+
 - Lost all of EntryTechinfo entries in import
+
 - Devise 2FA completely broken
+
 - _meta.html: Had to remove soundmanager
 ```
     <%= javascript_tag "var SM_SWF = #{asset_path('soundmanager2.swf').inspect};" %>

@@ -1,55 +1,55 @@
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="description" content="troupeIT is a simple, online stage management system for shows, conferences, meetings, and more. We help producers, performers, stage managers, and your tech crew to create great shows together with ease." />
-    <meta name="keywords" content="event planning, event management, event planning software, event planning app, event planning database, event planning online, stage management online, event software, stage management, event production, free stage management, simple stage management, stage management apps, stage management software, stage management essentials, prompt book, stage management program" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="description" content="troupeIT is a simple, online stage management system for shows, conferences, meetings, and more. We help producers, performers, stage managers, and your tech crew to create great shows together with ease." />
+<meta name="keywords" content="event planning, event management, event planning software, event planning app, event planning database, event planning online, stage management online, event software, stage management, event production, free stage management, simple stage management, stage management apps, stage management software, stage management essentials, prompt book, stage management program" />
 
-    <meta property="og:title"          content="troupeIT stage management software" />
-    <meta property="og:site_name"      content="troupeIT" />
-    <meta property="og:url"            content="https://troupeit.com" />
-  	<meta property="og:image"          content="<%=asset_path 'landing/troupeit-trussedlogo.jpg'%>" />
-    <meta property="og:locality"       content="San Francisco" />
-    <meta property="og:description"    content="troupeIT is a simple, online stage management system for shows, conferences, meetings, and more. We help producers, performers, stage managers, and your tech crew to create great shows together with ease." />
-    <meta property="og:region"         content="CA" />
-    <meta property="og:postal-code"    content="94103" />
-    <meta property="og:country-name"   content="USA" />
- 	  <meta property="fb:app_id"         content="308336679243664" />
+<meta property="og:title"          content="troupeIT stage management software" />
+<meta property="og:site_name"      content="troupeIT" />
+<meta property="og:url"            content="https://troupeit.com" />
+<meta property="og:image"          content="<%=asset_path 'landing/troupeit-trussedlogo.jpg'%>" />
+<meta property="og:locality"       content="San Francisco" />
+<meta property="og:description"    content="troupeIT is a simple, online stage management system for shows, conferences, meetings, and more. We help producers, performers, stage managers, and your tech crew to create great shows together with ease." />
+<meta property="og:region"         content="CA" />
+<meta property="og:postal-code"    content="94103" />
+<meta property="og:country-name"   content="USA" />
+<meta property="fb:app_id"         content="308336679243664" />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@troupeit" />
-    <meta name="twitter:title" content="troupeIT - simple stage management for everyone">
-    <meta name="twitter:description" content="Manage conferences, theater, or any show with ease.">
-    <meta name="twitter:image" content="<%=asset_path 'landing/troupeit-trussedlogo.jpg' %>">
-    
-    <meta name="author" content="John Adams" />
-    <meta name="google-site-verification" content="Y7_vEVTgyhH6j2aN908Jew4tGqfmRzEtIwc79dt26dM" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@troupeit" />
+<meta name="twitter:title" content="troupeIT - simple stage management for everyone">
+<meta name="twitter:description" content="Manage conferences, theater, or any show with ease.">
+<meta name="twitter:image" content="<%=asset_path 'landing/troupeit-trussedlogo.jpg' %>">
 
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<meta name="author" content="John Adams" />
+<meta name="google-site-verification" content="Y7_vEVTgyhH6j2aN908Jew4tGqfmRzEtIwc79dt26dM" />
 
-    <%= yield :head %>
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
 
-  	<%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
-    
-    <% if params[:controller] == "companies" or params[:controller] == "apps" -%>
-    <%= javascript_include_tag "https://checkout.stripe.com/checkout.js" %>
-    <% end -%>
+<%= yield :head %>
 
-    <% if Rails.env.production? -%>
-      <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js"
-              data-apikey="05b2550f97913d20a81c180dfd1318d2"></script>
-      <% if current_user -%>
-       <script>
-        Bugsnag.user = {
-          id: "<%=current_user.id.to_s %>",
-          name: "<%=current_user.name %>",
-          email: "<%=current_user.email %>"
-        }
-       </script>
-     <% end -%>
+<%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
 
-    <% end -%>
-    <% if current_user -%>
-      <%= javascript_tag "var USER_ID = #{current_user.id.to_s.inspect};" %>
-      <%= javascript_tag "var X_AUTH_TOKEN = #{current_user.xauth_token.inspect};" %>
-    <% end -%>
-    <%= javascript_tag "var SOCKIO_SERVER = \"https://www.troupeit.com:8080\";" %> 
+<% if params[:controller] == "companies" or params[:controller] == "apps" -%>
+  <%= javascript_include_tag "https://checkout.stripe.com/checkout.js" %>
+<% end -%>
+
+<% if Rails.env.production? -%>
+  <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js"
+          data-apikey="05b2550f97913d20a81c180dfd1318d2"></script>
+  <% if current_user -%>
+    <script>
+    Bugsnag.user = {
+      id: "<%=current_user.id.to_s %>",
+      name: "<%=current_user.name %>",
+      email: "<%=current_user.email %>"
+    }
+    </script>
+  <% end -%>
+
+<% end -%>
+<% if current_user -%>
+  <%= javascript_tag "var USER_ID = #{current_user.id.to_s.inspect};" %>
+  <%= javascript_tag "var X_AUTH_TOKEN = #{current_user.xauth_token.inspect};" %>
+<% end -%>
+<%= javascript_tag "var SOCKIO_SERVER = \"https://www.troupeit.com:8080\";" %> 

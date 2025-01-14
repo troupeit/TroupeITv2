@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ACCESS_PRODUCER } from './constants';
 import { checkCompanyAccess } from "./util";
 import moment from 'moment-timezone';
-import { FormLabel, FormGroup, FormControl  } from 'react-bootstrap';
+import { Form, FormLabel, FormGroup, FormControl  } from 'react-bootstrap';
 
 const EventForm = (props) => {
   const [title, setTitle] = useState(props.title);
@@ -13,6 +13,8 @@ const EventForm = (props) => {
   const [url, setUrl] = useState('/events.json');
   const [startDate, setStartDate] = useState(props.start_date);
   const [endDate, setEndDate] = useState(props.end_date);
+
+  const [validated, setValidated] = useState(false);
 
   const validateTitle =  () => {
     if (title == null) return null;
@@ -39,12 +41,24 @@ const EventForm = (props) => {
     }
   }, []);
 
+  /**
+   * Handle submit and update events
+   * @param {Event} event 
+   * @returns 
+   */
   const handleUpdate = (event) => {
     if (validateTitle() != 'success') {
-      setTitle('');
+      const form = event.currentTarget;
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
       return;
     }
-    
+
+    setValidated(true);
+
     var data = {
       'event': {
         'title': title.trim(),
@@ -114,10 +128,11 @@ const EventForm = (props) => {
   });
     
   return ( <div className="EventForm">
-              <div className="panel-body">
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <div className="panel-body">
                 <div className="row">
                   <div className="col-md-8">
-                    <FormGroup controlId="titleInput" validationState={validateTitle()}>
+                    <FormGroup controlId="titleInput">
                       <FormLabel>Event Title</FormLabel>
                       <FormControl
                          type="text"
@@ -149,10 +164,11 @@ const EventForm = (props) => {
                  <div className="row">
                  <div className="col-md-12">
                  <p></p>
-                    <button className="btn btn-primary"  key="save_btn" onClick={handleUpdate}>Save</button>
+                 <Button type="submit">Save</Button>
                  </div>
                  </div>
             </div>
+          </Form>
         </div>
   );
 };

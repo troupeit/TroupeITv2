@@ -34,7 +34,7 @@ const CompanyListItem = (props) => {
   }
 
   if (props.thisuser == props.owner._id) {
-    var ownerBadge = (<span className="badge pill-rounded bg-dark float-end">OWNER</span>);
+    var ownerBadge = (<span className="badge rounded-pill bg-dark float-end">OWNER</span>);
   }
 
   var now = moment().utc();
@@ -57,7 +57,7 @@ const CompanyListItem = (props) => {
   if (typeof(paid_through) !== "undefined" ) { 
     /* previously paid customer logic here */
     if (now.isAfter(paid_through)) {
-      var ownerBadge = (<a href={paylink}><span className="badge pill-rounded badge-danger float-end"
+      var ownerBadge = (<a href={paylink}><span className="badge rounded-pill badge-danger float-end"
                         data-toggle="tooltip"
                         data-placement="left"
                         title="Payment for this company could not be completed and your company is now read-only. Click to purchase a subscription.">PAYMENT DUE</span></a>);
@@ -66,18 +66,18 @@ const CompanyListItem = (props) => {
     /* never paid for but after trial */
     if (now.isAfter(trial_expires_at)) {
       if (props.company.company.last_payment == null) {
-        var ownerBadge = (<a href={paylink}><span className="badge pill-rounded badge-danger float-end"
+        var ownerBadge = (<a href={paylink}><span className="badge rounded-pill badge-danger float-end"
                           data-toggle="tooltip"
                           data-placement="left"
                           title="The trial period for your account has ended and your company is now read-only. Click to purchase a subscription.">TRIAL ENDED</span></a>);
       } else {
-        var ownerBadge = (<a href={paylink}><span className="badge pill-rounded badge-danger float-end"
+        var ownerBadge = (<a href={paylink}><span className="badge rounded-pill badge-danger float-end"
                           data-toggle="tooltip"
                           data-placement="left"
                           title="Payment for this company could not be completed and your company is now read-only. Click to select a new plan.">CANCELLED</span></a>);
       }
     } else {
-      var ownerBadge = (<a href={paylink}><span className="badge pill-rounded badge-success float-end"
+      var ownerBadge = (<a href={paylink}><span className="badge rounded-pill badge-success float-end"
                         data-toggle="tooltip"
                         data-placement="left"
                         title={trial_expires_str}>TRIAL</span></a>);

@@ -18,9 +18,9 @@
 //import "@fortawesome/fontawesome-free";
 
 // without this all of the bootstrap stuff fails. 
-import "./vendor.min";
-//import "./app.min";
+//import "./vendor.min";
+// import "./app.min";
 
 // import all of the javascript packs here. 
-import "./hello-world-bundle";
 import "./ui-bundle";
+

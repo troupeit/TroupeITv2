@@ -1,77 +1,59 @@
-<div class="login-cover">
-</div>
-<div class="login-cover-bg">
-</div>
 
-<!-- begin login -->
-<div class="login login-v2" data-pageload-addclass="animated flipInX">
-  <!-- begin brand -->
-  <div class="login-header">
-    <div class="brand">
-      troupeIT
-        <small>simple stage management.</small>
-    </div>
-    <div class="icon">
-      <i class="fa fa-sign-in"></i>
-    </div>
-  </div>
-  <!-- end brand -->
-  <div class="login-content">
-    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => "mg-btm" } ) do |f| %>
-    <div class="login-buttons m-b-20 hidden-xs">
-      <p align="center">
-        <strong>or, log in below with your email address... </strong>
-      </p>
-    </div>
-    <div class="form-group m-b-20">
-      <%= f.email_field :email, :class=>"form-control input-lg",:placeholder=>"Email" %>
-    </div>
-    <div class="form-group m-b-20">
-      <%= f.password_field :password, :class=>"form-control input-lg", :placeholder=>"Password" %>
-    </div>
-    <% if devise_mapping.rememberable? -%>
-    <div class="checkbox m-b-20">
-      <label>
-        <%= f.check_box :remember_me %> Remember me
-      </label>
-    </div>
-    <% end -%>
-    <div class="login-buttons">
-      <div class="row visible-xs">
-        <div class="col-xs-8">
-
-          <a href="<%=omniauth_authorize_path(resource_name, 'facebook') %>" class="btn btn-primary btn-block btn-md">
-            <span class="fa fa-facebook-official"></span> Use Facebook
-          </a>
+<!-- BEGIN #app -->
+<div id="app" class="app">
+  <!-- BEGIN login -->
+  <div class="login login-v2 fw-bold text-gray-600">    
+    <!-- BEGIN login-container -->
+    <div class="login-container">
+      <!-- BEGIN login-header -->
+      <div class="login-header">
+        <div class="brand">
+          <div class="d-flex align-items-center">
+            <span>Login</span>
+          </div>
         </div>
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-success btn-block btn-md">Login</button>
+        <div class="icon">
+          <i class="fa fa-lock fa-3x"></i>
         </div>
       </div>
+      <!-- END login-header -->
+      
+      <!-- BEGIN login-content -->
+      <div class="login-content">
+        <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => "mg-btm" } ) do |f| %>
+           <%= render "devise/shared/error_messages", resource: resource %>
 
-      <div class="row hidden-xs">
-        <div class="col-xs-12">
-          <button type="submit" class="btn btn-success btn-block btn-lg">Sign me In</button>
-        </div>
+           <div class="form-floating mb-20px">
+            <%= f.email_field :email, :class=>"form-control fs-13px h-45px border-0", :placeholder=>"Email" %>
+            <label for="emailAddress" class="d-flex align-items-center text-gray-600 fs-13px">Email Address</label>
+          </div>
+          <div class="form-floating mb-20px">
+            <%= f.password_field :password, :class=>"form-control fs-13px h-45px border-0", :placeholder=>"Password" %>
+            <label for="password" class="d-flex align-items-center text-gray-600 fs-13px">Password</label>
+          </div>
+          <% if devise_mapping.rememberable? -%>
+          <div class="form-check mb-20px">
+            <%= f.check_box :remember_me, :class=>"form-check-input border-0", :value => 1 %> Remember me
+            <label class="form-check-label fs-13px text-gray-500" for="rememberMe">
+            </label>
+          </div>
+          <% end -%>
+          <div class="mb-20px">
+            <button type="submit" class="btn btn-theme d-block w-100 h-45px btn-lg">Sign me in</button>
+          </div>
+          <div class="text-gray-900">
+            Not a member yet? Click <a href="/users/sign_up" class="text-black">here</a> to register.
+          </div>
+          <div class="text-gray-900">
+            <P><a href="/users/password/new" class="text-black" >Forgot your password?</a></p>
+          </div>
+        <% end -%>
       </div>
-
+      <!-- END login-content -->
     </div>
-    <div class="m-t-20">
-      <P>Not a member yet? Click <a href="/users/sign_up">here</a> to register.</P>
-      <P><a href="/users/password/new">Forgot your password?</a></p>
-    </div>
-    <% end -%>
+    <!-- END login-container -->
   </div>
+  <!-- END login -->
+
 </div>
-<!-- end login -->
-
-<script>
-$(function() { 
-  $('input#user_email').focus();
-});
-</script>
-
-
-
-</DIV>
-</DIV>
+<!-- END #app -->

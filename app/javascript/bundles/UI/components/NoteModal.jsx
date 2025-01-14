@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { Form, FormGroup, FormLabel, FormControl, Col } from "react-bootstrap";
 
+import {durationRegexp} from "./util";
+
 /**
  * NoteModal component
  * @param {Object} props - Component properties
@@ -11,8 +13,8 @@ import { Form, FormGroup, FormLabel, FormControl, Col } from "react-bootstrap";
 const NoteModal = ({ reloadCallback }) => {
   const [state, setState] = useState({
     id: null,
-    notetext: null,
-    duration: null,
+    notetext: "",
+    duration: 0,
     duration_secs: 0,
     type: 0,
     color: "White",
@@ -52,7 +54,7 @@ const NoteModal = ({ reloadCallback }) => {
    */
   const validateDuration = () => {
     if (state.duration == null) return null;
-    return duration_re.test(state.duration) ? 'success' : 'error';
+    return durationRegexp.test(state.duration) ? 'success' : 'error';
   };
 
   /**
@@ -69,7 +71,7 @@ const NoteModal = ({ reloadCallback }) => {
    */
   const handleDurationChange = (event) => {
     const value = event.target.value;
-    if (duration_re.test(value)) {
+    if (durationRegexp.test(value)) {
       setState({ ...state, duration_secs: durationToSec(value), duration: value });
     } else {
       setState({ ...state, duration: value });
@@ -156,11 +158,11 @@ const NoteModal = ({ reloadCallback }) => {
             <h4 className="modal-title" id="noteLabel">{formtitle}</h4>
           </div>
           <div className="modal-body">
-            <Form horizontal>
-              <FormGroup controlId="notetext" validationState={validateNoteText()}>
-                <Col componentClass={FormLabel} sm={2}>
+            <Form>
+              <FormGroup controlId="notetext">
+                <FormLabel sm={2}>
                   Note Text
-                </Col>
+                </FormLabel>
                 <Col sm={10}>
                   <FormControl
                     type="text"
@@ -172,10 +174,10 @@ const NoteModal = ({ reloadCallback }) => {
                   <FormControl.Feedback />
                 </Col>
               </FormGroup>
-              <FormGroup controlId="durationInput" validationState={validateDuration()}>
-                <Col componentClass={FormLabel} sm={2}>
+              <FormGroup controlId="durationInput">
+                <FormLabel sm={2}>
                   Duration (mm:ss)
-                </Col>
+                </FormLabel>
                 <Col sm={10}>
                   <FormControl
                     type="text"
@@ -188,7 +190,7 @@ const NoteModal = ({ reloadCallback }) => {
                 </Col>
               </FormGroup>
               <FormGroup controlId="colorInput">
-                <Col componentClass={FormLabel} sm={2}>
+                <Col sm={2}>
                   Color
                 </Col>
                 <Col sm={10}>

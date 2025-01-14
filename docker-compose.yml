@@ -11,7 +11,7 @@ services:
     volumes:
       - ../mongodata/data/db:/data/db
       - ../mongodata/data/configdb:/data/configdb
-
+    
   mongo-express:
     image: mongo-express
     restart: always

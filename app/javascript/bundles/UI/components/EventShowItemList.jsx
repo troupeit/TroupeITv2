@@ -15,9 +15,9 @@ import $ from "jquery";
  * @returns {JSX.Element} EventShowItemList component
  */
 const EventShowItemList = ({ show, show_items, reloadCallback, user, event, notemodal }) => {
-  useEffect(() => {
-    $('.nav-tabs a:first').tab('show');
-  }, []);
+//  useEffect(() => {
+ //   $('.nav-tabs a:first').tab('show');
+//  }, []);
 
   if (show == null) {
     return (
@@ -35,7 +35,7 @@ const EventShowItemList = ({ show, show_items, reloadCallback, user, event, note
     show_items.map((s) => {
       const data = (
         <EventShowItem
-          key={s.show_item._id.$oid}
+          key={s.show_item._id}
           start_time={starttime.tz(event.event.time_zone).format('h:mm a')}
           duration={s.show_item.duration}
           show_item={s.show_item}

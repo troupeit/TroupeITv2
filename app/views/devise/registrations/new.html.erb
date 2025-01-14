@@ -1,92 +1,57 @@
 <!-- begin login -->
-<div class="login-cover">
-</div>
-
-<div class="login-cover-bg">
-</div>
-
-<div class="col-md-offset-2 col-md-8 col-md-offset-2">
-	<div class="row">
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {  :class=>"form-signup mg-btm" } ) do |f| %>
-    <h3 class="heading-desc">
-      Sign Up
-    </h3>
-    
-		<div class="social-box">
-			<div class="row mg-btm">
-        <div class="col-md-12">
-
-          <a href="<%=omniauth_authorize_path(resource_name, 'facebook') %>" class="btn btn-primary btn-block">
-            <span class="fa fa-facebook-official"></span> Sign Up with Facebook
-          </a>
-			  </div>
-			</div>
-		</div>
-		<div class="main">
-      <div class="row">
-        <div class="col-md-offset-3 col-md-6">
-          <%= f.hidden_field :used_code, :value => params[:invite_code] %>
+<div class="container">
+  <div class="row justify-content-center">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "form-signup mg-btm" }) do |f| %>
+    <div class="main">
+      <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+        <h3 class="heading-desc">
+          Sign Up
+        </h3>
+          <%= f.hidden_field :used_code, value: params[:invite_code] %>
           <%= f.label :username, "Username" %>
-          <%= f.text_field :username, :class=>"form-control" , :placeholder => "Username" %>
+          <%= f.text_field :username, class: "form-control", placeholder: "Username" %>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-offset-3 col-md-6">
+      <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
           <%= f.label :name, "Name" %>
-          <%= f.text_field :name, :class=>"form-control", :placeholder => "Full Name"  %>
+          <%= f.text_field :name, class: "form-control", placeholder: "Full Name" %>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-offset-3 col-md-6">
-          <%= f.label :email, "E-Mail", :id => "email" %>
-          <%= f.text_field :email, :class=>"form-control", :placeholder => "E-Mail" %>
+      <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+          <%= f.label :email, "E-Mail", id: "email" %>
+          <%= f.text_field :email, class: "form-control", placeholder: "E-Mail" %>
         </div>
         <div class="col-md-3">
           <div id="correction" class="float-end"></div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-offset-3 col-md-6">
+      <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
           <%= f.label :password, "Password" %>
-            <%= f.password_field :password, :class=>"form-control", :placeholder => "Password", oninput: "update_and_checkpw(this)"  %>
-            <%= f.text_field :password_confirmation, :class=>"form-control", :placeholder => "Password", oninput: "update_and_checkpw(this)", style: "display:none;" %>
-          <p>
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="showpw" id="showpw" class="checkbox" value="1">&nbsp;Show password
-              </label>
-            </div>
-          </p>
-          <label>Password Strength (green is good!)</label>
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="pwstrengthbar">
-            </div>
+          <%= f.password_field :password, class: "form-control", placeholder: "Password", oninput: "update_and_checkpw(this)" %>
+          <%= f.text_field :password_confirmation, class: "form-control", placeholder: "Password", oninput: "update_and_checkpw(this)", style: "display:none;" %>
+          <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" name="showpw" id="showpw" value="1">
+            <label class="form-check-label" for="showpw">
+              Show password
+            </label>
           </div>
-          
+          <label class="mt-3">Password Strength (green is good!)</label>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" id="pwstrengthbar"></div>
+          </div>
+          <div class="mb-20px">
+            <button type="submit" class="btn btn-theme d-block w-100 h-45px btn-lg">Register</button>
+          </div>
         </div>
       </div>
-      
-	    <span class="clearfix"></span>	
     </div>
-		<div class="login-footer">
-		  <div class="row">
-        <div class="col-xs-8 col-md-8">
-          <div class="left-section">
-            
-  			    <P><a href="/users/sign_in">Already have an account?</a></p>
-            
-					</div>
-        </div>
-        <div class="col-xs-8 col-md-8 float-end">
-          <button type="submit" class="btn btn-large btn-success float-end">Sign Up</button>
-        </div>
-      </div>
-
-		</div>
     <% end %>
-	</div>
   </div>
-
+</div>
 
       
 
