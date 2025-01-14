@@ -77,6 +77,17 @@ const ShowList = (props) => {
     postChange();
   };
 
+  // Let's not render if we don't have data yet.
+  if (!user || !companies) { 
+    // return a spinner
+    return (
+      <div id='loading'>
+        LOADING...
+        <i className="fas fa-spinner fa-spin"></i>
+      </div>
+    );
+  }
+
   let showNodes = "";
   var arrowClass = "fas fa-chevron-right";
         
@@ -99,6 +110,7 @@ const ShowList = (props) => {
               goog_place_id={s.goog_place_id}
               reloadCallback={postChange}
               company={company}
+              companies={companies}
               user={user} /> );
       });
     }
@@ -117,15 +129,7 @@ const ShowList = (props) => {
         />
     );
   }
-    
-  if (!user || !companies) { 
-    // return a spinner
-    return (
-      <div>
-        <span className="fas fa-spinner fa-spin"></span>
-      </div>
-    );
-  }
+
  
   if (checkCompanyAccess(companies, company._id, ACCESS_PRODUCER)) { 
     var showaddbtn = ( <button className="btn btn-sm btn-success" onClick={toggleShowForm}>
@@ -158,19 +162,19 @@ const ShowList = (props) => {
   }
   
   return (
-          <div>
-            <button className="btn btn-sm btn-success" onClick={expand}>
-            <i className={arrowClass}></i>
+      <div>
+        <button className="btn btn-sm btn-success" onClick={expand}>
+          <i className={arrowClass}></i>
             <span>&nbsp;Shows</span>
-            </button>
-            &nbsp;
-            {showaddbtn}
-            &nbsp;
-            {eventeditbtn}
-            &nbsp;
-            {liveviewbtn}
-            {showNodes}
-          </div>
+          </button>
+        &nbsp;
+        {showaddbtn}
+        &nbsp;
+        {eventeditbtn}
+        &nbsp;
+        {liveviewbtn}
+        {showNodes}
+      </div>
     );
 }
 

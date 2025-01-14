@@ -23,6 +23,7 @@ const Show = (props) => {
     door_time,
     user,
     company,
+    companies,
     reloadCallback,
     time_zone,
   } = props;
@@ -69,7 +70,7 @@ const Show = (props) => {
   var door_date_s = ddate.tz(time_zone).format("dddd, MMMM Do YYYY, h:mm A z");
   var content;
 
-  if (checkCompanyAccess(user, company._id, ACCESS_STAGEMGR)) {
+  if (checkCompanyAccess(companies, company._id, ACCESS_STAGEMGR)) {
     var editdelbtns = (
       <div>
         <button
