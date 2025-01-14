@@ -12,7 +12,7 @@ import Show from "./Show";
 import ShowForm from "./ShowForm";
 
 const ShowList = (props) => {
-  const { reloadCallback, company, user, event_id, time_zone } = props;
+  const { reloadCallback, company, companies, user, event_id, time_zone } = props;
 
   const [ data, setData ] = useState([]);
   const [ expanded, setExpanded ] = useState(false);
@@ -118,9 +118,18 @@ const ShowList = (props) => {
     );
   }
     
-  if (checkCompanyAccess(user, company._id, ACCESS_PRODUCER)) { 
+  if (!user || !companies) { 
+    // return a spinner
+    return (
+      <div>
+        <span className="fas fa-spinner fa-spin"></span>
+      </div>
+    );
+  }
+ 
+  if (checkCompanyAccess(companies, company._id, ACCESS_PRODUCER)) { 
     var showaddbtn = ( <button className="btn btn-sm btn-success" onClick={toggleShowForm}>
-                        <i className="fas fa-plus"></i>
+                        <span className="fas fa-plus"></span>
                         <span>&nbsp;Add Show</span>
                         </button> );
 
@@ -134,33 +143,35 @@ const ShowList = (props) => {
     );
   }
 
-      if (checkCompanyAccess(user, company._id, ACCESS_TECHCREW)) {
-        livelink = "/events/" + event_id + "/live";
-        var liveviewbtn = ( <a href={livelink}>
-                             <button className="btn btn-inverse btn-sm">
-                             <span className="fas fa-th-list"></span>
-                             &nbsp;
-                             Live view
-                             </button>
-                             </a>
-                           );
-      }
-      
-      return (
-              <div>
-                <button className="btn btn-sm btn-success" onClick={expand}>
-                <i className={arrowClass}></i>
-                <span>&nbsp;Shows</span>
-                </button>
-                &nbsp;
-                {showaddbtn}
-                &nbsp;
-                {eventeditbtn}
-                &nbsp;
-                {liveviewbtn}
-                {showNodes}
-            	</div>
-        );
+  let livelink, liveviewbtn;
+
+  if (checkCompanyAccess(companies, company._id, ACCESS_TECHCREW)) {
+    livelink = "/events/" + event_id + "/live";
+    liveviewbtn = ( <a href={livelink}>
+                          <button className="btn btn-inverse btn-sm">
+                          <span className="fas fa-th-list"></span>
+                          &nbsp;
+                          Live view
+                          </button>
+                          </a>
+                        );
+  }
+  
+  return (
+          <div>
+            <button className="btn btn-sm btn-success" onClick={expand}>
+            <i className={arrowClass}></i>
+            <span>&nbsp;Shows</span>
+            </button>
+            &nbsp;
+            {showaddbtn}
+            &nbsp;
+            {eventeditbtn}
+            &nbsp;
+            {liveviewbtn}
+            {showNodes}
+          </div>
+    );
 }
 
 export default ShowList;

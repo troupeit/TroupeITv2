@@ -1,141 +1,129 @@
-// util.js
 import moment from 'moment';
-import { ACCESS_TECHCREW } from './constants';
+import { ACCESS_TECHCREW, ASSET_SERVER } from './constants';
 
 /**
  * Protect window.console method calls, e.g. console is not defined on IE
  * unless dev tools are open, and IE doesn't define console.debug
- * 
- * Chrome 41.0.2272.118: debug,error,info,log,warn,dir,dirxml,table,trace,assert,count,markTimeline,profile,profileEnd,time,timeEnd,timeStamp,timeline,timelineEnd,group,groupCollapsed,groupEnd,clear
- * Firefox 37.0.1: log,info,warn,error,exception,debug,table,trace,dir,group,groupCollapsed,groupEnd,time,timeEnd,profile,profileEnd,assert,count
- * Internet Explorer 11: select,log,info,warn,error,debug,assert,time,timeEnd,timeStamp,group,groupCollapsed,groupEnd,trace,clear,dir,dirxml,count,countReset,cd
- * Safari 6.2.4: debug,error,log,info,warn,clear,dir,dirxml,table,trace,assert,count,profile,profileEnd,time,timeEnd,timeStamp,group,groupCollapsed,groupEnd
- * Opera 28.0.1750.48: debug,error,info,log,warn,dir,dirxml,table,trace,assert,count,markTimeline,profile,profileEnd,time,timeEnd,timeStamp,timeline,timelineEnd,group,groupCollapsed,groupEnd,clear
  */
-(function() {
-  // Union of Chrome, Firefox, IE, Opera, and Safari console methods
-  var methods = ["assert", "cd", "clear", "count", "countReset",
-                 "debug", "dir", "dirxml", "error", "exception", "group", "groupCollapsed",
-                 "groupEnd", "info", "log", "markTimeline", "profile", "profileEnd",
-                 "select", "table", "time", "timeEnd", "timeStamp", "timeline",
-                 "timelineEnd", "trace", "warn"];
-  var length = methods.length;
-  var console = (window.console = window.console || {});
-  var method;
-  var noop = function() {};
-  while (length--) {
-    method = methods[length];
-    // define undefined methods as noops to prevent errors
-    if (!console[method])
-      console[method] = noop;
-  }
+(() => {
+  const methods = ["assert", "cd", "clear", "count", "countReset", "debug", "dir", "dirxml", "error", "exception", "group", "groupCollapsed", "groupEnd", "info", "log", "markTimeline", "profile", "profileEnd", "select", "table", "time", "timeEnd", "timeStamp", "timeline", "timelineEnd", "trace", "warn"];
+  const console = (window.console = window.console || {});
+  methods.forEach(method => {
+    if (!console[method]) {
+      console[method] = () => {};
+    }
+  });
 })();
 
-/* Basic Cookie Handling */
-function createCookie(name, value, days) {
-  var expires;
-  
+/**
+ * Create a cookie
+ * @param {string} name - Cookie name
+ * @param {string} value - Cookie value
+ * @param {number} days - Number of days until expiration
+ */
+const createCookie = (name, value, days) => {
+  let expires = "";
   if (days) {
-    var expires; 
-    if (days == -1) {
+    if (days === -1) {
       expires = "; expires=Tue, 19 Jan 2038 03:14:07 UTC";
-    } else { 
-      var date = new Date();
+    } else {
+      const date = new Date();
       date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
       expires = "; expires=" + date.toGMTString();
     }
-  } else {
-    expires = "";
   }
-  document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
-}
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}${expires}; path=/`;
+};
 
-function readCookie(name) {
-  var nameEQ = encodeURIComponent(name) + "=";
-  var ca = document.cookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+/**
+ * Read a cookie
+ * @param {string} name - Cookie name
+ * @returns {string|null} - Cookie value or null if not found
+ */
+const readCookie = (name) => {
+  const nameEQ = `${encodeURIComponent(name)}=`;
+  const ca = document.cookie.split(';');
+  for (let c of ca) {
+    c = c.trim();
+    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
   }
   return null;
-}
+};
 
-function eraseCookie(name) {
+/**
+ * Erase a cookie
+ * @param {string} name - Cookie name
+ */
+const eraseCookie = (name) => {
   createCookie(name, "", -1);
-}
+};
 
-/* Time Formats */
+/**
+ * Pad a number with leading zeros
+ * @param {number} n - Number to pad
+ * @returns {string} - Padded number
+ */
+const pad = (n) => {
+  return n < 10 ? `0${n}` : n;
+};
 
-/* --- Duration Handling ---------------------------------------- */
-/* permit mm:ss or hh:mm, also permit large minutes (90:00, etc.) */
+/** Regexp for duration values */
 var durationRegexp=/^([0-2][0-3](:[0-9][0-9]){2})|([0-9]{1,2}:[0-5][0-9])$/;
 
-/* support functions for dates, move this to a utility someplace. */
-function pad(n) {
-    return (n < 10) ? ("0" + n) : n;
-}
+/**
+ * Format duration in seconds to HH:MM:SS
+ * @param {number} n - Duration in seconds
+ * @param {boolean} addPlus - Whether to add a plus sign
+ * @returns {string} - Formatted duration
+ */
+const formatDuration = (n, addPlus) => {
+  const h = Math.floor(n / 3600);
+  const m = Math.floor((n - (h * 3600)) / 60);
+  const s = n - h * 3600 - m * 60;
+  return `${addPlus ? "+" : ""}${pad(h)}:${pad(m)}:${pad(s)}`;
+};
 
-function formatDuration(n, addPlus) {
-  
-  let h = Math.floor(n / 3600);
-  let m = Math.floor((n - (h * 3600)) / 60);
-  let s = n - h * 3600 - m * 60;
-  let plus_s = "";
-
-  if (addPlus) {
-    plus_s = "+";
-  }
-  
-  return(plus_s + pad(h) + ":" + pad(m) + ":" + pad(s));
-}
-
-function durationToSec(value) {
-
-  /* convert HH:MM:SS or MM:SS into seconds. This assumes you've
-   * already validated value with the durationRegexp above.
-   * Don't call this prior to validating. 
-   */
-  
-  var parts = value.split(':');
-  secs = 0;
-  if (parts.length == 3) {
-    secs = secs + parseInt(parts[0]) * (60 * 60);
-    secs = secs + parseInt(parts[1]) * (60);
-    secs = secs + parseInt(parts[2]);
+/**
+ * Convert duration string to seconds
+ * @param {string} value - Duration string (HH:MM:SS or MM:SS)
+ * @returns {number} - Duration in seconds
+ */
+const durationToSec = (value) => {
+  const parts = value.split(':');
+  let secs = 0;
+  if (parts.length === 3) {
+    secs += parseInt(parts[0]) * 3600;
+    secs += parseInt(parts[1]) * 60;
+    secs += parseInt(parts[2]);
   } else {
-    secs = secs + parseInt(parts[0]) * (60);
-    secs = secs + parseInt(parts[1]);
+    secs += parseInt(parts[0]) * 60;
+    secs += parseInt(parts[1]);
   }
   return secs;
-}
+};
 
-function checkCompanyAccess(cmdata, company_id, minaccess) {
-  /* returns true if your access is at or greater than minaccess 
-   * and if the company is paid up -- the beauty of this is that
-   * when your account expires you can't demote user access 
-   * or move it, because the account is locked... 
-   * 
-   * cmdata is company membership data, company_id is the company
-   */
-  
-  if (cmdata == null) { return false }
-  if (company_id == null) { return false }
+/**
+ * Check company access level
+ * @param {Array} cmdata - Company membership data
+ * @param {string} company_id - Company ID
+ * @param {number} minaccess - Minimum access level
+ * @returns {boolean} - Whether the user has access
+ */
+const checkCompanyAccess = (cmdata, company_id, minaccess) => {
+  if (!cmdata || !company_id) return false;
 
-  var access=false;
-  $.each(cmdata, function (index, value) {
-    // console.log('checkAcccess', cmdata, company_id, minaccess);
-    if ((value.company_id == company_id) || (company_id == 'any')) {
-      let now = moment().utc();
-      /* if trial expired, maximum access can only be tech crew */
+  let access = false;
+  cmdata.forEach(value => {
+    if (value.company_id === company_id || company_id === 'any') {
+      const now = moment().utc();
       if (minaccess >= ACCESS_TECHCREW) {
-        if (value.company.paid_through != null) {
-          let paid_through = moment(value.company.paid_through).utc();
+        if (value.company.paid_through) {
+          const paid_through = moment(value.company.paid_through).utc();
           if (paid_through.isAfter(now) && value.access_level >= minaccess) {
             access = true;
           }
-        } else { 
-          let trial_expires = moment(value.company.user.trial_expires_at).utc();
+        } else {
+          const trial_expires = moment(value.company.user.trial_expires_at).utc();
           if (trial_expires.isAfter(now) && value.access_level >= minaccess) {
             access = true;
           }
@@ -144,33 +132,16 @@ function checkCompanyAccess(cmdata, company_id, minaccess) {
     }
   });
 
-  /* Now we have to handle paid vs. not paid */
-
-  /* If company has a paid through date (and is current)
-   *   return access
-   * else
-   *   if the company owner is in a valid trial period
-   *      return access
-   *   else (the company is unpaid.)
-   *      if minaccess > TECH_CREW, return false. 
-   *   end
-   * end 
-   */
-
   return access;
-}
+};
 
-/* these functions are used on login pages */
-function check_pwstrength(pw) {
-  
-  var colors = ['progress-bar-danger',
-                'progress-bar-danger',
-                'progress-bar-warning',
-                'progress-bar-success',
-                'progress-bar-success' ];
-
-  var pw = pw.value;
-  var data = { 'pw': pw };
+/**
+ * Check password strength
+ * @param {HTMLInputElement} pw - Password input element
+ */
+const check_pwstrength = (pw) => {
+  const colors = ['progress-bar-danger', 'progress-bar-danger', 'progress-bar-warning', 'progress-bar-success', 'progress-bar-success'];
+  const data = { 'pw': pw.value };
 
   $.ajax({
     type: "POST",
@@ -178,233 +149,212 @@ function check_pwstrength(pw) {
     dataType: "json",
     contentType: "application/json",
     data: JSON.stringify(data),
-    success: function(result) {
-      value = result['score'] * 25;
-      if (value == 0 && pw.length > 0)  { value = 10 }; /* just enough to color it. */
-      $('#pwstrengthbar').css('width', value + '%').attr('aria-valuenow', value);
-      $('#pwstrengthbar').attr('class', 'progress-bar ' + colors[result['score']]);
+    success: (result) => {
+      const value = result['score'] * 25;
+      const width = value === 0 && pw.value.length > 0 ? 10 : value;
+      $('#pwstrengthbar').css('width', `${width}%`).attr('aria-valuenow', width);
+      $('#pwstrengthbar').attr('class', `progress-bar ${colors[result['score']]}`);
     },
-    error: function(xhr, status,err) {
+    error: (xhr, status, err) => {
       console.error("passwordcheck", status, err.toString());
     }
   });
-}
+};
 
-function update_and_checkpw(e) {
-  check_pwstrength(e);
-  
-  if ($( "#showpw" ).is(':checked')) {
-    $( "#user_password" ).val( $('#user_password_confirmation').val() );
+/**
+ * Update and check password strength
+ * @param {Event} e - Event object
+ */
+const update_and_checkpw = (e) => {
+  check_pwstrength(e.target);
+
+  if ($("#showpw").is(':checked')) {
+    $("#user_password").val($('#user_password_confirmation').val());
   } else {
-    $( "#user_password_confirmation" ).val( $('#user_password').val() );
-  }
-}
-
-function revArr(a) {
-  var temp = [];
-  var len = a.length;
-
-  for (var i = (len - 1); i >= 0; i--) {
-    temp.push(a[i]);
-  }
-  
-  return temp;
-}
-
-/* support code to render switches on page */
-var green = "#00acac",
-    red = "#ff5b57",
-    blue = "#348fe2",
-    purple = "#727cb6",
-    orange = "#f59c1a",
-    black = "#2d353c";
-    
-var renderSwitcher = function() {
-  if ($("[data-render=switchery]").length !== 0) {
-    $("[data-render=switchery]").each(function() {
-      var e = green;
-      if ($(this).attr("data-theme")) {
-        switch ($(this).attr("data-theme")) {
-        case "red":
-          e = red;
-          break;
-        case "blue":
-          e = blue;
-          break;
-        case "purple":
-          e = purple;
-          break;
-        case "orange":
-          e = orange;
-          break;
-        case "black":
-          e = black;
-          break
-        }
-      }
-      var t = {};
-      t.color = e;
-      t.secondaryColor = $(this).attr("data-secondary-color") ? $(this).attr("data-secondary-color") : "#dfdfdf";
-      t.className = $(this).attr("data-classname") ? $(this).attr("data-classname") : "switchery";
-      t.disabled = $(this).attr("data-disabled") ? true : false;
-      t.disabledOpacity = $(this).attr("data-disabled-opacity") ? $(this).attr("data-disabled-opacity") : .5;
-      t.speed = $(this).attr("data-speed") ? $(this).attr("data-speed") : "0.5s";
-      var n = new Switchery(this, t)
-    })
+    $("#user_password_confirmation").val($('#user_password').val());
   }
 };
 
-/* a very small jQuery-esque plugin to handle querystring */
-/* http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript */
+/**
+ * Reverse an array
+ * @param {Array} a - Array to reverse
+ * @returns {Array} - Reversed array
+ */
+const revArr = (a) => {
+  return a.slice().reverse();
+};
 
-(function($) {
-    $.QueryString = (function(a) {
-        if (a == "") return {};
-        var b = {};
-        for (var i = 0; i < a.length; ++i)
-        {
-            var p=a[i].split('=');
-            if (p.length != 2) continue;
-            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
-        }
-        return b;
-    })(window.location.search.substr(1).split('&'))
+/**
+ * Render switcher elements
+ */
+const renderSwitcher = () => {
+  $("[data-render=switchery]").each(function() {
+    const colorMap = {
+      red: "#ff5b57",
+      blue: "#348fe2",
+      purple: "#727cb6",
+      orange: "#f59c1a",
+      black: "#2d353c"
+    };
+    const color = colorMap[$(this).attr("data-theme")] || "#00acac";
+    const options = {
+      color,
+      secondaryColor: $(this).attr("data-secondary-color") || "#dfdfdf",
+      className: $(this).attr("data-classname") || "switchery",
+      disabled: $(this).attr("data-disabled") ? true : false,
+      disabledOpacity: $(this).attr("data-disabled-opacity") || 0.5,
+      speed: $(this).attr("data-speed") || "0.5s"
+    };
+    new Switchery(this, options);
+  });
+};
+
+/**
+ * Parse query string into an object
+ */
+(($) => {
+  $.QueryString = ((a) => {
+    if (a === "") return {};
+    const b = {};
+    a.forEach(p => {
+      const [key, value] = p.split('=');
+      if (key && value) {
+        b[key] = decodeURIComponent(value.replace(/\+/g, " "));
+      }
+    });
+    return b;
+  })(window.location.search.substr(1).split('&'));
 })(jQuery);
 
-
-/* titleize from rails */
-function titleize(title) {
-  var words = title.split(' ');
-  var array = [];
-
-  for (var i=0; i<words.length; ++i) {
-    array.push(words[i].charAt(0).toUpperCase() + words[i].toLowerCase().slice(1));
-  }
-
-  return array.join(' ');
-}
-
-/* array remove */
-// Array Remove - By John Resig (MIT Licensed)
-Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
+/**
+ * Titleize a string
+ * @param {string} title - String to titleize
+ * @returns {string} - Titleized string
+ */
+const titleize = (title) => {
+  return title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-/* javascript version of embed_for */
-function asset_thumb_path(asset,w,h) {
-  return asset.uuid + ".thumb-" + w + "x" + h 
-}
-
-function asset_download_for(asset) {
-
-  /* append the extension if we have one */
-  if ( asset.filename.lastIndexOf('.') != -1 ) { 
-    var ext = "." + asset.filename.substr(asset.filename.lastIndexOf('.') + 1);
-  } else {
-    var ext = "";
-  }
-
-  return ASSET_SERVER + "/uploads/" + asset.uuid + ext;
-}
-
-function asset_embed_for(asset) {
-  if (asset == undefined) {
-    return undefined;
-  }
-
-  if (asset.kind.lastIndexOf("audio/",0) === 0) {
-    return asset_download_for(asset);
-  }
-  if (asset.kind.lastIndexOf("image/",0) === 0) {  
-    return ASSET_SERVER + "/thumbs/" + asset_thumb_path(asset,100,100) + '.jpg';
-  }
-}
-
-function asset_getfile_for(asset) {
-  /* this will send the user to our getfile server which will remap
-   * the name into something sensible for download. This regexp
-   * whitelist is a bit severe but very safe. */
-  var safe_fn = asset.filename.replace(/[^a-z0-9\.]/gi, '_');
-  safe_fn = safe_fn.replace(/[_]+/gi, '_');
-  
-  return "/gf/getfile?uuid=" + asset.uuid + "&downloadas=" + safe_fn;
-}
-
-
-function bytesToSize(bytes) {
-  var sizes = ['bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes == 0) return '0 bytes';
-
-  var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+/**
+ * Get asset thumbnail path
+ * @param {Object} asset - Asset object
+ * @param {number} w - Width
+ * @param {number} h - Height
+ * @returns {string} - Thumbnail path
+ */
+const asset_thumb_path = (asset, w, h) => {
+  return `${asset.uuid}.thumb-${w}x${h}`;
 };
 
+/**
+ * Get asset download URL
+ * @param {Object} asset - Asset object
+ * @returns {string} - Download URL
+ */
+const asset_download_for = (asset) => {
+  const ext = asset.filename.includes('.') ? `.${asset.filename.split('.').pop()}` : "";
+  return `${ASSET_SERVER}/uploads/${asset.uuid}${ext}`;
+};
 
-function truncateFilename(str, maxlength) {
-  /* mac-os style truncation, for filenames */
-  if (str === undefined) {
-    return undefined;
-  }
+/**
+ * Get asset embed URL
+ * @param {Object} asset - Asset object
+ * @returns {string} - Embed URL
+ */
+const asset_embed_for = (asset) => {
+  if (!asset) return undefined;
+  if (asset.kind.startsWith("audio/")) return asset_download_for(asset);
+  if (asset.kind.startsWith("image/")) return `${ASSET_SERVER}/thumbs/${asset_thumb_path(asset, 100, 100)}.jpg`;
+};
 
-  if (str.length > maxlength) {
-    return str.substring(0, 20) + "..." + str.substring(str.length-10,str.length);
-  } else {
-    return str
-  }
-}
-  
-function enforce_maxlength(oInObj, outSel)
-{
-  var iMaxLen = parseInt(oInObj.getAttribute('maxlength'));
-  var iCurLen = oInObj.value.length;
+/**
+ * Get asset file URL for download
+ * @param {Object} asset - Asset object
+ * @returns {string} - File URL
+ */
+const asset_getfile_for = (asset) => {
+  const safe_fn = asset.filename.replace(/[^a-z0-9\.]/gi, '_').replace(/[_]+/gi, '_');
+  return `/gf/getfile?uuid=${asset.uuid}&downloadas=${safe_fn}`;
+};
 
-  if ( oInObj.getAttribute && iCurLen > iMaxLen )
-  {
+/**
+ * Convert bytes to human-readable size
+ * @param {number} bytes - Number of bytes
+ * @returns {string} - Human-readable size
+ */
+const bytesToSize = (bytes) => {
+  const sizes = ['bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes === 0) return '0 bytes';
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return `${Math.round(bytes / Math.pow(1024, i), 2)} ${sizes[i]}`;
+};
+
+/**
+ * Truncate filename with ellipsis
+ * @param {string} str - Filename
+ * @param {number} maxlength - Maximum length
+ * @returns {string} - Truncated filename
+ */
+const truncateFilename = (str, maxlength) => {
+  if (!str) return undefined;
+  return str.length > maxlength ? `${str.substring(0, 20)}...${str.substring(str.length - 10)}` : str;
+};
+
+/**
+ * Enforce maxlength on input
+ * @param {HTMLInputElement} oInObj - Input element
+ * @param {string} outSel - Selector for output element
+ */
+const enforce_maxlength = (oInObj, outSel) => {
+  const iMaxLen = parseInt(oInObj.getAttribute('maxlength'));
+  if (oInObj.value.length > iMaxLen) {
     oInObj.value = oInObj.value.substring(0, iMaxLen);
   }
-
-  // update the count
   $(outSel).html(iMaxLen - oInObj.value.length);
+};
 
-} 
-
-function get_fa_icon(mimetype) {
-  /* return a font awesome icon class based on a mimetype */
-  var parts = mimetype.split("/");
-  var fasize  ="text-center fa fa-4x"
-  switch(parts[0]) {
-  case "audio":
-    return fasize + " fa-file-audio-o";
-    break;
-  case "image":
-    return fasize + " fa-file-image-o";
-    break;
-  case "video":
-    return fasize + " fa-file-video-o";
-    break;
-  case "error":
-    return fasize + " fa-exclamation-circle";
-  default:
-    return fasize + " fa-file-o";
+/**
+ * Get FontAwesome icon class for mimetype
+ * @param {string} mimetype - Mimetype
+ * @returns {string} - FontAwesome icon class
+ */
+const get_fa_icon = (mimetype) => {
+  const parts = mimetype.split("/");
+  const fasize = "text-center fa fa-4x";
+  switch (parts[0]) {
+    case "audio":
+      return `${fasize} fa-file-audio-o`;
+    case "image":
+      return `${fasize} fa-file-image-o`;
+    case "video":
+      return `${fasize} fa-file-video-o`;
+    case "error":
+      return `${fasize} fa-exclamation-circle`;
+    default:
+      return `${fasize} fa-file-o`;
   }
-}
+};
 
 export {
-  checkCompanyAccess,
+  asset_download_for,
+  asset_embed_for,
+  asset_getfile_for,
+  asset_thumb_path,
+  bytesToSize,
   check_pwstrength,
+  checkCompanyAccess,
   createCookie,
-  durationToSec,
   durationRegexp,
+  durationToSec,
+  enforce_maxlength,
   eraseCookie,
   formatDuration,
+  get_fa_icon,
   pad,
   readCookie,
   renderSwitcher,
   revArr,
   titleize,
-  update_and_checkpw,
-  bytesToSize,
   truncateFilename,
+  update_and_checkpw
 };

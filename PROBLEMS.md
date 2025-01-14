@@ -1,6 +1,9 @@
 PROBLEMS.md
 ----------
+- Need to replace threesixtyplay/react audio playback in general in the face of HTML5 audio
+
 - Tooltips gone, need to figure that out
+
 - Automatic tab switching / resetting in EventsApp (cannot control Tabs?)
 
 - Pagination gone (have to migrate to pagy but was only using it for bhofmember)
